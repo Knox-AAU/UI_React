@@ -6,8 +6,8 @@ import {Link} from 'react-router-dom'
 
 const Header = props => {
     return (<Navbar collapseOnSelect expand="lg" bg="light" variant="light" sticky="top">
-    <Container>
-    <Navbar.Brand href="/home"><img width="auto" height="5vh" className="img-responsive" src={logo} alt="logo"/></Navbar.Brand>
+    <Container style={{minHeight: "30px",height:"5vh"}}>
+    <Navbar.Brand href="/home"><img style={{minHeight: "30px",height:"5vh"}} className="img-responsive" src={logo} alt="logo"/></Navbar.Brand>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
     <Navbar.Collapse id="responsive-navbar-nav">
       <Nav className="me-auto">

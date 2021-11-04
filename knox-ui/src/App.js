@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import Header from './Components/Header.js';
 import Home from './Components/Home.js';
 import {
