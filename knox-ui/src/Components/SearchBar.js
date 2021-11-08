@@ -21,7 +21,7 @@ function SearchBar({searchText, onClick}) {
             onClick={() => onClick(searchTerms)}
             variant="outline-secondary"
             id="search-button">
-                <img src={SearchIcon} height="40px"/>
+                <img src={SearchIcon} height="40px" alt="Search icon"/>
         </Button>
     </InputGroup>
     )
