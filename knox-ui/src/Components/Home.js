@@ -10,12 +10,20 @@ import SearchResult from './SearchResult';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([{ title:"test", id: 520, score: 1.1, }])
+    const [searchResults, setSearchResults] = useState([])
+    const [searching, setSearching] = useState(false);
 
     const onClick = (searchText)=>{
-        const jsonDummyArray = '[{ "title":"'+searchText+'", "id": 521 , "score": 1.1 }]' //replace with API call
-        const objectArray = JSON.parse(jsonDummyArray)
-        setSearchResults([...searchResults, ...objectArray ])
+        console.log("start")
+        fetch("http://localhost:8081/api/search?input="+encodeURI(searchText))
+        .then(response=> response.json())
+        .then(json => setSearchResults(json.result))
+        .finally(()=>{
+            setSearching(false)
+            console.log("stop")
+        })
+
+
     }
     
     const homeStyle = {
