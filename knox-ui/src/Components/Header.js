@@ -1,6 +1,5 @@
 import React from 'react'
 import logo from '../Img/logo.svg'
-import PropTypes from 'prop-types'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 
 const Header = props => {

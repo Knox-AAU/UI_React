@@ -13,12 +13,15 @@ function SearchBar({searchText, onClick}) {
     return (
     <InputGroup className="mb-3" style={{maxHeight: "5vh"}}>
         <FormControl onChange={e => setSearchTerms( e.target.value) }
+            id= "search-bar"
             placeholder= {searchText} 
             aria-label="Search Term"
-            aria-describedby="basic-addon2"
         />
-        <Button onClick={() => onClick(searchTerms)} variant="outline-secondary" id="button-addon2">
-            <img src={SearchIcon} height="40px"/>
+        <Button
+            onClick={() => onClick(searchTerms)}
+            variant="outline-secondary"
+            id="search-button">
+                <img src={SearchIcon} height="40px" alt="Search icon"/>
         </Button>
     </InputGroup>
     )
