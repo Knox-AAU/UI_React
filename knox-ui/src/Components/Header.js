@@ -1,10 +1,14 @@
 import React from 'react'
 import logo from '../Img/logo.svg'
 import { Navbar, Nav, Container } from 'react-bootstrap'
+import StickyBox from 'react-sticky-box/dist/esnext'
 
 const Header = props => {
-    return (<Navbar collapseOnSelect expand="lg" bg="light" variant="light" sticky="top">
-    <Container style={{minHeight: "30px",height:"5vh"}}>
+    return (
+    
+    <StickyBox>
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{overflow:"hidden"}}>
+    <Container style={{height:"50px"}}>
     <Navbar.Brand href="/home"><img style={{minHeight: "30px",height:"5vh"}} className="img-responsive" src={logo} alt="logo"/></Navbar.Brand>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
     <Navbar.Collapse id="responsive-navbar-nav">
@@ -18,6 +22,7 @@ const Header = props => {
     </Navbar.Collapse>
     </Container>
   </Navbar>
+  </StickyBox>
     )
 }
 

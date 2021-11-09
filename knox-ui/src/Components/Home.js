@@ -5,23 +5,49 @@ import Collapse from 'react-bootstrap/Collapse'
 import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
+import SearchResult from './SearchResult';
 
 
 const Home = props => {
     const [open, setOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([{title: "test", text:"test text"}, {title: "test2", text:"test text"}])
+    const [searchResults, setSearchResults] = useState([{ title:"test", id: 520, score: 1.1, }])
 
     const onClick = (searchText)=>{
-        setSearchResults([...searchResults, {title: searchText, text:"test text"}])
+        const jsonDummyArray = '[{ "title":"'+searchText+'", "id": 521 , "score": 1.1 }]' //replace with API call
+        const objectArray = JSON.parse(jsonDummyArray)
+        setSearchResults([...searchResults, ...objectArray ])
     }
     
+    const homeStyle = {
+        marginTop: "8vh",
+        display: "flex",
+        width: "100%",
+        alignItems: "stretch",
+        marginLeft: "10vh"
+    }
+
     return (
-    <div style={{display: "flex", width: "100%", alignItems: "stretch"}}>
-        <div style={{display: "block", width: "100%"}}>
-        <SearchBar
+    <div style={{homeStyle}}>
+        
+        <div style={{homeStyle, display: "block", width: "100%"}}>
+            <SearchBar
             searchText="Enter your search"
             onClick={onClick}
-        />
+            />
+            <div style={{float: "right"}}>
+                <StickyBox offsetTop={50}>
+                <Collapse in={open} dimension="width">
+                    <div id="example-collapse-text">
+                        <Card body style={{backgroundColor: "darkgray", width: '400px', height: "94vh", position:"sticky"}}>
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
+                            labore wes anderson cred nesciunt sapiente ea proident.
+                        </Card>
+                    </div>
+                </Collapse>
+                </StickyBox>
+            </div>
+        </div>
         <Button
             onClick={() => setOpen(!open)}
             aria-controls="example-collapse-text"
@@ -30,24 +56,11 @@ const Home = props => {
         >
             Advanced
         </Button>
+        {/*Adds searchResult to the DOM*/}
         {searchResults.map(result => {
-            return (<div className="search-result">
-                <h1>{result.title}</h1>
-                <h2>{result.text}</h2>
-            </div>)
-        })}
-        </div>
-        <div style={{float: "right"}}>
-            <Collapse in={open} dimension="width">
-                <div id="example-collapse-text">
-                    <Card body style={{backgroundColor: "cyan", width: '400px', height: "94vh", position:"sticky"}}>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                        terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-                        labore wes anderson cred nesciunt sapiente ea proident.
-                    </Card>
-                </div>
-            </Collapse>
-        </div>
+            return (<SearchResult searchResult = {result}/>
+                )
+            })}
     </div>
     )
 }

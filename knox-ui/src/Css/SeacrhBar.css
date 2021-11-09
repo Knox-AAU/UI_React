@@ -1,0 +1,16 @@
+.searchBarStyle {
+    height: "5vh";
+    border-radius: "25px";
+}
+
+.searchButtonStyle {
+    height: "5vh";
+    border-radius: "25px";
+    border-style: "none";
+}
+
+.searchBarPlacement {
+    margin-top: "5%";
+    width: "50%";
+    margin-left: "5%";
+}
