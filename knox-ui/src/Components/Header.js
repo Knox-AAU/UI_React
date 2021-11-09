@@ -2,7 +2,6 @@ import React from 'react'
 import logo from '../Img/logo.svg'
 import PropTypes from 'prop-types'
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import {Link} from 'react-router-dom'
 
 const Header = props => {
     return (<Navbar collapseOnSelect expand="lg" bg="light" variant="light" sticky="top">
