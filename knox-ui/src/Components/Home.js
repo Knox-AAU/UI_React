@@ -4,23 +4,30 @@ import Card from 'react-bootstrap/Card'
 import Collapse from 'react-bootstrap/Collapse'
 import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
+import SearchResults from './SearchResults';
 import { useState } from 'react';
-import SearchResult from './SearchResult';
 
 
 const Home = props => {
     const [open, setOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
+    const [firstSearchMade, setFirstSearchMade] = useState(false)
 
     const onClick = (searchText)=>{
-        console.log("start")
+        if(searching===true) return
+        if (searchText === ""){
+            setSearchResults([])
+            return
+        }
+        setSearching(true)
         fetch("http://localhost:8081/api/search?input="+encodeURI(searchText))
         .then(response=> response.json())
         .then(json => setSearchResults(json.result))
+        .catch(e=>console.log(e))
         .finally(()=>{
             setSearching(false)
-            console.log("stop")
+            setFirstSearchMade(true)
         })
 
 
@@ -41,6 +48,7 @@ const Home = props => {
             <SearchBar
             searchText="Enter your search"
             onClick={onClick}
+            loadingState= {searching}
             />
             <div style={{float: "right"}}>
                 <StickyBox offsetTop={50}>
@@ -65,10 +73,7 @@ const Home = props => {
             Advanced
         </Button>
         {/*Adds searchResult to the DOM*/}
-        {searchResults.map(result => {
-            return (<SearchResult searchResult = {result}/>
-                )
-            })}
+        <SearchResults searchResults={searchResults} firstSearchMade={firstSearchMade}/>
     </div>
     )
 }
