@@ -7,7 +7,7 @@ import propTypes from 'prop-types'
 import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
 
-function SearchBar({searchText, onClick, loadingState}) {
+function SearchBar({ searchText, onClick, loadingState }) {
     const [searchTerms, setSearchTerms] = useState();
 
     const searchBarStyle = {
@@ -23,35 +23,34 @@ function SearchBar({searchText, onClick, loadingState}) {
     const handleKeypress = e => e.key === "Enter" && sendSearch()
     const sendSearch = () => {
         onClick(searchTerms.value)
-        searchTerms.value=""
+        searchTerms.value = ""
     }
 
     return (
-        
-    <InputGroup className="mb-3" >
-        <FormControl style={searchBarStyle} onChange={e => setSearchTerms( e.target)}
-            id= "search-bar"
-            placeholder= {searchText} 
-            aria-label="Search Term"
-            onKeyPress={handleKeypress}
-        />
-        <Button style={searchButtonStyle}
-            onClick={sendSearch}
-            variant="outline-secondary"
-            id="search-button">
-                <img src={SearchIcon} height="30px" alt="Search icon"/>
-                
-        </Button>
-        <BarLoader loading={loadingState}/> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
+        <InputGroup className="mb-3" >
+            <FormControl style={searchBarStyle} onChange={e => setSearchTerms(e.target)}
+                id="search-bar"
+                placeholder={searchText}
+                aria-label="Search Term"
+                onKeyPress={handleKeypress}
+            />
+            <Button style={searchButtonStyle}
+                onClick={sendSearch}
+                variant="outline-secondary"
+                id="search-button">
+                <img src={SearchIcon} height="30px" alt="Search icon" />
 
-    </InputGroup>
+            </Button>
+            <BarLoader loading={loadingState} /> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
+
+        </InputGroup>
 
 
     )
 }
-SearchBar.defaultProps= {
-    searchText : "Enter your search",
-    loadingState : false,
+SearchBar.defaultProps = {
+    searchText: "Enter your search",
+    loadingState: false,
 }
 SearchBar.propTypes = {
     searchText: propTypes.string,

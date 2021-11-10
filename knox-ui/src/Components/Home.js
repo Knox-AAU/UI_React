@@ -6,6 +6,8 @@ import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import { useState } from 'react';
+import PaginatedSearchResults from './PaginatedSearchResults'
+
 
 
 const Home = props => {
@@ -73,7 +75,7 @@ const Home = props => {
             Advanced
         </Button>
         {/*Adds searchResult to the DOM*/}
-        <SearchResults searchResults={searchResults} firstSearchMade={firstSearchMade}/>
+        <PaginatedSearchResults  itemsPerPage={10} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
     </div>
     )
 }
