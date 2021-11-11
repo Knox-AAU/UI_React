@@ -35,40 +35,48 @@ const Home = props => {
     }
 
     return (
-    <div style={{homeStyle}}>
-        
-        <div style={{homeStyle, display: "block", width: "100%"}}>
+    <div style={{display: "flex", width: "100%", alignItems: "stretch"}}>
+        <div style={{display: "block", width: "100%"}}>
+            
+            <div>
+                <h1 style={{fontSize:"5em"}}>Search Contents</h1>
+                <h2 style={{marginBottom:"1em"}}>It is possible to search between multiple datasets of the toolbox!</h2>
+             </div>
+
+        <StickyBox offsetTop={50}>
             <SearchBar
-            searchText="Enter your search"
-            onClick={onClick}
+                searchText="Enter your search"
+                onClick={onClick}
             />
-            <div style={{float: "right"}}>
+            <Button
+                onClick={() => setOpen(!open)}
+                aria-controls="example-collapse-text"
+                aria-expanded={open}
+                variant="secondary"
+            >
+                Advanced
+            </Button>
+        </StickyBox>
+        {searchResults.map(result => {
+            return (<div className="search-result">
+                <h1>{result.title}</h1>
+                <h2>{result.text}</h2>
+            </div>)
+        })}
+        </div>
+        <div style={{float: "right"}}>
+            <Collapse in={open} dimension="width">
                 <StickyBox offsetTop={50}>
-                <Collapse in={open} dimension="width">
                     <div id="example-collapse-text">
-                        <Card body style={{backgroundColor: "darkgray", width: '400px', height: "94vh", position:"sticky"}}>
+                        <Card body style={{backgroundColor: "cyan", width: '400px', height: "94vh", position:"sticky"}}>
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
                             terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
                             labore wes anderson cred nesciunt sapiente ea proident.
                         </Card>
                     </div>
-                </Collapse>
                 </StickyBox>
-            </div>
+            </Collapse>
         </div>
-        <Button
-            onClick={() => setOpen(!open)}
-            aria-controls="example-collapse-text"
-            aria-expanded={open}
-            variant="secondary"
-        >
-            Advanced
-        </Button>
-        {/*Adds searchResult to the DOM*/}
-        {searchResults.map(result => {
-            return (<SearchResult searchResult = {result}/>
-                )
-            })}
     </div>
     )
 }
