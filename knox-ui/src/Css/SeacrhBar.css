@@ -1,16 +1,21 @@
 .searchBarStyle {
-    height: "5vh";
-    border-radius: "25px";
+    height: 5vh;
+    border-radius: 25px !important;
 }
 
 .searchButtonStyle {
-    height: "5vh";
-    border-radius: "25px";
-    border-style: "none";
+    height: 5vh;
+    border-radius: 25px !important;
+    border-style: none !important;
 }
 
 .searchBarPlacement {
-    margin-top: "5%";
-    width: "50%";
-    margin-left: "5%";
+    margin-top: 5%;
+    width: 50%;
+    margin-left: 5%;
+}
+
+.outerbox h1 {
+    margin-top: 3%; 
+    margin-left: 5%;
 }

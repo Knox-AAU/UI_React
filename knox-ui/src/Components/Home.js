@@ -6,7 +6,7 @@ import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
 import SearchResult from './SearchResult';
-
+import '../Css/AdvancedButton.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -35,36 +35,15 @@ const Home = props => {
     }
 
     return (
-    <div style={{display: "flex", width: "100%", alignItems: "stretch"}}>
-        <div style={{display: "block", width: "100%"}}>
-            
-            <div>
-                <h1 style={{fontSize:"5em"}}>Search Contents</h1>
-                <h2 style={{marginBottom:"1em"}}>It is possible to search between multiple datasets of the toolbox!</h2>
-             </div>
 
-        <StickyBox offsetTop={50}>
+    <div className='outerbox'>
+        <h1> Search Engine </h1>
+        <div className='searchBarPlacement'>
             <SearchBar
-                searchText="Enter your search"
-                onClick={onClick}
-            />
-            <Button
-                onClick={() => setOpen(!open)}
-                aria-controls="example-collapse-text"
-                aria-expanded={open}
-                variant="secondary"
-            >
-                Advanced
-            </Button>
-        </StickyBox>
-        {searchResults.map(result => {
-            return (<div className="search-result">
-                <h1>{result.title}</h1>
-                <h2>{result.text}</h2>
-            </div>)
-        })}
-        </div>
-        <div style={{float: "right"}}>
+            searchText="Enter your search"
+            onClick={onClick}
+            /> 
+            <div style={{float: "right"}}>
             <Collapse in={open} dimension="width">
                 <StickyBox offsetTop={50}>
                     <div id="example-collapse-text">
@@ -77,6 +56,21 @@ const Home = props => {
                 </StickyBox>
             </Collapse>
         </div>
+        
+        <Button className='advancedButtonStyle advancedButtonPlacement'
+            onClick={() => setOpen(!open)}
+            aria-controls="example-collapse-text"
+            aria-expanded={open}
+            variant="secondary"
+        >
+            Advanced
+        </Button>
+        {/*Adds searchResult to the DOM*/}
+        {searchResults.map(result => {
+            return (<SearchResult searchResult = {result}/>
+                )
+            })}
+
     </div>
     )
 }
