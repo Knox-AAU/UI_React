@@ -5,16 +5,35 @@ import Collapse from 'react-bootstrap/Collapse'
 import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
+import SearchResult from './SearchResult';
 
 
 const Home = props => {
     const [open, setOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([{title: "test", text:"test text"}, {title: "test2", text:"test text"}])
+    const [searchResults, setSearchResults] = useState([])
+    const [searching, setSearching] = useState(false);
 
     const onClick = (searchText)=>{
-        setSearchResults([...searchResults, {title: searchText, text:"test text"}])
+        console.log("start")
+        fetch("http://localhost:8081/api/search?input="+encodeURI(searchText))
+        .then(response=> response.json())
+        .then(json => setSearchResults(json.result))
+        .finally(()=>{
+            setSearching(false)
+            console.log("stop")
+        })
+
+
     }
     
+    const homeStyle = {
+        marginTop: "8vh",
+        display: "flex",
+        width: "100%",
+        alignItems: "stretch",
+        marginLeft: "10vh"
+    }
+
     return (
     <div style={{display: "flex", width: "100%", alignItems: "stretch"}}>
         <div style={{display: "block", width: "100%"}}>

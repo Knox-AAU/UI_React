@@ -21,7 +21,7 @@ const Header = props => {
           </Nav>
         </Navbar.Collapse>
         </Container>
-    </Navbar>
+    </Navbar
   </StickyBox>
     )
 }

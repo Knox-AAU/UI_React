@@ -7,21 +7,33 @@ import propTypes from 'prop-types'
 import { useState } from 'react';
 
 
+
 function SearchBar({searchText, onClick}) {
     const [searchTerms, setSearchTerms] = useState("");
 
+    const searchBarStyle = {
+        height: "5vh",
+        borderRadius: "25px"
+    }
+
+    const searchButtonStyle = {
+        height: "5vh",
+        borderRadius: "25px",
+        borderStyle: "none",
+    }
+
     return (
     <InputGroup className="mb-3" style={{maxHeight: "5vh"}}>
-        <FormControl onChange={e => setSearchTerms( e.target.value) }
+        <FormControl style={searchBarStyle} onChange={e => setSearchTerms( e.target.value) }
             id= "search-bar"
             placeholder= {searchText} 
             aria-label="Search Term"
         />
-        <Button
+        <Button style={searchButtonStyle}
             onClick={() => onClick(searchTerms)}
             variant="outline-secondary"
             id="search-button">
-                <img src={SearchIcon} height="40px" alt="Search icon"/>
+                <img src={SearchIcon} height="30px" alt="Search icon"/>
         </Button>
     </InputGroup>
     )

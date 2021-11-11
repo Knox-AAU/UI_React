@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import FactChecker from './Components/FactChecker.js';
 import Status from './Components/Status.js';
+import AppCss from './Css/App.css'
 
 
 function App() {
