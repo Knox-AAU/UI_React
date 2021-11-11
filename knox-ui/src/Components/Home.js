@@ -6,74 +6,91 @@ import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
 import SearchResult from './SearchResult';
-import '../Css/AdvancedButton.css';
+import '../Css/HomePage.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
 
-    const onClick = (searchText)=>{
+    const [checked, setChecked] = React.useState(false);
+
+    const handleChange = () => {
+        setChecked(!checked);
+    };
+
+    const onClick = (searchText) => {
         console.log("start")
-        fetch("http://localhost:8081/api/search?input="+encodeURI(searchText))
-        .then(response=> response.json())
-        .then(json => setSearchResults(json.result))
-        .finally(()=>{
-            setSearching(false)
-            console.log("stop")
-        })
-
-
-    }
-    
-    const homeStyle = {
-        marginTop: "8vh",
-        display: "flex",
-        width: "100%",
-        alignItems: "stretch",
-        marginLeft: "10vh"
+        fetch("http://localhost:8081/api/search?input=" + encodeURI(searchText))
+            .then(response => response.json())
+            .then(json => setSearchResults(json.result))
+            .finally(() => {
+                setSearching(false)
+                console.log("stop")
+            })
     }
 
     return (
+        <div className="ContentOfPage">
+            <div className="SearchBarPlacement">
 
-    <div className='outerbox'>
-        <h1> Search Engine </h1>
-        <div className='searchBarPlacement'>
-            <SearchBar
-            searchText="Enter your search"
-            onClick={onClick}
-            /> 
-            <div style={{float: "right"}}>
-            <Collapse in={open} dimension="width">
+                <div className="HeaderDiv">
+                    <h1 >Search Contents</h1>
+                    <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
+                </div>
+
                 <StickyBox offsetTop={50}>
-                    <div id="example-collapse-text">
-                        <Card body style={{backgroundColor: "cyan", width: '400px', height: "94vh", position:"sticky"}}>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-                            labore wes anderson cred nesciunt sapiente ea proident.
-                        </Card>
+                    <div className="SearchBarPlacement ">
+                        <SearchBar
+                            searchText="Enter your search"
+                            onClick={onClick}
+                        />
+                        <Button
+                            onClick={() => setOpen(!open)}
+                            aria-controls="example-collapse-text"
+                            aria-expanded={open}
+                            variant="secondary"
+                        >
+                            Advanced
+                        </Button>
                     </div>
                 </StickyBox>
-            </Collapse>
-        </div>
-        
-        <Button className='advancedButtonStyle advancedButtonPlacement'
-            onClick={() => setOpen(!open)}
-            aria-controls="example-collapse-text"
-            aria-expanded={open}
-            variant="secondary"
-        >
-            Advanced
-        </Button>
-        {/*Adds searchResult to the DOM*/}
-        {searchResults.map(result => {
-            return (<SearchResult searchResult = {result}/>
-                )
-            })}
+            </div>
+            <div className="CollapseDiv">
+                <Collapse in={open} dimension="width">
+                    <StickyBox offsetTop={50}>
+                        <div>
+                            <Card body style={{ backgroundColor: "darkgray", width: '400px', height: "94vh" }}>
+                                <div class="sidebar_component">
+                                    <h2 > Filter Datasets</h2>
+                                    <div class="checkbox">
+                                        <ul class="nobullets">
+                                            <li>
+                                                <label>
+                                                    <p class="sidebar_option_text">Grundfos</p>
+                                                    <input type="checkbox" id="option0" name="Grundfos"/>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label>
+                                                    <p class="sidebar_option_text">Nordjyske</p>
+                                                    <input type="checkbox" id="option1" name="Nordjyske"/>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-    </div>
+                            </Card>
+                        </div>
+                    </StickyBox>
+                </Collapse>
+            </div>
+
+        </div>
     )
 }
+
 Home.propTypes = {
 
 }

@@ -14,16 +14,16 @@ function SearchBar({searchText, onClick}) {
 
     return (
     <InputGroup >
-        <FormControl className='searchBarStyle' onChange={e => setSearchTerms( e.target.value) }
+        <FormControl className='SearchBarStyle' onChange={e => setSearchTerms( e.target.value) }
             id= "search-bar"
             placeholder= {searchText} 
             aria-label="Search Term"
         />
-        <Button className='searchButtonStyle'
+        <Button className='SearchButtonStyle'
             onClick={() => onClick(searchTerms)}
             variant="outline-secondary"
             id="search-button">
-                <img src={SearchIcon} height="30px" alt="Search icon"/>
+                <img src={SearchIcon} className="ImgStyle" alt="Search icon"/>
         </Button>
     </InputGroup>
     )
