@@ -10,12 +10,20 @@ import '../Css/AdvancedButton.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([{ title:"test", id: 520, score: 1.1, }])
+    const [searchResults, setSearchResults] = useState([])
+    const [searching, setSearching] = useState(false);
 
     const onClick = (searchText)=>{
-        const jsonDummyArray = '[{ "title":"'+searchText+'", "id": 521 , "score": 1.1 }]' //replace with API call
-        const objectArray = JSON.parse(jsonDummyArray)
-        setSearchResults([...searchResults, ...objectArray ])
+        console.log("start")
+        fetch("http://localhost:8081/api/search?input="+encodeURI(searchText))
+        .then(response=> response.json())
+        .then(json => setSearchResults(json.result))
+        .finally(()=>{
+            setSearching(false)
+            console.log("stop")
+        })
+
+
     }
     
     const homeStyle = {
@@ -27,6 +35,7 @@ const Home = props => {
     }
 
     return (
+
     <div className='outerbox'>
         <h1> Search Engine </h1>
         <div className='searchBarPlacement'>
@@ -35,18 +44,17 @@ const Home = props => {
             onClick={onClick}
             /> 
             <div style={{float: "right"}}>
+            <Collapse in={open} dimension="width">
                 <StickyBox offsetTop={50}>
-                <Collapse in={open} dimension="width">
                     <div id="example-collapse-text">
-                        <Card body style={{backgroundColor: "darkgray", width: '400px', height: "94vh", position:"sticky"}}>
+                        <Card body style={{backgroundColor: "cyan", width: '400px', height: "94vh", position:"sticky"}}>
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
                             terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
                             labore wes anderson cred nesciunt sapiente ea proident.
                         </Card>
                     </div>
-                </Collapse>
                 </StickyBox>
-            </div>
+            </Collapse>
         </div>
         
         <Button className='advancedButtonStyle advancedButtonPlacement'
@@ -62,6 +70,7 @@ const Home = props => {
             return (<SearchResult searchResult = {result}/>
                 )
             })}
+
     </div>
     )
 }
