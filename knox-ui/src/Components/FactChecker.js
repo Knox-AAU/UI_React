@@ -1,6 +1,6 @@
 import React from 'react'
 import SearchBar from './SearchBar';
-
+import '../Css/SeacrhBar.css';
 
 
 
@@ -9,16 +9,10 @@ const FactChecker = props => {
         console.log(searchText)
     }
 
-    const searchBarPlacementStyle = {
-        marginTop: "5%",
-        width: "50%",
-        marginLeft: "5%" 
-    };
-
     return (
-        <div>
-            <h1 style={{marginTop: "3%", marginLeft: "5%"}}> Factchecker </h1>
-            <div  style={searchBarPlacementStyle}>
+        <div className="outerbox">
+            <h1> Factchecker </h1>
+            <div className='searchBarPlacement'>
             <SearchBar
             searchText="Enter potential truth"
             onClick={onClick}

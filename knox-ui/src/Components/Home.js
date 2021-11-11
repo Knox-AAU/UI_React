@@ -6,7 +6,7 @@ import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
 import SearchResult from './SearchResult';
-
+import '../Css/AdvancedButton.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -27,13 +27,13 @@ const Home = props => {
     }
 
     return (
-    <div style={{homeStyle}}>
-        
-        <div style={{homeStyle, display: "block", width: "100%"}}>
+    <div className='outerbox'>
+        <h1> Search Engine </h1>
+        <div className='searchBarPlacement'>
             <SearchBar
             searchText="Enter your search"
             onClick={onClick}
-            />
+            /> 
             <div style={{float: "right"}}>
                 <StickyBox offsetTop={50}>
                 <Collapse in={open} dimension="width">
@@ -48,7 +48,8 @@ const Home = props => {
                 </StickyBox>
             </div>
         </div>
-        <Button
+        
+        <Button className='advancedButtonStyle advancedButtonPlacement'
             onClick={() => setOpen(!open)}
             aria-controls="example-collapse-text"
             aria-expanded={open}
