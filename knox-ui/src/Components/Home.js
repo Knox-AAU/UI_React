@@ -31,8 +31,6 @@ const Home = props => {
             setSearching(false)
             setFirstSearchMade(true)
         })
-
-
     }
     
     const homeStyle = {
