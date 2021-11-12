@@ -8,7 +8,7 @@ const Header = props => {
     return (
     
     <StickyBox>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="NavBarStyle" >
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{padding: 0}} className="NavBarStyle" >
         <Container className="ContainerStyle">
         <Navbar.Brand href="/home"><img style={{height:"40px"}} className="img-responsive" src={logo} alt="logo"/></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

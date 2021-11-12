@@ -18,23 +18,24 @@ function SearchBar({ searchText, onClick, loadingState }) {
     }
 
     return (
-        <InputGroup className="mb-3" >
-            <FormControl className='SearchBarStyle' onChange={e => setSearchTerms(e.target)}
-                id="search-bar"
-                placeholder={searchText}
-                aria-label="Search Term"
-                onKeyPress={handleKeypress}
-            />
-            <Button className='SearchButtonStyle'
-                onClick={sendSearch}
-                variant="outline-secondary"
-                id="search-button">
-                <img src={SearchIcon} height="30px" alt="Search icon" />
+        <div>
+            <InputGroup className="mb-3" >
+                <FormControl className='SearchBarStyle' onChange={e => setSearchTerms(e.target)}
+                    id="search-bar"
+                    placeholder={searchText}
+                    aria-label="Search Term"
+                    onKeyPress={handleKeypress}
+                />
+                <Button className='SearchButtonStyle'
+                    onClick={sendSearch}
+                    variant="outline-secondary"
+                    id="search-button">
+                    <img src={SearchIcon} height="30px" alt="Search icon" />
 
-            </Button>
-            <BarLoader loading={loadingState} /> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
-
-        </InputGroup>
+                </Button>
+                <BarLoader loading={loadingState} style={{}} /> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
+            </InputGroup>
+        </div>
     )
 }
 SearchBar.defaultProps = {

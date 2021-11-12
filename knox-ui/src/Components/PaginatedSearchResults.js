@@ -2,6 +2,7 @@ import React from 'react'
 import SearchResults from './SearchResults';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
+import '../Css/SearchResult.css';
 
 function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }) {
     const [currentSearchResults, setCurrentSearchResults] = useState([]);
@@ -31,6 +32,7 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
                 pageCount={pageCount}
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
+                className="PageViewerStyle"
             />
         </>
     );
