@@ -5,89 +5,64 @@ import Collapse from 'react-bootstrap/Collapse'
 import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
-import SearchResult from './SearchResult';
+import PaginatedSearchResults from './PaginatedSearchResults'
+import AdvancedSidebar from './AdvancedSideBar'
 import '../Css/HomePage.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
-
-    const [checked, setChecked] = React.useState(false);
-
-    const handleChange = () => {
-        setChecked(!checked);
-    };
+    const [firstSearchMade, setFirstSearchMade] = useState(false)
+    const [advancedOptions, setAdvancedOptions] = useState([])
 
     const onClick = (searchText) => {
-        console.log("start")
-        fetch("http://localhost:8081/api/search?input=" + encodeURI(searchText))
+        if (searching === true) return
+        if (searchText === "") {
+            setSearchResults([])
+            return
+        }
+        setSearching(true)
+        console.log(encodeURI(advancedOptions.join(",")))
+        fetch("http://localhost:8081/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
+            .catch(e => console.log(e))
             .finally(() => {
                 setSearching(false)
-                console.log("stop")
+                setFirstSearchMade(true)
             })
     }
 
     return (
         <div className="ContentOfPage">
-            <div className="SearchBarPlacement">
-
-                <div className="HeaderDiv">
-                    <h1 >Search Contents</h1>
-                    <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
-                </div>
-
-                <StickyBox offsetTop={50}>
-                    <div className="SearchBarPlacement ">
-                        <SearchBar
-                            searchText="Enter your search"
-                            onClick={onClick}
-                        />
-                        <Button
-                            onClick={() => setOpen(!open)}
-                            aria-controls="example-collapse-text"
-                            aria-expanded={open}
-                            variant="secondary"
-                        >
-                            Advanced
-                        </Button>
+            <div className="SearchWrapper">
+                <div className="SearchBarPlacement">
+                    <div className="HeaderDiv">
+                        <h1 >Search Contents</h1>
+                        <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
                     </div>
-                </StickyBox>
+                    <SearchBar
+                        searchText="Enter your search"
+                        onClick={onClick}
+                        loadingState={searching}
+                    />
+                    <Button
+                        onClick={() => setOpen(!open)}
+                        aria-controls="example-collapse-text"
+                        aria-expanded={open}
+                        variant="secondary"
+                    >
+                        Advanced
+                    </Button>
+                    
+                </div>
+            {/*Adds searchResult to the DOM*/}
+            <PaginatedSearchResults itemsPerPage={10} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
             </div>
-            <div className="CollapseDiv">
-                <Collapse in={open} dimension="width">
-                    <StickyBox offsetTop={50}>
-                        <div>
-                            <Card body style={{ backgroundColor: "darkgray", width: '400px', height: "94vh" }}>
-                                <div class="sidebar_component">
-                                    <h2 > Filter Datasets</h2>
-                                    <div class="checkbox">
-                                        <ul class="nobullets">
-                                            <li>
-                                                <label>
-                                                    <p class="sidebar_option_text">Grundfos</p>
-                                                    <input type="checkbox" id="option0" name="Grundfos"/>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label>
-                                                    <p class="sidebar_option_text">Nordjyske</p>
-                                                    <input type="checkbox" id="option1" name="Nordjyske"/>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </Card>
-                        </div>
-                    </StickyBox>
-                </Collapse>
-            </div>
-
+            <AdvancedSidebar open={open} advancedOptions={advancedOptions} setAdvancedOptions={setAdvancedOptions}/>
         </div>
+
     )
 }
 
