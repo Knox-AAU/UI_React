@@ -7,8 +7,8 @@ import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import { useState } from 'react';
 import PaginatedSearchResults from './PaginatedSearchResults'
-
-
+import SearchResult from './SearchResult';
+import '../Css/HomePage.css';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -32,51 +32,67 @@ const Home = props => {
             setFirstSearchMade(true)
         })
     }
-    
-    const homeStyle = {
-        marginTop: "8vh",
-        display: "flex",
-        width: "100%",
-        alignItems: "stretch",
-        marginLeft: "10vh"
-    }
 
     return (
-    <div style={{homeStyle}}>
-        
-        <div style={{homeStyle, display: "block", width: "100%"}}>
+        <div className="ContentOfPage">
+            <div className="SearchBarPlacement">
+                <div className="HeaderDiv">
+                    <h1 >Search Contents</h1>
+                    <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
+                </div>
             <SearchBar
             searchText="Enter your search"
             onClick={onClick}
             loadingState= {searching}
             />
-            <div style={{float: "right"}}>
-                <StickyBox offsetTop={50}>
-                <Collapse in={open} dimension="width">
-                    <div id="example-collapse-text">
-                        <Card body style={{backgroundColor: "darkgray", width: '400px', height: "94vh", position:"sticky"}}>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-                            labore wes anderson cred nesciunt sapiente ea proident.
-                        </Card>
-                    </div>
-                </Collapse>
-                </StickyBox>
-            </div>
-        </div>
-        <Button
+            <Button
             onClick={() => setOpen(!open)}
             aria-controls="example-collapse-text"
             aria-expanded={open}
             variant="secondary"
-        >
+            >
             Advanced
-        </Button>
+            </Button>
+        <div>
+            </div>
+            <div className="CollapseDiv">
+                <Collapse in={open} dimension="width">
+                    <StickyBox offsetTop={50}>
+                        <div>
+                            <Card body style={{ backgroundColor: "darkgray", width: '400px', height: "94vh" }}>
+                                <div class="sidebar_component">
+                                    <h2 > Filter Datasets</h2>
+                                    <div class="checkbox">
+                                        <ul class="nobullets">
+                                            <li>
+                                                <label>
+                                                    <p class="sidebar_option_text">Grundfos</p>
+                                                    <input type="checkbox" id="option0" name="Grundfos"/>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label>
+                                                    <p class="sidebar_option_text">Nordjyske</p>
+                                                    <input type="checkbox" id="option1" name="Nordjyske"/>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </Card>
+                        </div>
+                    </StickyBox>
+                </Collapse>
+            </div>
+        </div>
         {/*Adds searchResult to the DOM*/}
         <PaginatedSearchResults  itemsPerPage={10} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
     </div>
+
     )
 }
+
 Home.propTypes = {
 
 }

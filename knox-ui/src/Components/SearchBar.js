@@ -6,19 +6,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import propTypes from 'prop-types'
 import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
+import '../Css/SeacrhBar.css';
 
 function SearchBar({ searchText, onClick, loadingState }) {
     const [searchTerms, setSearchTerms] = useState();
-
-    const searchBarStyle = {
-        height: "5vh",
-        borderRadius: "25px"
-    }
-    const searchButtonStyle = {
-        height: "5vh",
-        borderRadius: "25px",
-        borderStyle: "none",
-    }
 
     const handleKeypress = e => e.key === "Enter" && sendSearch()
     const sendSearch = () => {
@@ -28,13 +19,13 @@ function SearchBar({ searchText, onClick, loadingState }) {
 
     return (
         <InputGroup className="mb-3" >
-            <FormControl style={searchBarStyle} onChange={e => setSearchTerms(e.target)}
+            <FormControl className='SearchBarStyle' onChange={e => setSearchTerms(e.target)}
                 id="search-bar"
                 placeholder={searchText}
                 aria-label="Search Term"
                 onKeyPress={handleKeypress}
             />
-            <Button style={searchButtonStyle}
+            <Button className='SearchButtonStyle'
                 onClick={sendSearch}
                 variant="outline-secondary"
                 id="search-button">
@@ -44,8 +35,6 @@ function SearchBar({ searchText, onClick, loadingState }) {
             <BarLoader loading={loadingState} /> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
 
         </InputGroup>
-
-
     )
 }
 SearchBar.defaultProps = {

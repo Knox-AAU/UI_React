@@ -1,28 +1,25 @@
 import React from 'react'
 import SearchBar from './SearchBar';
-
+import '../Css/FactChecker.css';
 
 
 
 const FactChecker = props => {
-    const onClick = (searchText)=>{
+    const onClick = (searchText) => {
         console.log(searchText)
     }
 
-    const searchBarPlacementStyle = {
-        marginTop: "5%",
-        width: "50%",
-        marginLeft: "5%" 
-    };
-
     return (
-        <div>
-            <h1 style={{marginTop: "3%", marginLeft: "5%"}}> Factchecker </h1>
-            <div  style={searchBarPlacementStyle}>
-            <SearchBar
-            searchText="Enter potential truth"
-            onClick={onClick}
-            />
+        <div className="ContentOfPage">
+            <div className='SearchBarPlacement'>
+                <div className="HeaderDiv">
+                    <h1 >Fact Checker</h1>
+                    <h2 >It is possible to fact check the data of the toolbox!</h2>
+                </div>
+                <SearchBar
+                    searchText="Enter potential truth"
+                    onClick={onClick}
+                />
             </div>
         </div>
     )
