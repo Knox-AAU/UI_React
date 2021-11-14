@@ -24,13 +24,13 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                                                 <li>
                                                     <label>
                                                         <p class="sidebar_option_text">Grundfos</p>
-                                                        <input type="checkbox" id="option0" name="Grundfos" onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
+                                                        <input type="checkbox" id="option0" name="Grundfos A/S" onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
                                                         <p class="sidebar_option_text">Nordjyske</p>
-                                                        <input type="checkbox" id="option1" name="Nordjyske"  onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
+                                                        <input type="checkbox" id="option1" name="Nordjyske Medier"  onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
                                                     </label>
                                                 </li>
                                             </ul>
