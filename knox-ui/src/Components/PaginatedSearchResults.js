@@ -22,7 +22,19 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
     const handlePageClick = (event) => setItemOffset((event.selected * itemsPerPage) % searchResults.length)
 
     return (
-        <>
+        <div className="PaginateStyle">
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={3}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+                containerClassName='pagination' /* as this work same as bootstrap class */
+                subContainerClassName='pages pagination' /* as this work same as bootstrap class */
+                activeClassName='active' /* as this work same as bootstrap class */
+            />
             <SearchResults searchResults={currentSearchResults} firstSearchMade={firstSearchMade} />
             <ReactPaginate
                 breakLabel="..."
@@ -32,9 +44,11 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
                 pageCount={pageCount}
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
-                className="PageViewerStyle"
+                containerClassName='pagination' /* as this work same as bootstrap class */
+                subContainerClassName='pages pagination' /* as this work same as bootstrap class */
+                activeClassName='active' /* as this work same as bootstrap class */
             />
-        </>
+        </div>
     );
 }
 
