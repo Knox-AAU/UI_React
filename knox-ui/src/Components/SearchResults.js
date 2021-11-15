@@ -1,16 +1,16 @@
 import React from 'react'
 import propTypes from 'prop-types'
 import SearchResult from './SearchResult'
-import '../Css/SearchResult.css';
+import '../Css/SearchResults.css';
 
 function SearchResults({ searchResults, firstSearchMade }) {
     return (
-        <ul className="LiStyle">
+        <ul class="list-group list-group-flush">
             {searchResults.length === 0 && firstSearchMade
-                ? <li>No results</li>
+                ? <li class="list-group-item">No results</li>
                 : searchResults.map(result => {
                     return (
-                        <li>
+                        <li class="list-group-item">
                             <SearchResult searchResult={result} />
                         </li>
                     )
