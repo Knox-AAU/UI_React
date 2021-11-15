@@ -33,7 +33,9 @@ function SearchBar({ searchText, onClick, loadingState }) {
                     <img src={SearchIcon} height="30px" alt="Search icon" />
 
                 </Button>
-                <BarLoader loading={loadingState} style={{}} /> {/*TODO MAKE THIS ELEMENT SHOW UP in a better place*/}
+            </InputGroup>
+            <InputGroup className="Loader">
+                <BarLoader loading={loadingState} color='orange' height='15px'/> 
             </InputGroup>
         </div>
     )
