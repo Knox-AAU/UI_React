@@ -1,8 +1,5 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card'
-import Collapse from 'react-bootstrap/Collapse'
-import StickyBox from "react-sticky-box/dist/esnext";
 import SearchBar from './SearchBar';
 import { useState } from 'react';
 import PaginatedSearchResults from './PaginatedSearchResults'

@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React  from 'react';
 import Header from './Components/Header.js';
 import Home from './Components/Home.js';
 import {
@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import FactChecker from './Components/FactChecker.js';
 import Status from './Components/Status.js';
-import AppCss from './Css/App.css'
 
 
 function App() {
