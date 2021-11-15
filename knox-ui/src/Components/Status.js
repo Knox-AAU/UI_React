@@ -21,7 +21,7 @@ const Status = props => {
                 <h2>Nordjysk Status of parsing:</h2>
                 <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
-                <PieChart viewBoxSize={[10, 10]} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
+                <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
                         { title: 'One', value: 10, color: '#E38627' },
                         { title: 'Two', value: 15, color: '#C13C37' },
