@@ -1,14 +1,16 @@
 /* Most outer div css */
 
 .ContentOfPage {
-    max-width: 100%;
-    margin: 0 0 0 7%;
+    width: 100%;
+    padding: 0 0 0 7%;
     display: flex;
     align-items: stretch;
 }
 
 .SearchWrapper {
     display: block;
+    width: 100%;
+    padding-right: 7%;
 }
 
 
@@ -20,6 +22,7 @@
 
 .HeaderDiv h2 {
     margin-bottom: 1em;
+    white-space: nowrap;
 }
 
 
@@ -27,6 +30,7 @@
 
 .CollapseDiv {
     float: right;
+    padding-right: none;
 }
 
 .AdvancedFilterBy {

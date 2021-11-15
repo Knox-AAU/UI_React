@@ -1,19 +1,10 @@
-.SearchResultStyle h1 {
-    color: royalblue;
-    font-size: 2em;
-    margin-top: 5vh;
+.searchResultDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.SearchResultStyle p {
-    color: royalblue;
-}
-
-.LiStyle {
-    list-style: none;
-    padding-left: 0rem;
-}
-
-.PageViewerStyle {
-    list-style: none;
-    display: inline-block;
+#scoreField {
+    white-space: nowrap;
+    padding-left: 20px;
 }
