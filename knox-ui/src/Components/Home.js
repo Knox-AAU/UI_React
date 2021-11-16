@@ -48,7 +48,7 @@ const Home = props => {
                         onClick={() => setOpen(!open)}
                         aria-controls="example-collapse-text"
                         aria-expanded={open}
-                        variant="primary"
+                        className="ButtonStyle"
                     >
                         Advanced
                     </Button>

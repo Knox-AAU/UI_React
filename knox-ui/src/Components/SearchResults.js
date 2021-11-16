@@ -5,12 +5,12 @@ import '../Css/SearchResults.css';
 
 function SearchResults({ searchResults, firstSearchMade }) {
     return (
-        <ul class="list-group list-group-flush">
+        <ul className="list-group list-group-flush">
             {searchResults.length === 0 && firstSearchMade
                 ? <li class="list-group-item">No results</li>
                 : searchResults.map(result => {
                     return (
-                        <li class="list-group-item">
+                        <li className="list-group-item">
                             <SearchResult searchResult={result} />
                         </li>
                     )

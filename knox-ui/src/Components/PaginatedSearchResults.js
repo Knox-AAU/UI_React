@@ -25,11 +25,11 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
         <div className="PaginateStyle">
             <ReactPaginate
                 breakLabel="..."
-                nextLabel="next >"
+                nextLabel="→"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={3}
                 pageCount={pageCount}
-                previousLabel="< previous"
+                previousLabel="←"
                 renderOnZeroPageCount={null}
                 containerClassName='pagination' /* as this work same as bootstrap class */
                 subContainerClassName='pages pagination' /* as this work same as bootstrap class */
@@ -38,11 +38,11 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
             <SearchResults searchResults={currentSearchResults} firstSearchMade={firstSearchMade} />
             <ReactPaginate
                 breakLabel="..."
-                nextLabel="next >"
+                nextLabel="→"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={3}
                 pageCount={pageCount}
-                previousLabel="< previous"
+                previousLabel="←"
                 renderOnZeroPageCount={null}
                 containerClassName='pagination' /* as this work same as bootstrap class */
                 subContainerClassName='pages pagination' /* as this work same as bootstrap class */
