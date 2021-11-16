@@ -11,11 +11,12 @@ const Home = props => {
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
     const [firstSearchMade, setFirstSearchMade] = useState(false)
-    const [advancedOptions, setAdvancedOptions] = useState([])
+    // OBS OBS OBS! if more databases are added, add the names here as well as in the checkboxes on Advanced Sidebar!
+    const [advancedOptions, setAdvancedOptions] = useState(["Grundfos A/S", "Nordjyske Medier"])
 
     const onClick = (searchText) => {
         if (searching === true) return
-        if (searchText === "") {
+        if (searchText === "" || advancedOptions.length===0) {
             setSearchResults([])
             return
         }
