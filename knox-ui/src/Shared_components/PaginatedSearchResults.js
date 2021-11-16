@@ -18,23 +18,15 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
     }, [itemOffset, itemsPerPage, searchResults]);
 
 
+
     // Invoke when user click to request another page.
-    const handlePageClick = (event) => setItemOffset((event.selected * itemsPerPage) % searchResults.length)
+    const handlePageClick = (event) => {
+        setItemOffset((event.selected * itemsPerPage) % searchResults.length)
+        window.scrollTo(0,0)
+    }
 
     return (
         <div className="PaginateStyle">
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel="→"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                pageCount={pageCount}
-                previousLabel="←"
-                renderOnZeroPageCount={null}
-                containerClassName='pagination' /* as this work same as bootstrap class */
-                subContainerClassName='pages pagination' /* as this work same as bootstrap class */
-                activeClassName='active' /* as this work same as bootstrap class */
-            />
             <SearchResults searchResults={currentSearchResults} firstSearchMade={firstSearchMade} />
             <ReactPaginate
                 breakLabel="..."
