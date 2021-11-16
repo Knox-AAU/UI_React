@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Collapse from 'react-bootstrap/Collapse'
-import StickyBox from "react-sticky-box/dist/esnext";
+import StickyBox from "react-sticky-box";
 import "../Css/AdvancedSidebar.css"
 
 function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
@@ -23,13 +23,13 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                                         height: "94vh",
                                         border:"0px",
                                         borderRadius: "0px" }}>
-                                    <div class="sidebar_component">
+                                    <div className="sidebar_component">
                                         <h2 > Filter Datasets</h2>
-                                        <div class="checkbox">
-                                            <ul class="nobullets">
+                                        <div className="checkbox">
+                                            <ul className="nobullets">
                                                 <li>
                                                     <label>
-                                                        <p class="sidebar_option_text">Grundfos</p>
+                                                        <p className="sidebar_option_text">Grundfos</p>
                                                         <input type="checkbox"
                                                             id="option0"
                                                             name="Grundfos A/S"
@@ -39,7 +39,7 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <p class="sidebar_option_text">Nordjyske</p>
+                                                        <p className="sidebar_option_text">Nordjyske</p>
                                                         <input type="checkbox"
                                                             id="option1"
                                                             name="Nordjyske Medier"

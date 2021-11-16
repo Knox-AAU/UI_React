@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../Img/logo.svg'
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import StickyBox from 'react-sticky-box/dist/esnext'
+import StickyBox from 'react-sticky-box'
 import '../Css/Header.css';
 
 const Header = () => {
