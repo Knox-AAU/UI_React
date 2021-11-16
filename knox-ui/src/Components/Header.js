@@ -4,7 +4,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap'
 import StickyBox from 'react-sticky-box/dist/esnext'
 import '../Css/Header.css';
 
-const Header = props => {
+const Header = () => {
     return (
     
     <StickyBox>
@@ -25,10 +25,6 @@ const Header = props => {
       </Navbar>
     </StickyBox>
     )
-}
-
-Header.propTypes = {
-
 }
 
 export default Header

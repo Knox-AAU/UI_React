@@ -17,7 +17,12 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                     <Collapse in={open} dimension="width">
                         <StickyBox offsetTop={50}>
                             <div>
-                                <Card body style={{ backgroundColor: "darkgray", width: '400px', height: "94vh" }}>
+                                <Card body style={{
+                                        background: "linear-gradient(0deg, rgba(7,0,139,1) 0%, rgba(24,83,218,1) 37%, rgba(13,165,253,1) 100%)",
+                                        width: '400px',
+                                        height: "94vh",
+                                        border:"0px",
+                                        borderRadius: "0px" }}>
                                     <div class="sidebar_component">
                                         <h2 > Filter Datasets</h2>
                                         <div class="checkbox">
