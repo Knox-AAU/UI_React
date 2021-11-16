@@ -1,0 +1,16 @@
+.searchResultDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.searchResultDiv h2 a{
+    color: #3874CB;
+    text-decoration: none;
+}
+
+#scoreField {
+    white-space: nowrap;
+    padding-left: 20px;
+
+}

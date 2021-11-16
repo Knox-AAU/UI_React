@@ -1,0 +1,43 @@
+/* Most outer div css */
+
+.ContentOfPage {
+    width: 100%;
+    padding: 0 0 0 7%;
+    display: flex;
+    align-items: stretch;
+   
+}
+
+.SearchWrapper {
+    display: block;
+    width: 100%;
+    padding-right: 7%;
+}
+
+
+/* Header text css */
+
+.HeaderDiv h1 {
+    font-size: 5em;
+}
+
+.HeaderDiv h2 {
+    margin-bottom: 1em;
+}
+
+
+/* Advanced content css */
+
+.CollapseDiv {
+    float: right;
+    padding-right: none;
+}
+
+.AdvancedFilterBy {
+    display: inline-block;
+}
+
+.ButtonStyle{
+    background-color: #3874CB !important;
+    border: none !important;
+}
