@@ -35,7 +35,7 @@ function SearchBar({ searchText, onClick, loadingState }) {
                 </Button>
             </InputGroup>
             <InputGroup className="Loader">
-                <BarLoader loading={loadingState} color='orange' height='15px'/> 
+                <BarLoader loading={loadingState} color='#0d6efd' height='15px' width="100%"/> 
             </InputGroup>
         </div>
     )
