@@ -14,11 +14,11 @@ const Header = props => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/home">Home</Nav.Link>
-              <Nav.Link href="/factchecker">Fact Checking</Nav.Link>
+              <Nav.Link style={{color: "#000000"}} href="/home">Home</Nav.Link>
+              <Nav.Link style={{color: "#000000"}} href="/factchecker">Fact Checking</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="/status">Status</Nav.Link>
+              <Nav.Link style={{color: "#000000"}} href="/status">Status</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
