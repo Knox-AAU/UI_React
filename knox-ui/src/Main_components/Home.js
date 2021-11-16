@@ -5,6 +5,7 @@ import { useState } from 'react';
 import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
+import reactStickyBox from 'react-sticky-box';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -21,8 +22,7 @@ const Home = props => {
             return
         }
         setSearching(true)
-        console.log(encodeURI(advancedOptions.join(",")))
-        fetch("http://localhost:8081/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
+        fetch("http://localhost:8000/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
             .catch(e => console.log(e))
@@ -49,14 +49,13 @@ const Home = props => {
                         onClick={() => setOpen(!open)}
                         aria-controls="example-collapse-text"
                         aria-expanded={open}
-                        variant="primary"
+                        className="ButtonStyle"
                     >
                         Advanced
                     </Button>
-                    
                 </div>
             {/*Adds searchResult to the DOM*/}
-            <PaginatedSearchResults itemsPerPage={10} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
+            <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
             </div>
             <AdvancedSidebar open={open} advancedOptions={advancedOptions} setAdvancedOptions={setAdvancedOptions}/>
         </div>

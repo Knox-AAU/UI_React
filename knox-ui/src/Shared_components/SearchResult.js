@@ -5,7 +5,7 @@ function SearchResult({searchResult}) {
     const {title, id, score} = searchResult
     return (
             <div className="searchResultDiv">
-                <h2 ><a href= {"http://localhost:8081/api/getpdf?id="+id} target="_blank" rel="noreferrer">{title}</a></h2>
+                <h2 ><a href= {"http://localhost:8000/getpdf?id="+id} target="_blank" rel="noreferrer">{title}</a></h2>
                 <small id="scoreField" class="text-muted">score: {score}</small>
             </div>
             )
