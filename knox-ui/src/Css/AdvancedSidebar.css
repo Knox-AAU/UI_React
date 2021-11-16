@@ -6,17 +6,16 @@
     padding: 7px;
     width: 80%;
     border-radius: 5px;
-    border: 1px solid black;
-    background: #729A9A;
+    background: #6895D7;
     position: relative;
 }
 
 .sidebar_component h2 {
     margin-top: 10px;
-    color: black;
+    color: white;
+    text-align: center;
 }
 
-.sidebar_component p {}
 
 .nobullets {
     padding-left: 0;
@@ -33,8 +32,6 @@
     margin-bottom: 5px;
 }
 
-.checkbox input {}
-
 .sidebar_option_text {
     margin: 0;
 }
@@ -42,4 +39,5 @@
 .checkbox ul li label {
     display: flex;
     align-items: center;
+    color: white;
 }

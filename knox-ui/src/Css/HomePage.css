@@ -5,6 +5,7 @@
     padding: 0 0 0 7%;
     display: flex;
     align-items: stretch;
+   
 }
 
 .SearchWrapper {
@@ -37,6 +38,6 @@
 }
 
 .ButtonStyle{
-    background-color: #3E7C7C !important;
-
+    background-color: #3874CB !important;
+    border: none !important;
 }

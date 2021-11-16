@@ -1,5 +1,5 @@
 :root {
-    --main-color: #0d6efd;
+    --main-color: #3874CB;
     --secondary-color: gray;
 }
 
@@ -39,6 +39,7 @@
 
 .pagination>li {
     list-style: none;
+    color: black;
 }
 
 .pagination>li>a,
@@ -49,8 +50,7 @@
     line-height: 1.42857143;
     text-decoration: none;
     color: black;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid slategray;
     margin-left: -1px;
 }
 
