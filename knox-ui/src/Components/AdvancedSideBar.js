@@ -18,7 +18,7 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                         <StickyBox offsetTop={50}>
                             <div>
                                 <Card body style={{
-                                        background: "linear-gradient(0deg, rgba(7,0,139,1) 0%, rgba(24,83,218,1) 37%, rgba(13,165,253,1) 100%)",
+                                        background: "#9AB6B6",
                                         width: '400px',
                                         height: "94vh",
                                         border:"0px",
