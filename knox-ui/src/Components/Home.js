@@ -5,6 +5,7 @@ import { useState } from 'react';
 import PaginatedSearchResults from './PaginatedSearchResults'
 import AdvancedSidebar from './AdvancedSideBar'
 import '../Css/HomePage.css';
+import reactStickyBox from 'react-sticky-box';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -53,10 +54,9 @@ const Home = props => {
                     >
                         Advanced
                     </Button>
-                    
                 </div>
             {/*Adds searchResult to the DOM*/}
-            <PaginatedSearchResults itemsPerPage={10} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
+            <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
             </div>
             <AdvancedSidebar open={open} advancedOptions={advancedOptions} setAdvancedOptions={setAdvancedOptions}/>
         </div>
