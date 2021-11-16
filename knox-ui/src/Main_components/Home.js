@@ -1,9 +1,9 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
-import SearchBar from './SearchBar';
+import SearchBar from '../Shared_components/SearchBar';
 import { useState } from 'react';
-import PaginatedSearchResults from './PaginatedSearchResults'
-import AdvancedSidebar from './AdvancedSideBar'
+import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
+import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
 
 const Home = props => {
