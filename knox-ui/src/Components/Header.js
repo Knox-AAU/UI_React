@@ -32,19 +32,3 @@ Header.propTypes = {
 }
 
 export default Header
-
-/*
-        <header class="Header">
-            <div class = "LeftHeader">
-                <img id="logo" src={logo} alt="logo"/>
-                <ul>
-                    <li>Main</li>
-                    <li>Truth Seeking</li>
-                </ul>
-            </div>
-            <div class = "RightHeader">
-                <ul>
-                    <li>Stats</li>
-                </ul>
-            </div>
-        </header>*/
