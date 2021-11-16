@@ -21,8 +21,7 @@ const Home = props => {
             return
         }
         setSearching(true)
-        console.log(encodeURI(advancedOptions.join(",")))
-        fetch("http://localhost:8081/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
+        fetch("http://localhost:8000/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
             .catch(e => console.log(e))
