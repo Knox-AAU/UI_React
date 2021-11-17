@@ -103,7 +103,7 @@ class DBPedia extends Component {
       headerFontColor: "#fff"
   };
 
-  const ExampleDBPedia = () => (
+  const VirtualAssistant = () => (
     <ThemeProvider theme={theme}>
     <ChatBot
       floating = {true}
@@ -131,4 +131,4 @@ class DBPedia extends Component {
     </ThemeProvider>
   );
   
-  export default ExampleDBPedia;
+  export default VirtualAssistant;
