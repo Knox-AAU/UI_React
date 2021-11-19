@@ -18,7 +18,7 @@ function SearchBar({ searchText, onClick, loadingState }) {
     }
 
     return (
-        <div>
+        <div style={{width:"100%"}}>
             <InputGroup className="mb-3" >
                 <FormControl className='SearchBarStyle' onChange={e => setSearchTerms(e.target)}
                     id="search-bar"

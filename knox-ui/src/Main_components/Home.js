@@ -6,6 +6,7 @@ import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
 import reactStickyBox from 'react-sticky-box';
+import Suggestor from '../Shared_components/Suggestor';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -40,6 +41,7 @@ const Home = props => {
                         <h1 >Search Contents</h1>
                         <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
                     </div>
+                    <div style={{display:'inline-flex',width:"100%"}}>
                     <SearchBar
                         searchText="Enter your search"
                         onClick={onClick}
@@ -50,9 +52,11 @@ const Home = props => {
                         aria-controls="example-collapse-text"
                         aria-expanded={open}
                         className="ButtonStyle"
+                        style={{height:"5vh"}}
                     >
                         Advanced
                     </Button>
+                    </div>
                 </div>
             {/*Adds searchResult to the DOM*/}
             <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
