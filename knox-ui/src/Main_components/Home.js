@@ -5,7 +5,6 @@ import { useState } from 'react';
 import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
-import reactStickyBox from 'react-sticky-box';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
