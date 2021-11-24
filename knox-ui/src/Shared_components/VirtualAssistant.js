@@ -17,39 +17,38 @@ class DBPedia extends Component {
     }
   
     componentDidMount() {
+      let json;
       const self = this;
       const { steps } = this.props;
       const search = steps.search.value;
-      const query = encodeURI(`
-        select * where {
-        ?x rdfs:label "${search}"@en .
-        ?x rdfs:comment ?comment .
-        FILTER (lang(?comment) = 'en')
-        } LIMIT 100
-      `);
-  
-      const queryUrl = `https://dbpedia.org/sparql/?&query=${query}&format=json`;
-  
-      const xhr = new XMLHttpRequest();
-  
-      xhr.addEventListener('readystatechange', readyStateChange);
-  
-      function readyStateChange() {
-        if (this.readyState === 4) {
-          const data = JSON.parse(this.responseText);
-          const bindings = data.results.bindings;
-          if (bindings && bindings.length > 0) {
-            self.setState({ loading: false, result: bindings[0].comment.value });
-          } else {
-            self.setState({ loading: false, result: 'Not found.' });
+      const queryUrl = `http://localhost:8081/api/VirtualAssistant/node?id=${search}`;
+      console.log(queryUrl);
+      fetch(queryUrl)
+      .then(
+        response => {
+          console.log("Fetch responded");
+          if (response.status === 200 ) {
+            json = response.json()
+          }
+          return json;
+        }
+      )
+      .then(
+        json => {
+          console.log(json);
+          self.setState({ loading: false, result: json });
+          if (json === null) {
+          self.setState({ loading: false, result: 'Something went wrong...' });
           }
         }
-      }
-  
-      xhr.open('GET', queryUrl);
-      xhr.send();
+      )
+      .catch(e => console.log(e))
     }
   
+    formatResponse(response) {
+      return response.text; //TODO: Actually implement this
+    }
+
     triggetNext() {
       this.setState({ trigger: true }, () => {
         this.props.triggerNextStep();
@@ -75,7 +74,7 @@ class DBPedia extends Component {
                 <button
                   onClick={() => this.triggetNext()}
                 >
-                  Search Again
+                  Try Again?
                 </button>
               }
             </div>
@@ -109,6 +108,7 @@ class DBPedia extends Component {
       floating = {true}
       headerTitle = "Virtual Assistant" 
       hideUserAvatar = {true}
+      botDelay = {250}
       steps={[
         {
           id: '1',
