@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import ChatBot, { Loading } from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 
-class DBPedia extends Component {
+//Anything without explicit comments is taken (almost) directly from react-simple-chatbot Wikidata example
+//https://lucasbassetti.com.br/react-simple-chatbot/#/docs/wikipedia
+
+
+class VirtualAssistant extends Component {
     constructor(props) {
       super(props);
   
@@ -23,20 +27,18 @@ class DBPedia extends Component {
       const search = steps.search.value;
       const queryUrl = `http://localhost:8000/VirtualAssistant/node?id=${encodeURI(search)}`;
       
-      console.log(queryUrl);
+      //Fetches the response from the knowledge graph
       fetch(queryUrl)
       .then(
         response => {
-          console.log("Fetch responded");
           if (response.status === 200 ) {
             json = response.json()
           }
           return json;
         }
-      )
+      ) //Formats the response at adds it to the display in the chat area
       .then(
         json => {
-          console.log(json);
           self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
           if (json === null) {
           self.setState({ loading: false, result: 'Something went wrong...' });
@@ -46,18 +48,24 @@ class DBPedia extends Component {
       .catch(e => console.log(e))
     }
   
+    //Formats the response, returning each item as a div in an array
     formattedResponse(response, search) {
-      console.log(response);
       let output = [];
       let responseInfo = response["information"];
       const keyset = Object.keys(responseInfo);
+
+      //Pushes a header div onto the output, displaying the searched input in bold
       output.push(<div style={{fontSize: "16px", fontWeight: "bolder"}}> {`${search}:`}</div>)
+
+      //Pushes a div for each key in the information dictionary
       for (const key of keyset) {
         output.push(this.responseElement(key, responseInfo[key]));
       }
+
       return output;
     }   
 
+    //Formats the key-value pairs in the response information
     responseElement(key, value) {
       let formattedKey = key;
       let formattedValue = value;
@@ -65,11 +73,13 @@ class DBPedia extends Component {
       formattedKey = this.capitalizeInitialLetter(formattedKey);
       formattedKey = formattedKey.replaceAll("_", " ");
 
-      let fancyString = `${formattedKey}: ${formattedValue}`
-      return ( <div style={{fontSize: "14px"}}> {fancyString} </div>
+      let fancyString = `${formattedKey}: ${formattedValue}`;
+      return ( 
+        <div style={{fontSize: "14px"}}> {fancyString} </div>
       )
     }
 
+    //Capitalizes the initial letter of a string, input as a value called value and return a string, that is formatted so that the first letter is capitalized
     capitalizeInitialLetter(value) {
       return value.charAt(0).toUpperCase() + value.slice(1);
     }
@@ -84,7 +94,7 @@ class DBPedia extends Component {
       const { trigger, loading, result } = this.state;
   
       return (
-        <div className="dbpedia">
+        <div>
           { loading ? <Loading /> : result }
           {
             !loading &&
@@ -109,16 +119,17 @@ class DBPedia extends Component {
     }
   }
   
-  DBPedia.propTypes = {
+  VirtualAssistant.propTypes = {
     steps: PropTypes.object,
     triggerNextStep: PropTypes.func,
   };
   
-  DBPedia.defaultProps = {
+  VirtualAssistant.defaultProps = {
     steps: undefined,
     triggerNextStep: undefined,
   };
   
+  //Uses Themeprovider to style the chatbot interface, properties are described at the docs
   const theme = {
       background: '#fff',//'#212529',
       botBubbleColor: '#3874AB',//"#313539",
@@ -127,13 +138,17 @@ class DBPedia extends Component {
       headerFontColor: "#fff"
   };
 
-  const VirtualAssistant = () => (
+  const VirtualAssistantBot = () => (
     <ThemeProvider theme={theme}>
     <ChatBot
+      //Various settings for the chatbot are entered here
+      //For more options: https://lucasbassetti.com.br/react-simple-chatbot/#/docs/chatbot
       floating = {true}
       headerTitle = "Virtual Assistant" 
       hideUserAvatar = {true}
       botDelay = {1000}
+
+      //The actual steps the chat bot goes through to communicate with the user
       steps={[
         {
           id: '1',
@@ -147,7 +162,7 @@ class DBPedia extends Component {
         },
         {
           id: '3',
-          component: <DBPedia />,
+          component: <VirtualAssistant />,
           waitAction: true,
           trigger: '1',
         },
@@ -156,4 +171,4 @@ class DBPedia extends Component {
     </ThemeProvider>
   );
   
-  export default VirtualAssistant;
+  export default VirtualAssistantBot;
