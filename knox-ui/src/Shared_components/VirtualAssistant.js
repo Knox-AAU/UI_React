@@ -21,7 +21,7 @@ class DBPedia extends Component {
       const self = this;
       const { steps } = this.props;
       const search = steps.search.value;
-      const queryUrl = `http://localhost:8081/api/VirtualAssistant/node?id=${encodeURI(search)}`;
+      const queryUrl = `http://localhost:8000/VirtualAssistant/node?id=${encodeURI(search)}`;
       
       console.log(queryUrl);
       fetch(queryUrl)
