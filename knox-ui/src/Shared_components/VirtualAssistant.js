@@ -21,7 +21,8 @@ class DBPedia extends Component {
       const self = this;
       const { steps } = this.props;
       const search = steps.search.value;
-      const queryUrl = `http://localhost:8081/api/VirtualAssistant/node?id=${search}`;
+      const queryUrl = `http://localhost:8081/api/VirtualAssistant/node?id=${encodeURI(search)}`;
+      
       console.log(queryUrl);
       fetch(queryUrl)
       .then(
@@ -36,7 +37,7 @@ class DBPedia extends Component {
       .then(
         json => {
           console.log(json);
-          self.setState({ loading: false, result: json });
+          self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
           if (json === null) {
           self.setState({ loading: false, result: 'Something went wrong...' });
           }
@@ -45,8 +46,32 @@ class DBPedia extends Component {
       .catch(e => console.log(e))
     }
   
-    formatResponse(response) {
-      return response.text; //TODO: Actually implement this
+    formattedResponse(response, search) {
+      console.log(response);
+      let output = [];
+      let responseInfo = response["information"];
+      const keyset = Object.keys(responseInfo);
+      output.push(<div style={{fontSize: "16px", fontWeight: "bolder"}}> {`${search}:`}</div>)
+      for (const key of keyset) {
+        output.push(this.responseElement(key, responseInfo[key]));
+      }
+      return output;
+    }   
+
+    responseElement(key, value) {
+      let formattedKey = key;
+      let formattedValue = value;
+
+      formattedKey = this.capitalizeInitialLetter(formattedKey);
+      formattedKey = formattedKey.replaceAll("_", " ");
+
+      let fancyString = `${formattedKey}: ${formattedValue}`
+      return ( <div style={{fontSize: "14px"}}> {fancyString} </div>
+      )
+    }
+
+    capitalizeInitialLetter(value) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
     triggetNext() {
@@ -74,7 +99,7 @@ class DBPedia extends Component {
                 <button
                   onClick={() => this.triggetNext()}
                 >
-                  Try Again?
+                  Search Again?
                 </button>
               }
             </div>
@@ -108,7 +133,7 @@ class DBPedia extends Component {
       floating = {true}
       headerTitle = "Virtual Assistant" 
       hideUserAvatar = {true}
-      botDelay = {250}
+      botDelay = {1000}
       steps={[
         {
           id: '1',
