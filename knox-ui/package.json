@@ -36,6 +36,8 @@
 
         "react-sticky-box": "^0.9.3",
 
+        "styled-components": "^5.3.3",
+
         "web-vitals": "^1.1.2"
 
     },
