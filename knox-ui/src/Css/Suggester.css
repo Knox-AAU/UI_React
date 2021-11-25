@@ -1,0 +1,13 @@
+.SuggesterOuter{
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    top: -45px;
+    border: lightskyblue;
+    border-style: outset;
+    height: 100px;
+    height: fit-content;
+}
+.SuggesterOuter ul{
+    padding-top: 2.5vh;
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
 import SearchIcon from '../Img/search-solid.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -8,10 +8,11 @@ import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
 import '../Css/SeacrhBar.css';
 import Suggester from './Suggester';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 function SearchBar({ searchText, onClick, loadingState }) {
     const [searchTerms, setSearchTerms] = useState();
-    const [showSuggester, setShowSuggester]= useState(false);
+    const [showSuggester, setShowSuggester] = useState(false);
 
     const searchBarFocus = () => {
         setShowSuggester(true)
@@ -27,13 +28,51 @@ function SearchBar({ searchText, onClick, loadingState }) {
 
     const searchFieldChange = e => {
         setSearchTerms(e.target)
-        
+        setSuggesterData(e.target.value)
+        console.log(SuggesterData)
     }
 
+    //Start connection to SignalR for realtime communication to the suggester
+    const [connection, setConnection] = useState();
+    const [SuggesterData, setSuggesterData] = useState();
+    useEffect(() => {
+        joinRoom();
+    }, []);
+
+    async function joinRoom() {
+        try {
+            const connection = new HubConnectionBuilder()
+                .withUrl("http://localhost:8081/chathub")
+                .configureLogging(LogLevel.Information)
+                .build();
+
+            connection.on("ReceiveMessage", (user, message)  => {
+                console.log("Message Received: ", message);
+            });
+
+            await connection.start();
+            console.log("success")
+            setConnection(connection);
+        } catch (e) {
+            console.log("badness")
+            console.log(e);
+
+        }
+    }
+
+    const sendMessage = async (message)=>{
+        try {
+            await connection.invoke("SendMessage", ('bot',message));
+        } catch (e) {
+         console.log(e);
+        }
+    }
+
+
     return (
-        <div style={{width:"100%"}}>
+        <div style={{ width: "100%" }}>
             <InputGroup className="mb-3" >
-                <FormControl className='SearchBarStyle' 
+                <FormControl className='SearchBarStyle'
                     onChange={searchFieldChange}
                     onFocus={searchBarFocus}
                     onBlur={SearchBarUnfocus}
@@ -50,9 +89,9 @@ function SearchBar({ searchText, onClick, loadingState }) {
 
                 </Button>
             </InputGroup>
-            { showSuggester ? <Suggester SearchTerm={"test"}/> : null }
+            {showSuggester ? <Suggester searchData={SuggesterData} /> : null}
             <InputGroup className="Loader">
-                <BarLoader loading={loadingState} color='#729A9A' height='15px' width="100%"/> 
+                <BarLoader loading={loadingState} color='#729A9A' height='15px' width="100%" />
             </InputGroup>
         </div>
     )

@@ -5,7 +5,6 @@ import { useState } from 'react';
 import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
-import reactStickyBox from 'react-sticky-box';
 
 const Home = props => {
     const [open, setOpen] = useState(false);
@@ -14,7 +13,7 @@ const Home = props => {
     const [firstSearchMade, setFirstSearchMade] = useState(false)
     // OBS OBS OBS! if more databases are added, add the names here as well as in the checkboxes on Advanced Sidebar!
     const [advancedOptions, setAdvancedOptions] = useState(["Grundfos A/S", "Nordjyske Medier"])
-
+    
     const onClick = (searchText) => {
         if (searching === true) return
         if (searchText === "" || advancedOptions.length===0) {
@@ -32,6 +31,7 @@ const Home = props => {
             })
     }
 
+
     return (
         <div className="ContentOfPage">
             <div className="SearchWrapper">
@@ -40,7 +40,7 @@ const Home = props => {
                         <h1 >Search Contents</h1>
                         <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
                     </div>
-                    <div style={{display:'inline-flex',width:"100%"}}>
+                    <div style={{display:'inline-flex',width:"100%",position:'relative'}}>
                     <SearchBar
                         searchText="Enter your search"
                         onClick={onClick}
