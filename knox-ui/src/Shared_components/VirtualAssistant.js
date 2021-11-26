@@ -36,13 +36,15 @@ class VirtualAssistant extends Component {
           }
           return json;
         }
-      ) //Formats the response at adds it to the display in the chat area
+      ) //Formats the response and adds it to the display in the chat area
       .then(
         json => {
-          self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
           if (json === null) {
-          self.setState({ loading: false, result: 'Something went wrong...' });
+            self.setState({ loading: false, result: 'Something went wrong...' });
+            return;
           }
+          self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
+
         }
       )
       .catch(e => console.log(e))
