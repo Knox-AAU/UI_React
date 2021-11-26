@@ -9,14 +9,14 @@ const Visualiser = props => {
     const [ResponsePayload, setResponsePayload] = useState(null)
     const [ResponseError, setResponseError] = useState(true)
     const [TextInput, setTextInput] = useState("")
-    const [Publisher, setPublisher] = useState(props.publishers[0])
+    const [Publisher, setPublisher] = useState(0)
     
     const clickHandler = () => sendRequest(TextInput)
     const changeHandler = (e) => setTextInput(e.target.value)
 
     const sendRequest = async value => {
         try {
-            const payload = JSON.stringify({'publisher': Publisher, 'text': value})
+            const payload = JSON.stringify({'publisher': props.publishers[Publisher], 'text': value})
             const response = await axios.post(props.url, payload, {
                 headers: {
                   'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ const Visualiser = props => {
         <div className="visualise-wrapper">
             <div className="visualiser-text-input">
                 <input type='text' onChange={changeHandler} />
-                <select onChange={e => {console.log(e); setPublisher(e.target.options[e.target.options.selectedIndex].value)}}>
+                <select onChange={e => {console.log(e); setPublisher(e.target.options.selectedIndex)}}>
                     { props.publishers.map(publisher => <option value={publisher}>{publisher}</option>) }
                 </select>
             </div>
