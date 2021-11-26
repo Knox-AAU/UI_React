@@ -6,3 +6,9 @@ test('renders learn react link', () => {
   const linkElement = screen.getByText(/Search Contents/i);
   expect(linkElement).toBeInTheDocument();
 });
+
+test('renders ChatBot', () => {
+  const result = render(<App />);
+  const rsc = result.container.querySelector(".rsc");
+  expect(rsc).toBeTruthy()
+});
