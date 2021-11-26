@@ -22,7 +22,6 @@ const Visualiser = props => {
                   'Content-Type': 'application/json'
                 }
               });
-            console.log(response)
             setResponsePayload(response.data)
             setResponseError(false)
         }

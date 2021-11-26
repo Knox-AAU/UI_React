@@ -7,6 +7,8 @@ const cors = require('cors');
 const app = express();
 const serverPort= 8000;
 
+app.use(express.json());
+
 /*
 #################################################################
 #################################################################
@@ -44,6 +46,19 @@ app.get("/getpdf*", (req,res)=>{
       res.send(e)
       console.log(e)
     })
+})
+
+app.post("/visualiseNer", async (req, res) => {
+  try {
+  const options = { method: "POST", body: JSON.stringify(req.body) }
+  const response = await fetch("http://localhost:5050/visualiseNer/", options)
+  response.body.pipe(res)
+  }
+  catch (error) {
+    res.status = 500;
+    res.send(e)
+    console.log(e)
+  }
 })
 
 app.get('/*', (req, res) => {
