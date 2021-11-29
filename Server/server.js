@@ -50,14 +50,14 @@ app.get("/getpdf*", (req,res)=>{
 
 app.post("/visualiseNer", async (req, res) => {
   try {
-  const options = { method: "POST", body: JSON.stringify(req.body) }
-  const response = await fetch("http://localhost:5050/visualiseNer/", options)
-  response.body.pipe(res)
+    const options = { method: "POST", body: JSON.stringify(req.body) }
+    const response = await fetch("http://localhost:5050/visualiseNer/", options)
+    if(!response.ok)
+      throw new Error(response.status)
+    response.body.pipe(res)
   }
   catch (error) {
-    res.status = 500;
-    res.send(e)
-    console.log(e)
+    res.status(500).send("Error Visualising Text. Visualiser might be down. Try again later.")
   }
 })
 

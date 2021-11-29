@@ -26,9 +26,9 @@ const Visualiser = props => {
             setResponseError(false)
         }
         catch (error) {
-            setResponsePayload("Error retrieving visualised text.\n" + error)
+            setResponsePayload("Error retrieving visualised text.")
             setResponseError(true)
-            console.error("Error retrieving visualised text.\nError: " + error)
+            console.error("Error retrieving visualised text.")
         }
     }
 
