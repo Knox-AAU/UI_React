@@ -17,7 +17,7 @@ function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
                     <Collapse in={open} dimension="width">
                         <StickyBox offsetTop={50}>
                             <div>
-                                <Card body style={{
+                                <Card data-testid="card" body style={{
                                         background: "#3874CB",
                                         width: '400px',
                                         height: "94vh",
