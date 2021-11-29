@@ -51,7 +51,7 @@ const Home = props => {
                         aria-controls="example-collapse-text"
                         aria-expanded={open}
                         className="ButtonStyle"
-                        style={{height:"5vh"}}
+                        style={{height:"5vh",width:"100px", padding:"0px"}}
                     >
                         Advanced
                     </Button>

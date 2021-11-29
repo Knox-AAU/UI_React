@@ -5,6 +5,7 @@
 
 .SearchButtonStyle {
     height: 5vh;
+    width: 50px;
     border-radius: 25px !important;
     border-style: none !important;
 }

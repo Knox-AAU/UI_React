@@ -7,7 +7,7 @@ function SearchResults({ searchResults, firstSearchMade }) {
     return (
         <ul className="list-group list-group-flush">
             {searchResults.length === 0 && firstSearchMade
-                ? <li class="list-group-item">No results</li>
+                ? <li className="list-group-item">No results</li>
                 : searchResults.map(result => {
                     return (
                         <li className="list-group-item">

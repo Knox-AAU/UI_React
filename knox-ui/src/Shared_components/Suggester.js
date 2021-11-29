@@ -10,7 +10,7 @@ function Suggester({SuggesterData}) {
             <ul className="list-group list-group-flush" >
                 {AutoSuggestions.map(suggestion => {
                     return (
-                        <li key={suggestion.toString()} className="list-group-item">{SuggesterData}</li>
+                        <li key={suggestion.toString()} className="list-group-item">{suggestion}</li>
                     )
                 })}
             </ul>

@@ -24,6 +24,7 @@ function SearchBar({ searchText, onClick, loadingState }) {
         onClick(searchTerms.value)
         searchTerms.value = ""
         setShowSuggester(false)
+        sendMessage(SuggesterData)
     }
 
     const searchFieldChange = e => {
@@ -39,14 +40,15 @@ function SearchBar({ searchText, onClick, loadingState }) {
         joinRoom();
     }, []);
 
-    async function joinRoom() {
+    async function joinRoom(user, message) {
         try {
             const connection = new HubConnectionBuilder()
                 .withUrl("http://localhost:8081/chathub")
                 .configureLogging(LogLevel.Information)
                 .build();
 
-            connection.on("ReceiveMessage", (user, message)  => {
+            connection.on("ReceiveMessage", (message) => {
+                alert("Message Received: " +  message);
                 console.log("Message Received: ", message);
             });
 
@@ -60,9 +62,9 @@ function SearchBar({ searchText, onClick, loadingState }) {
         }
     }
 
-    const sendMessage = async (message)=>{
+    const sendMessage = async (message) =>{
         try {
-            await connection.invoke("SendMessage", ('bot',message));
+            await connection.invoke("SendMessage", (message))
         } catch (e) {
          console.log(e);
         }
