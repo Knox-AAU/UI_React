@@ -46,6 +46,17 @@ app.get("/getpdf*", (req,res)=>{
     })
 })
 
+app.get("/VirtualAssistant/node", (req,res)=>{
+  const id = req.query.id
+  fetch(`http://localhost:8081/api/VirtualAssistant/node?id=${id}`,)
+    .then(response=>response.body.pipe(res))
+    .catch(e=>{
+      res.status=500;
+      res.send(e)
+      console.log(e)
+    })
+})
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
