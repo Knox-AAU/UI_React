@@ -1,12 +1,27 @@
 import React from 'react'
-import SearchBar from '../Shared_components/SearchBar';
 import '../Css/FactChecker.css';
+import { useState, useMemo } from 'react';
+import '../Css/SearchResult.css';
 
 
 
 const FactChecker = props => {
+    const [triples, setTriples] = useState([])
+
+
+    const firstRender = useMemo(
+    () =>  {
+    fetch("http://localhost:8000/gettriples")
+                .then(response => response.json())
+                .then(json => setTriples(json))
+                .catch(e => console.log(e))
+                .finally(() => {
+                    console.log(triples);
+                })},
+    []
+  );
     const onClick = (searchText) => {
-        console.log(searchText)
+        console.log(triples)
     }
 
     return (
@@ -14,12 +29,16 @@ const FactChecker = props => {
             <div className='SearchBarPlacement'>
                 <div className="HeaderDiv">
                     <h1 >Fact Checker</h1>
-                    <h2 >It is possible to fact check the data of the toolbox!</h2>
+                    <h2 >Click on a triple to factcheck it!</h2>
                 </div>
-                <SearchBar
-                    searchText="Enter potential truth"
-                    onClick={onClick}
-                />
+                {triples && triples.map(triple => (
+                    <div className="searchResultDiv">
+                        <h2>
+                            <a href={""} target="_blank" rel="noreferrer">{triple}</a>
+                        </h2>
+                    </div>
+                ))}
+                
             </div>
         </div>
     )

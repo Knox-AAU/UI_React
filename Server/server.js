@@ -35,6 +35,8 @@ app.get("/search",(req,res)=>{
     })
 })
 
+
+
 app.get("/getpdf*", (req,res)=>{
   const id = req.query.id
   fetch("http://localhost:8081/api/getpdf?id="+id,)
@@ -44,6 +46,17 @@ app.get("/getpdf*", (req,res)=>{
       res.send(e)
       console.log(e)
     })
+})
+
+app.get("/gettriples", (req,res) => {
+  fetch("http://localhost:4605/Triple",)
+  .then(response => response.json())
+  .then(json => res.json(json))
+  .catch(e=> {
+      res.status = 500;
+      res.send(e)
+      console.log(e)
+  })
 })
 
 app.get('/*', (req, res) => {
