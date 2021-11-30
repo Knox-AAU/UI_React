@@ -24,31 +24,35 @@ function SearchBar({ searchText, onClick, loadingState }) {
         onClick(searchTerms.value)
         searchTerms.value = ""
         setShowSuggester(false)
-        sendMessage(SuggesterData)
     }
 
     const searchFieldChange = e => {
         setSearchTerms(e.target)
         setSuggesterData(e.target.value)
         console.log(SuggesterData)
+        sendMessage(SuggesterData)
     }
 
     //Start connection to SignalR for realtime communication to the suggester
     const [connection, setConnection] = useState();
     const [SuggesterData, setSuggesterData] = useState();
+
     useEffect(() => {
         joinRoom();
     }, []);
-
+    let timer;
     async function joinRoom(user, message) {
+        
         try {
+            clearInterval(timer)
             const connection = new HubConnectionBuilder()
-                .withUrl("http://localhost:8081/chathub")
+                .withUrl("http://localhost:8081/suggestorHub")
+                .withAutomaticReconnect()
                 .configureLogging(LogLevel.Information)
                 .build();
 
             connection.on("ReceiveMessage", (message) => {
-                alert("Message Received: " +  message);
+                //alert("Message Received: " +  message);
                 console.log("Message Received: ", message);
             });
 
@@ -58,13 +62,13 @@ function SearchBar({ searchText, onClick, loadingState }) {
         } catch (e) {
             console.log("badness")
             console.log(e);
-
+            timer = setInterval(joinRoom,10000)
         }
     }
 
     const sendMessage = async (message) =>{
         try {
-            await connection.invoke("SendMessage", (message))
+          //  await connection.invoke("AddToGroup", (connection.connecti))
         } catch (e) {
          console.log(e);
         }

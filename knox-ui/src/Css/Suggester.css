@@ -1,5 +1,5 @@
 .SuggesterOuter{
-    width: calc(100% - 150px);
+    width: calc(100% - 50px);
     position: relative;
     z-index: 1;
     top: -45px;
