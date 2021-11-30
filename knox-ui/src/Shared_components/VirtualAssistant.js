@@ -32,19 +32,24 @@ class VirtualAssistant extends Component {
       //Fetches the response from the knowledge graph
       fetch(queryUrl)
       .then(
-        response => {
-          if (response.status === 200) {
-            json = response.json()
-          }
+        response => { //Get the body from the response
+          return response.text();
+        }
+      ) 
+      .then( //If the body contains anything, parse it as Json, otherwise pass null
+        text => {
+          if (text.length > 0) {
+            json = JSON.parse(text);
+          } else json = null;
           return json;
         }
-      ) //Formats the response and adds it to the display in the chat area
+      )
       .then(
         json => {
-          if (json === null) {
+          if (json === null) { //If no content was received, display an error
             self.setState({ loading: false, result: 'Something went wrong...' });
             return;
-          }
+          } //If there is content, format and display it
           self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
 
         }
