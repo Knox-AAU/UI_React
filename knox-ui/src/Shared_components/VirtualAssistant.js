@@ -17,13 +17,13 @@ class VirtualAssistant extends Component {
         result: '',
         trigger: false,
       };
-  
-      this.triggetNext = this.triggerNext.bind(this);
+      
+      this.triggerNext = this.triggerNext.bind(this);
     }
   
     componentDidMount() {
       let json;
-      const self = this;
+      const VAThis = this;
       const { steps } = this.props;
       const search = steps.search.value; //Gets the information from the step with id search
       //The UI server runs on port 8000 on the same node, and pipes to query to the access API
@@ -47,11 +47,10 @@ class VirtualAssistant extends Component {
       .then(
         json => {
           if (json === null) { //If no content was received, display an error
-            self.setState({ loading: false, result: 'Something went wrong...' });
+            VAThis.setState({ loading: false, result: 'Something went wrong...' });
             return;
           } //If there is content, format and display it
-          self.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
-
+          VAThis.setState({ loading: false, result: this.formattedResponse(JSON.parse(json), search) });
         }
       )
       .catch(e => console.log(e))
@@ -70,7 +69,6 @@ class VirtualAssistant extends Component {
       for (const key of keyset) {
         output.push(this.responseElement(key, responseInfo[key]));
       }
-
       return output;
     }   
 
