@@ -30,6 +30,7 @@ const FactChecker = props => {
                 <div className="HeaderDiv">
                     <h1 >Fact Checker</h1>
                     <h2 >Click on a triple to factcheck it!</h2>
+                    {triples && <h3>A total of {triples.length} triples was found from 60 entities and 15 Wikipedia articles.</h3>}
                 </div>
                 {triples && triples.map(triple => (
                     <div className="searchResultDiv">
