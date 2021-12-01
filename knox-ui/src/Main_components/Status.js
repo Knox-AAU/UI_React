@@ -1,9 +1,160 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 import '../Css/Status.css';
 
-
 const Status = props => {
+    useEffect(() => {
+        let primaryProgressBarOuter = document.getElementById("primaryProgressBar");
+        let primaryProgressBar = primaryProgressBarOuter.getElementsByClassName("progress-bar")[0];
+        primaryProgressBar.textContent = ""
+
+        let secondaryProgressBarOuter = document.getElementById("secondaryProgressBar");
+        let secondaryProgressBar = secondaryProgressBarOuter.getElementsByClassName("progress-bar")[0];
+        secondaryProgressBar.textContent = ""
+
+        let wsStart = () => {
+            let ws = new WebSocket("ws://localhost:1337/");
+        
+            ws.onopen = (e) => {
+                console.log("Connection to grundfos preprocessing ws established.");
+            };
+
+            let current_pdf = 0;
+            let pdfs = 0;
+            let page = 0;
+            let pages = 0;
+            let imagePage = 0;
+            let imagePages = 0;
+
+            let setState = ((state) => {
+                document.getElementById("primaryProgressBarLegend").style.display = "none"
+
+                if (primaryProgressBar.classList.contains("progress-bar-animated") == false)
+                    primaryProgressBar.classList.add("progress-bar-animated");
+                if (secondaryProgressBar.classList.contains("progress-bar-animated") == false)
+                    secondaryProgressBar.classList.add("progress-bar-animated");
+                
+                document.getElementById("no_ws_connection").style.display = "none";
+                document.getElementById("success_message").style.display = "none";
+
+                switch(state) {
+                    case "PROCESSING":
+                        primaryProgressBarOuter.style.display = "initial";
+                        secondaryProgressBarOuter.style.display = "initial";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial"
+                        primaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Pdf files processed";
+                        secondaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Page processed";
+                        break;
+                    case "GENERATING_IMAGES":
+                        primaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Pdf files converted to images";
+                        primaryProgressBarOuter.style.display = "initial";
+                        secondaryProgressBarOuter.style.display = "none";
+                        break;
+                    case "CLIENT_WARNING":
+                        primaryProgressBarOuter.style.display = "none";
+                        secondaryProgressBarOuter.style.display = "none";
+                        if (primaryProgressBar.classList.contains("progress-bar-animated"))
+                            primaryProgressBar.classList.remove("progress-bar-animated");
+                        if (secondaryProgressBar.classList.contains("progress-bar-animated"))
+                            secondaryProgressBar.classList.remove("progress-bar-animated");
+
+                        document.getElementById("buttons").style.display = "none";
+                        document.getElementById("no_ws_connection").style.display = "block";
+                        break;
+                    case "FINISHED":
+                        document.getElementById("success_message").style.display = "block";
+                        break;
+                    default:
+                        primaryProgressBarOuter.style.display = "none";
+                        secondaryProgressBarOuter.style.display = "none";
+                        if (primaryProgressBar.classList.contains("progress-bar-animated"))
+                            primaryProgressBar.classList.remove("progress-bar-animated");
+                        if (secondaryProgressBar.classList.contains("progress-bar-animated"))
+                            secondaryProgressBar.classList.remove("progress-bar-animated");
+
+                        document.getElementById("buttons").style.display = "initial";
+                }
+            });
+
+            let updatePdfNumber = (() => {
+                updateProgressBar(primaryProgressBar, current_pdf, pdfs);
+
+                page = 0;
+                updatePageNumber();
+            });
+
+            let updatePageNumber = (() => {
+                updateProgressBar(secondaryProgressBar, page, pages);
+            });
+
+            let updateImagePageNumber = (() => {
+                updateProgressBar(primaryProgressBar, imagePage, imagePages);
+            });
+
+            let updateProgressBar = ((elm, minVal, maxVal) => {
+                elm.style.width = ((maxVal ? minVal / maxVal : 0) * 100) + "%";
+                elm.textContent = "Page " + minVal + " of " + maxVal;
+                elm.setAttribute("aria-valuemax", maxVal);
+                elm.setAttribute("aria-valuemin", 0);
+                elm.setAttribute("aria-valuenow", minVal);
+            });
+
+            ws.onmessage = (e) => {
+                let msg = JSON.parse(e.data);
+                if (msg.source == "grundfoss_preprocessing" && msg.type == "updateStatus"){
+                    let contents = msg.contents;
+                    
+                    if (contents.hasOwnProperty("setState")){
+                        setState(contents.setState);
+                    }
+                    if (contents.hasOwnProperty("currentPdf")){
+                        current_pdf = contents.currentPdf;
+                        updatePdfNumber();
+                    }
+                    if (contents.hasOwnProperty("fileName")){
+                        document.getElementById("primaryProgressBarLegend").textContent = contents.fileName;
+                    }
+                    if (contents.hasOwnProperty("numberOfPDFs")){
+                        pdfs = contents.numberOfPDFs;
+                        updatePdfNumber();
+                    }
+                    if (contents.hasOwnProperty("page")){
+                        page = contents.page;
+                        updatePageNumber();
+                    }
+                    if (contents.hasOwnProperty("pages")){
+                        pages = contents.pages;
+                        updatePageNumber();
+                    }
+                    if (contents.hasOwnProperty("finished")){
+                        primaryProgressBar.textContent = "Finished!";
+                        secondaryProgressBar.textContent = "Finished!";
+                        document.getElementById("success_message").style.display = "initial"
+                        setState("FINISHED");
+                    }
+                    if (contents.hasOwnProperty("imagePage")){
+                        imagePage = contents.imagePage
+                        updateImagePageNumber();
+                    }
+                    if (contents.hasOwnProperty("imagePages")){
+                        imagePages = contents.imagePages
+                        updateImagePageNumber();
+                    }
+                }
+            }
+
+            ws.onclose = (e) => {
+                setTimeout(() => {
+                    setState("CLIENT_WARNING");
+                    wsStart();
+                }, 1000);
+            }
+        }
+        wsStart();
+    });
     return (
         <div>
             {/* Header including subheader */}
@@ -34,6 +185,49 @@ const Status = props => {
             {/* Section for Grundfoss statistics */}
             <div className="GroupSpecificlDiv">
                 <h2>Grundfoss Status of parsing:</h2>
+                <div>
+                    <div id="no_ws_connection">
+                        <br />
+                        <Alert variant="warning">
+                            <Alert.Heading>No Connection</Alert.Heading>
+                                <p>
+                                    Disconnected from the preprocessing server. Check your internet connection, and validate that the server is running.
+                                </p>
+                            </Alert>
+                    </div>
+
+                    <div id="primaryProgressBar" class="progrssBarOuter">
+                        <div class="ProgessBarTitle"></div><i>&nbsp;&nbsp;&nbsp;<span id="primaryProgressBarLegend"></span></i>
+                        <br />
+                        <ProgressBar now={0} animated label="" />
+                    </div>
+                    
+                    <br />
+                    <div id="secondaryProgressBar" class="progrssBarOuter">
+                        <div class="ProgessBarTitle"></div>
+                        <ProgressBar now={0} animated label="" variant="info" />
+                    </div>
+                    
+                    <div id="success_message">
+                        <br />
+                        <Alert variant="success">
+                            <Alert.Heading>The program finsihed</Alert.Heading>
+                                <p>
+                                    Nice
+                                </p>
+                            </Alert>
+                    </div>
+
+                    <div id="buttons">
+                        <Button variant="primary" size="lg">Scrape manuals, process them and send them to Knowladge layer</Button>{' '}
+                        <br />
+                        <br />
+                        <Button variant="primary">Scrape manuals</Button>{' '}
+                        <Button variant="primary">Process all manuals from lates scraping</Button>{' '}
+                        <Button variant="primary">Send scraped data to Knowladge layer</Button>{' '}
+                    </div>
+                    <br />
+                </div>
             </div>
 
 

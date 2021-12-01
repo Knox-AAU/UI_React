@@ -6,3 +6,31 @@
 .ParagraphIntroDiv {
     margin-bottom: 5vh;
 }
+
+.ProgessBarTitle{
+    font-size: 140%;
+}
+
+#fileName{
+    font-size:70%;
+}
+
+.progrssBarOuter{
+    display:none;
+}
+
+#success_message{
+    display:none;
+}
+
+#buttons{
+    display:none;
+}
+
+#no_ws_connection{
+    display:none;
+}
+
+.ProgessBarTitle{
+    display:inline-block;
+}
