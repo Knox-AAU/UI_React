@@ -78,12 +78,7 @@ const Status = props => {
                         document.getElementById("buttons").style.display = "block";
                         break;
                     default:
-                        if (primaryProgressBar.classList.contains("progress-bar-animated"))
-                            primaryProgressBar.classList.remove("progress-bar-animated");
-                        if (secondaryProgressBar.classList.contains("progress-bar-animated"))
-                            secondaryProgressBar.classList.remove("progress-bar-animated");
-
-                        document.getElementById("buttons").style.display = "initial";
+                        break;
                 }
             });
 
