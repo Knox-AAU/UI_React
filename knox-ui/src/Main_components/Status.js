@@ -22,6 +22,7 @@ const Status = props => {
                 console.log("Connection to grundfos preprocessing ws established.");
             };
 
+            let state = "no state jet"
             let current_pdf = 0;
             let pdfs = 0;
             let page = 0;
@@ -29,14 +30,20 @@ const Status = props => {
             let imagePage = 0;
             let imagePages = 0;
 
-            let setState = ((state) => {
+            let setState = ((newState) => {
+                state = newState
+
+                console.log("Grundfos processing new state: " + state)
+
                 document.getElementById("primaryProgressBarLegend").style.display = "none"
 
-                if (primaryProgressBar.classList.contains("progress-bar-animated") == false)
+                if (primaryProgressBar.classList.contains("progress-bar-animated") === false)
                     primaryProgressBar.classList.add("progress-bar-animated");
-                if (secondaryProgressBar.classList.contains("progress-bar-animated") == false)
+                if (secondaryProgressBar.classList.contains("progress-bar-animated") === false)
                     secondaryProgressBar.classList.add("progress-bar-animated");
                 
+                primaryProgressBarOuter.style.display = "none";
+                secondaryProgressBarOuter.style.display = "none";
                 document.getElementById("no_ws_connection").style.display = "none";
                 document.getElementById("success_message").style.display = "none";
 
@@ -65,11 +72,12 @@ const Status = props => {
                         document.getElementById("no_ws_connection").style.display = "block";
                         break;
                     case "FINISHED":
+                        primaryProgressBar.textContent = "Finished!";
+                        secondaryProgressBar.textContent = "Finished!";
                         document.getElementById("success_message").style.display = "block";
+                        document.getElementById("buttons").style.display = "block";
                         break;
                     default:
-                        primaryProgressBarOuter.style.display = "none";
-                        secondaryProgressBarOuter.style.display = "none";
                         if (primaryProgressBar.classList.contains("progress-bar-animated"))
                             primaryProgressBar.classList.remove("progress-bar-animated");
                         if (secondaryProgressBar.classList.contains("progress-bar-animated"))
@@ -80,23 +88,23 @@ const Status = props => {
             });
 
             let updatePdfNumber = (() => {
-                updateProgressBar(primaryProgressBar, current_pdf, pdfs);
+                updateProgressBar(primaryProgressBar, current_pdf, pdfs, "Pdf");
 
                 page = 0;
                 updatePageNumber();
             });
 
             let updatePageNumber = (() => {
-                updateProgressBar(secondaryProgressBar, page, pages);
+                updateProgressBar(secondaryProgressBar, page, pages, "Page");
             });
 
             let updateImagePageNumber = (() => {
-                updateProgressBar(primaryProgressBar, imagePage, imagePages);
+                updateProgressBar(primaryProgressBar, imagePage, imagePages, "Page");
             });
 
-            let updateProgressBar = ((elm, minVal, maxVal) => {
+            let updateProgressBar = ((elm, minVal, maxVal, type) => {
                 elm.style.width = ((maxVal ? minVal / maxVal : 0) * 100) + "%";
-                elm.textContent = "Page " + minVal + " of " + maxVal;
+                elm.textContent = type + " " + minVal + " of " + maxVal;
                 elm.setAttribute("aria-valuemax", maxVal);
                 elm.setAttribute("aria-valuemin", 0);
                 elm.setAttribute("aria-valuenow", minVal);
@@ -104,7 +112,7 @@ const Status = props => {
 
             ws.onmessage = (e) => {
                 let msg = JSON.parse(e.data);
-                if (msg.source == "grundfoss_preprocessing" && msg.type == "updateStatus"){
+                if (msg.source === "grundfoss_preprocessing" && msg.type === "updateStatus"){
                     let contents = msg.contents;
                     
                     if (contents.hasOwnProperty("setState")){
@@ -112,36 +120,37 @@ const Status = props => {
                     }
                     if (contents.hasOwnProperty("currentPdf")){
                         current_pdf = contents.currentPdf;
-                        updatePdfNumber();
+                        if (state === "PROCESSING")
+                            updatePdfNumber();
                     }
                     if (contents.hasOwnProperty("fileName")){
                         document.getElementById("primaryProgressBarLegend").textContent = contents.fileName;
                     }
                     if (contents.hasOwnProperty("numberOfPDFs")){
+                        console.log("Updated number of pdfs: " + contents.numberOfPDFs);
                         pdfs = contents.numberOfPDFs;
-                        updatePdfNumber();
+                        if (state === "PROCESSING")
+                            updatePdfNumber();
                     }
                     if (contents.hasOwnProperty("page")){
                         page = contents.page;
-                        updatePageNumber();
+                        if (state === "PROCESSING")
+                            updatePageNumber();
                     }
                     if (contents.hasOwnProperty("pages")){
                         pages = contents.pages;
-                        updatePageNumber();
-                    }
-                    if (contents.hasOwnProperty("finished")){
-                        primaryProgressBar.textContent = "Finished!";
-                        secondaryProgressBar.textContent = "Finished!";
-                        document.getElementById("success_message").style.display = "initial"
-                        setState("FINISHED");
+                        if (state === "PROCESSING")
+                            updatePageNumber();
                     }
                     if (contents.hasOwnProperty("imagePage")){
                         imagePage = contents.imagePage
-                        updateImagePageNumber();
+                        if (state === "GENERATING_IMAGES")
+                            updateImagePageNumber();
                     }
                     if (contents.hasOwnProperty("imagePages")){
                         imagePages = contents.imagePages
-                        updateImagePageNumber();
+                        if (state === "GENERATING_IMAGES")
+                            updateImagePageNumber();
                     }
                 }
             }
@@ -212,9 +221,7 @@ const Status = props => {
                         <br />
                         <Alert variant="success">
                             <Alert.Heading>The program finsihed</Alert.Heading>
-                                <p>
-                                    Nice
-                                </p>
+
                             </Alert>
                     </div>
 
