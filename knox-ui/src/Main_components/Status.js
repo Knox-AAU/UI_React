@@ -17,7 +17,7 @@ const Status = props => {
             </div>
 
             {/* Section for Nordjysk statistics */}
-            <div className="GroupSpecificlDiv" >
+            <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
                 <h2>Nordjysk Status of parsing:</h2>
                 <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
@@ -32,7 +32,7 @@ const Status = props => {
 
 
             {/* Section for Grundfoss statistics */}
-            <div className="GroupSpecificlDiv">
+            <div data-testid="grundfosskDiv" className="GroupSpecificlDiv">
                 <h2>Grundfoss Status of parsing:</h2>
             </div>
 
@@ -47,7 +47,7 @@ const Status = props => {
 
 
             {/* Section for Database statistics */}
-            <div className="GroupSpecificlDiv">
+            <div data-testid="databaseDiv" className="GroupSpecificlDiv">
                 <h2>Some kind of database data:</h2>
             </div>
 
