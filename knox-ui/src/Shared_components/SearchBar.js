@@ -47,7 +47,7 @@ function SearchBar({ searchText, onClick, loadingState}) {
         ResultLength: 0,
         Results:[{
             Sentence:"",
-            Score: 0,
+            Score: 0
         }]
     };
     const [SuggesterResponse, setSuggesterResponse] = useState(suggesterObject);

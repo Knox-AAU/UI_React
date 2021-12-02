@@ -4,10 +4,6 @@ import '../Css/Suggester.css'
 
 
 function Suggester(props) {
-    // const [suggestion, setSuggestion]= useState()
-    // console.log("Inde i suggesteren",suggesterObject)
-    // //console.log("Inde i suggesteren",suggesterObject.Results[0].Sentence)
-    // console.log(Object.keys(suggesterObject.Results))
     console.log("props:",props)
 
     return (
@@ -20,7 +16,7 @@ function Suggester(props) {
                         <li key={suggestion.Sentence.toString()} className="list-group-item">
                         <div className="searchResultDiv">
                         <small>{suggestion.Sentence}</small>
-                        <small id="scoreField" class="text-muted">{suggestion.Score}%</small>
+                        <small id="scoreField" class="text-muted">{suggestion.Score.toFixed(0)}%</small>
                         </div>
                         </li>
                         
