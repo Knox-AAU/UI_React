@@ -12,26 +12,20 @@ pingServer();
 function pingServer() {
 	const startTime = performance.now();
 
-	fetch(`https://jsonplaceholder.typicode.com/todos/1`)
-		.then(res => res.text())
-		.then(data => {
-			console.log(data);
+	//fetch(`https://jsonplaceholder.typicode.com/todos/1`)
+	fetch("http://localhost:8081/api/wordCount/status")
+		.then(res => {
+			console.log(res);
 			let status = {
-				title: data.title,
+				statusCode: res.status,
 				responseTime: performance.now() - startTime
-				//serverStatus: response.serverStatus,
-				//dbStatus: response.dbStatus
 			};
 
-			//console.log(status);
-	
 			responses.push(status);
 	
 			if (responses.length >= statusEntryCount) {
 				responses.shift();
 			}
-	
-			//console.log(responses);
 		})
         .catch(e => {
 			console.log(e);
@@ -50,6 +44,7 @@ function getStatus() {
 	averageResponseTime /= responses.length;
 	
 	return {
+		status: responses[responses.length - 1],
 		averageResponseTime: averageResponseTime
 	};
 }
