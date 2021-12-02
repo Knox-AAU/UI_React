@@ -57,6 +57,17 @@ app.get("/VirtualAssistant/node", (req,res)=>{
     })
 })
 
+app.get("/dbstatus", (req, res) => {
+  fetch("https://jsonplaceholder.typicode.com/todos/1")
+    .then(response => response.json())
+    .then(json => res.json(json))
+    .catch(e => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+  });
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
