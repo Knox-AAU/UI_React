@@ -11,3 +11,7 @@
 .SuggesterOuter ul{
     padding-top: 2.5vh;
 }
+
+.SuggesterOuter ul li small {
+    text-align: right;
+}

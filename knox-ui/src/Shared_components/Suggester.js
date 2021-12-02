@@ -1,23 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import propTypes from 'prop-types'
 import '../Css/Suggester.css'
 
-function Suggester({ SuggesterData }) {
 
+function Suggester(props) {
+    // const [suggestion, setSuggestion]= useState()
+    // console.log("Inde i suggesteren",suggesterObject)
+    // //console.log("Inde i suggesteren",suggesterObject.Results[0].Sentence)
+    // console.log(Object.keys(suggesterObject.Results))
+    console.log("props:",props)
 
     return (
         <div className="SuggesterOuter">
             <ul className="list-group list-group-flush" >
-                {SuggesterData.Results.length != null && 
-                SuggesterData.Results.map(suggestion => {
+                    
+               
+                {props.searchData.Results.map(suggestion => {
                     return(
-                        <li key={suggestion.toString()} className="list-group-item">{suggestion}</li>
+                        <li key={suggestion.Sentence.toString()} className="list-group-item">{suggestion.Sentence}
+                        <small id="scoreField" class="text-muted">{suggestion.Score}%</small>
+                        </li>
                     )
                 })
                 }
 
-                {/* {AutoSuggestions.map(suggestion => {
-                    if(AutoSuggestions.Results > 0){
+                {/* {SuggesterData.Results.map(suggestion => {
+                    if(SuggesterData.Results != null ){
                         return (
                             <li key={suggestion.toString()} className="list-group-item">{suggestion}</li>
                         )
