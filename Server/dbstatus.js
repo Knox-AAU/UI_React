@@ -1,4 +1,3 @@
-const {request} = require('http');
 const fetch = require('node-fetch');
 const { performance } = require('perf_hooks');
 
@@ -13,9 +12,10 @@ pingServer();
 function pingServer() {
 	const startTime = performance.now();
 
-	fetch("https://jsonplaceholder.typicode.com/todos/1")
-		.then(res => res.json())
+	fetch(`https://jsonplaceholder.typicode.com/todos/1`)
+		.then(res => res.text())
 		.then(data => {
+			console.log(data);
 			let status = {
 				title: data.title,
 				responseTime: performance.now() - startTime
@@ -23,7 +23,7 @@ function pingServer() {
 				//dbStatus: response.dbStatus
 			};
 
-			console.log(status);
+			//console.log(status);
 	
 			responses.push(status);
 	
@@ -34,8 +34,6 @@ function pingServer() {
 			//console.log(responses);
 		})
         .catch(e => {
-			res.status = 500;
-			res.send(e);
 			console.log(e);
 		});
 	

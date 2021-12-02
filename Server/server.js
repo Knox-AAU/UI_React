@@ -59,7 +59,7 @@ app.get("/VirtualAssistant/node", (req,res)=>{
 
 app.get("/dbstatus", (req, res) => {
   console.log(dbStatus.getStatus());
-  res.json(dbStatus.getStatus());
+  res.json(dbStatus.getStatus(req, res));
 });
 
 app.get('/*', (req, res) => {

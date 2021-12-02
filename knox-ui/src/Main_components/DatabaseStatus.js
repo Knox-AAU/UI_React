@@ -32,13 +32,24 @@ class DatabaseStatus extends Component {
         const { error, isLoaded, status } = this.state;
 
         if (error) {
-            return <div>Error: {error.message}.</div>;
+            return (
+                <div className="db-status-container">
+                    <div className="db-status-circle db-status-circle-red"/>
+                    <span className="db-status-text">Error: {error.message}.</span>
+                </div>
+            );
         } else if (!isLoaded) {
-            return <div>Getting database status...</div>;
+            return (
+                <div className="db-status-container">
+                    <div className="db-status-circle"/>
+                    <span className="db-status-text">Getting database status...</span>
+                </div>
+            );
         } else {
             return (
-                <div>
-                    WordCount response time: {Math.round(status.averageResponseTime)} ms.
+                <div className="db-status-container">
+                    <div className="db-status-circle db-status-circle-green"/>
+                    <span className="db-status-text">WordCount response time: {Math.round(status.averageResponseTime)} ms.</span>
                 </div>
             );
         }
