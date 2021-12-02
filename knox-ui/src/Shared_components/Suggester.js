@@ -17,9 +17,13 @@ function Suggester(props) {
                
                 {props.searchData.Results.map(suggestion => {
                     return(
-                        <li key={suggestion.Sentence.toString()} className="list-group-item">{suggestion.Sentence}
+                        <li key={suggestion.Sentence.toString()} className="list-group-item">
+                        <div className="searchResultDiv">
+                        <small>{suggestion.Sentence}</small>
                         <small id="scoreField" class="text-muted">{suggestion.Score}%</small>
+                        </div>
                         </li>
+                        
                     )
                 })
                 }

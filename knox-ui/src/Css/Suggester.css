@@ -8,10 +8,14 @@
     height: 100px;
     height: fit-content;
 }
+.SuggesterOuter div{
+    width: 100%;
+}
 .SuggesterOuter ul{
     padding-top: 2.5vh;
 }
 
-.SuggesterOuter ul li small {
-    text-align: right;
+.SuggesterOuter ul li{
+    width: 100%;
+    align-items: right;
 }
