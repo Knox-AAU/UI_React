@@ -8,9 +8,9 @@ import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
 import '../Css/SeacrhBar.css';
 import Suggester from './Suggester';
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import {HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr';
 
-function SearchBar({ searchText, onClick, loadingState }) {
+function SearchBar({ searchText, onClick, loadingState}) {
     const [searchTerms, setSearchTerms] = useState();
     const [showSuggester, setShowSuggester] = useState(false);
 
@@ -30,47 +30,62 @@ function SearchBar({ searchText, onClick, loadingState }) {
         setSearchTerms(e.target)
         setSuggesterData(e.target.value)
         console.log(SuggesterData)
+        //this.State({message: e.target.value}, this.handleSubmit());
         sendMessage(SuggesterData)
     }
 
     //Start connection to SignalR for realtime communication to the suggester
     const [connection, setConnection] = useState();
     const [SuggesterData, setSuggesterData] = useState();
+    const [SuggesterResponse, setSuggesterResponse] = useState();
+    let suggesterObject = {}
+    let ConnectionID;
+    let SuggesterConnection;
 
+    
     useEffect(() => {
         joinRoom();
     }, []);
     let timer;
-    async function joinRoom(user, message) {
-        
+    async function joinRoom() {
+
         try {
             clearInterval(timer)
-            const connection = new HubConnectionBuilder()
-                .withUrl("http://localhost:8081/suggestorHub")
-                .withAutomaticReconnect()
-                .configureLogging(LogLevel.Information)
-                .build();
+            SuggesterConnection = new HubConnectionBuilder()
+            .withUrl("http://localhost:8081/suggestorHub")
+            .withAutomaticReconnect()
+            .configureLogging(LogLevel.Information)
+            .build();
 
-            connection.on("ReceiveMessage", (message) => {
-                //alert("Message Received: " +  message);
-                console.log("Message Received: ", message);
+            SuggesterConnection.on("suggestionResponse", (response) => {
+                suggesterObject = JSON.parse(response);
+                //setSuggesterResponse(response)
+                console.log("Object Received: ")
+                console.log(SuggesterResponse);
+                console.log(suggesterObject)
+                console.log(suggesterObject.Results[1])
             });
 
-            await connection.start();
-            console.log("success")
-            setConnection(connection);
+           
+
+            await SuggesterConnection.start().then(() => {
+                ConnectionID = SuggesterConnection.connectionId;
+                console.log(ConnectionID)
+                setConnection(SuggesterConnection);
+            });
+            console.log(SuggesterConnection)
         } catch (e) {
             console.log("badness")
             console.log(e);
-            timer = setInterval(joinRoom,10000)
+            timer = setInterval(joinRoom, 10000)
         }
     }
 
-    const sendMessage = async (message) =>{
+    const sendMessage = async (message) => {
         try {
-          //  await connection.invoke("AddToGroup", (connection.connecti))
+            await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", SuggesterData)
         } catch (e) {
-         console.log(e);
+            console.log(e);
         }
     }
 
@@ -95,7 +110,7 @@ function SearchBar({ searchText, onClick, loadingState }) {
 
                 </Button>
             </InputGroup>
-            {showSuggester ? <Suggester searchData={SuggesterData} /> : null}
+            {showSuggester ? <Suggester searchData={suggesterObject} /> : null}
             <InputGroup className="Loader">
                 <BarLoader loading={loadingState} color='#729A9A' height='15px' width="100%" />
             </InputGroup>

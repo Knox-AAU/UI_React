@@ -6,7 +6,7 @@ import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
 
-const Home = props => {
+const Home = (SuggesterConnection) => {
     const [open, setOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
