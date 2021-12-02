@@ -38,7 +38,7 @@ class DatabaseStatus extends Component {
         } else {
             return (
                 <div>
-                    WordCount: {status.title}.
+                    WordCount response time: {Math.round(status.averageResponseTime)} ms.
                 </div>
             );
         }

@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
-
+const dbStatus = require('./dbstatus');
 
 const app = express();
 const serverPort= 8000;
@@ -58,14 +58,8 @@ app.get("/VirtualAssistant/node", (req,res)=>{
 })
 
 app.get("/dbstatus", (req, res) => {
-  fetch("https://jsonplaceholder.typicode.com/todos/1")
-    .then(response => response.json())
-    .then(json => res.json(json))
-    .catch(e => {
-      res.status = 500;
-      res.send(e);
-      console.log(e);
-  });
+  console.log(dbStatus.getStatus());
+  res.json(dbStatus.getStatus());
 });
 
 app.get('/*', (req, res) => {
