@@ -57,7 +57,7 @@ function SearchBar({ searchText, onClick, loadingState}) {
     let testObject = {
         Sentence: SuggesterData,
         OrderBy: "ASC",
-        MaxResults: 5
+        MaxResults: 5,
     };
 
     useEffect(() => {
