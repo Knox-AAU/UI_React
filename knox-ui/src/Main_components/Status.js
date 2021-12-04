@@ -51,12 +51,11 @@ const Status = props => {
                     case "PROCESSING":
                         primaryProgressBarOuter.style.display = "initial";
                         secondaryProgressBarOuter.style.display = "initial";
-                        document.getElementById("primaryProgressBarLegend").style.display = "initial"
-                        primaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Pdf files processed";
-                        secondaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Page processed";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "Current PDF file being processed: ";
                         break;
                     case "GENERATING_IMAGES":
-                        primaryProgressBarOuter.getElementsByClassName("ProgessBarTitle")[0].textContent = "Pdf files converted to images";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "PDF files are being converted to images.";
                         primaryProgressBarOuter.style.display = "initial";
                         secondaryProgressBarOuter.style.display = "none";
                         break;
@@ -83,7 +82,7 @@ const Status = props => {
             });
 
             let updatePdfNumber = (() => {
-                updateProgressBar(primaryProgressBar, current_pdf, pdfs, "Pdf");
+                updateProgressBar(primaryProgressBar, current_pdf, pdfs, "PDF");
 
                 page = 0;
                 updatePageNumber();
@@ -119,7 +118,19 @@ const Status = props => {
                             updatePdfNumber();
                     }
                     if (contents.hasOwnProperty("fileName")){
-                        document.getElementById("primaryProgressBarLegend").textContent = contents.fileName;
+                        let pbar = document.getElementById("primaryProgressBarLegend");
+                        let a = pbar.getElementsByTagName("a")[0];
+                        let link = document.createElement("a");
+                        
+                        if (a) {
+                            a.remove();
+                        }
+
+                        link.href = `http://net.grundfos.com/Appl/ccmsservices/public/literature/filedata/${contents.fileName}`;
+                        link.target = '_blank';
+                        link.innerText = contents.fileName;
+
+                        pbar.appendChild(link);
                     }
                     if (contents.hasOwnProperty("numberOfPDFs")){
                         console.log("Updated number of pdfs: " + contents.numberOfPDFs);
@@ -160,19 +171,19 @@ const Status = props => {
         wsStart();
     });
     return (
-        <div>
+        <div style={{display: "grid", gridTemplateColumns: "50%"}}>
             {/* Header including subheader */}
-            <div className="d-flex justify-content-center" >
-                <h1>Statistics</h1>
-            </div>
-            <div className="ParagraphIntroDiv d-flex justify-content-center" >
-                <p>The main function of this site is to display specific statistics of how many fils
-                    that have been parsed from Nordjyske and Grundfoss, and how many are still missing.
-                </p>
+            <div className="" style={{gridColumn: "span 2"}}>
+                <div className="ParagraphIntroDiv">
+                    <h1>Statistics for the Preprocessing Layer</h1>
+                    <p>The main function of this site is to display specific statistics of how many files
+                        that have been parsed from Nordjyske and Grundfos and how many are still missing.
+                    </p>
+                </div>
             </div>
 
             {/* Section for Nordjysk statistics */}
-            <div className="GroupSpecificlDiv" >
+            <div className="GroupSpecificlDiv"  style={{gridColumn: "1", gridRow: "2"}}>
                 <h2>Nordjysk Status of parsing:</h2>
                 <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
@@ -187,8 +198,22 @@ const Status = props => {
 
 
             {/* Section for Grundfoss statistics */}
-            <div className="GroupSpecificlDiv">
-                <h2>Grundfoss Status of parsing:</h2>
+            <div id="groupB" className="GroupSpecificlDiv" style={{justifyContent: "left",gridColumn: "2", gridRow: "2"}}>
+                <h2>Group B | Grundfos Manuals</h2>
+                <p><strong>Welcome to the Grundfos preprocessing interface!</strong> <br/>Currently, the following functionalities has been / will be implemented:
+                <ul>
+                    <li>
+                        Execute the program with the push of a button!
+                    </li>
+                    <li>
+                        A list with downloadable PDFs and JSONs
+                    </li>
+                    <li>
+                        Real-time PDF-viewer
+                    </li>
+                </ul>
+                </p> 
+                <hr/>
                 <div>
                     <div id="no_ws_connection">
                         <br />
@@ -200,36 +225,44 @@ const Status = props => {
                             </Alert>
                     </div>
 
-                    <div id="primaryProgressBar" class="progrssBarOuter">
-                        <div class="ProgessBarTitle"></div><i>&nbsp;&nbsp;&nbsp;<span id="primaryProgressBarLegend"></span></i>
-                        <br />
-                        <ProgressBar now={0} animated label="" />
+                    <div id="primaryProgressBar" class="ProgressBarOuter">
+                        <div class="ProgressBarTitle"></div>
+                            <strong>&nbsp;<span id="primaryProgressBarLegend"></span></strong>
+                        <div>
+                            <br/>
+                            <strong>
+                                <p style={{float: "left", fontSize:"0.75rem", marginRight:"1vw"}}>PDFs Progress:</p>
+                                <ProgressBar now={0} animated label="" />
+                            </strong>
+                        </div>
+                        
                     </div>
-                    
-                    <br />
-                    <div id="secondaryProgressBar" class="progrssBarOuter">
-                        <div class="ProgessBarTitle"></div>
-                        <ProgressBar now={0} animated label="" variant="info" />
+                    <br/>
+                    <div id="secondaryProgressBar" class="ProgressBarOuter">
+                            <div>
+                                <strong>
+                                    <p style={{float: "left", fontSize:"0.75rem", marginRight:"1vw"}}>Page Progress:</p>
+                                    <ProgressBar now={0} animated label="" variant="info" />
+                                </strong>
+                            </div>                        
                     </div>
                     
                     <div id="success_message">
                         <br />
                         <Alert variant="success">
-                            <Alert.Heading>The program finsihed</Alert.Heading>
+                            <Alert.Heading>The program finished!</Alert.Heading>
 
                             </Alert>
                     </div>
-
-                    <div id="buttons">
-                        <Button variant="primary" size="lg">Scrape manuals, process them and send them to Knowladge layer</Button>{' '}
-                        <br />
-                        <br />
-                        <Button variant="primary">Scrape manuals</Button>{' '}
-                        <Button variant="primary">Process all manuals from lates scraping</Button>{' '}
-                        <Button variant="primary">Send scraped data to Knowladge layer</Button>{' '}
-                    </div>
                     <br />
                 </div>
+                <div class="btn-group" id="buttons" style={{width:"100%"}}>
+                <Button variant="primary" size="lg" >Execute</Button>{' '}
+                <Button variant="primary" style={{width:"10%"}}>Scrape <br/> manuals</Button>{' '}
+                <Button variant="primary" style={{width:"10%"}}>Process <br/> manuals</Button>{' '}
+                <Button variant="primary" style={{width:"10%"}}>Send <br/> data</Button>{' '}
+                </div>
+                {/*<img src={GrundfosLogo} style={{width: "100%", height: "auto", backgroundRepeat: "no-repeat", backgroundPosition: "center", display: "block", opacity: "0.10"}} alt="" /> */}
             </div>
 
 

@@ -1,14 +1,21 @@
 .GroupSpecificlDiv {
     margin-bottom: 10vh; 
-    margin-left: 2vw;
-    margin-right: 2vw;
+    margin-left: 5vh;
+    margin-right: 5vh;
+    float: left;
+    
+}
+
+#groupB {
+    text-align:center;
 }
 
 .ParagraphIntroDiv {
     margin-bottom: 5vh;
+    text-align: center;
 }
 
-.ProgessBarTitle{
+.ProgressBarTitle{
     font-size: 140%;
 }
 
@@ -16,7 +23,7 @@
     font-size:70%;
 }
 
-.progrssBarOuter{
+.ProgressBarOuter{
     display:none;
 }
 
@@ -25,13 +32,30 @@
 }
 
 #buttons{
-    display:none;
+    width:100%;
+    text-align: center;
+    margin-bottom: 10vh; 
+    margin-right: 5vh;
+}
+
+.btn-group button {
+    background-color: #076fd1; /* Green background */
+    border: 2px solid #0456aa; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    font-weight: bold;
+  }
+
+.btn-group button:hover {
+    background-color: #0850d6;
 }
 
 #no_ws_connection{
     display:none;
 }
 
-.ProgessBarTitle{
+.ProgressBarTitle{
     display:inline-block;
 }
