@@ -1,5 +1,5 @@
 .GroupSpecificlDiv {
-    margin-bottom: 10vh; 
+    margin-bottom: 1vh; 
     margin-left: 5vh;
     margin-right: 5vh;
     float: left;
@@ -36,6 +36,15 @@
     text-align: center;
     margin-bottom: 10vh; 
     margin-right: 5vh;
+}
+
+#buttons button{
+    margin: 1vh;
+    border-radius: .3rem;
+}
+
+.alert{
+    margin:0 !important;
 }
 
 .btn-group button {

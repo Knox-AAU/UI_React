@@ -1,9 +1,10 @@
+import '../Css/Status.css';
+import GrundfosLogo from '../Img/grundfos_logo.svg'
 import React, { useEffect } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
-import '../Css/Status.css';
 
 const Status = props => {
     useEffect(() => {
@@ -17,7 +18,7 @@ const Status = props => {
 
         let wsStart = () => {
             let ws = new WebSocket("ws://localhost:1337/");
-        
+
             ws.onopen = (e) => {
                 console.log("Connection to grundfos preprocessing ws established.");
             };
@@ -41,13 +42,13 @@ const Status = props => {
                     primaryProgressBar.classList.add("progress-bar-animated");
                 if (secondaryProgressBar.classList.contains("progress-bar-animated") === false)
                     secondaryProgressBar.classList.add("progress-bar-animated");
-                
+
                 primaryProgressBarOuter.style.display = "none";
                 secondaryProgressBarOuter.style.display = "none";
                 document.getElementById("no_ws_connection").style.display = "none";
                 document.getElementById("success_message").style.display = "none";
 
-                switch(state) {
+                switch (state) {
                     case "PROCESSING":
                         primaryProgressBarOuter.style.display = "initial";
                         secondaryProgressBarOuter.style.display = "initial";
@@ -74,7 +75,7 @@ const Status = props => {
                         primaryProgressBar.textContent = "Finished!";
                         secondaryProgressBar.textContent = "Finished!";
                         document.getElementById("success_message").style.display = "block";
-                        document.getElementById("buttons").style.display = "block";
+                        document.getElementById("buttons").style.display = "grid";
                         break;
                     default:
                         break;
@@ -106,54 +107,45 @@ const Status = props => {
 
             ws.onmessage = (e) => {
                 let msg = JSON.parse(e.data);
-                if (msg.source === "grundfoss_preprocessing" && msg.type === "updateStatus"){
+                if (msg.source === "grundfoss_preprocessing" && msg.type === "updateStatus") {
                     let contents = msg.contents;
-                    
-                    if (contents.hasOwnProperty("setState")){
+
+                    if (contents.hasOwnProperty("setState")) {
                         setState(contents.setState);
                     }
-                    if (contents.hasOwnProperty("currentPdf")){
+                    if (contents.hasOwnProperty("currentPdf")) {
                         current_pdf = contents.currentPdf;
                         if (state === "PROCESSING")
                             updatePdfNumber();
                     }
-                    if (contents.hasOwnProperty("fileName")){
-                        let pbar = document.getElementById("primaryProgressBarLegend");
-                        let a = pbar.getElementsByTagName("a")[0];
-                        let link = document.createElement("a");
-                        
-                        if (a) {
-                            a.remove();
-                        }
-
+                    if (contents.hasOwnProperty("fileName")) {
+                        let progressBar = document.getElementById("primaryProgressBarLegend");
+                        let link = progressBar.getElementsByTagName("a")[0];
+                        link.textContent = contents.fileName;
                         link.href = `http://net.grundfos.com/Appl/ccmsservices/public/literature/filedata/${contents.fileName}`;
-                        link.target = '_blank';
-                        link.innerText = contents.fileName;
-
-                        pbar.appendChild(link);
                     }
-                    if (contents.hasOwnProperty("numberOfPDFs")){
+                    if (contents.hasOwnProperty("numberOfPDFs")) {
                         console.log("Updated number of pdfs: " + contents.numberOfPDFs);
                         pdfs = contents.numberOfPDFs;
                         if (state === "PROCESSING")
                             updatePdfNumber();
                     }
-                    if (contents.hasOwnProperty("page")){
+                    if (contents.hasOwnProperty("page")) {
                         page = contents.page;
                         if (state === "PROCESSING")
                             updatePageNumber();
                     }
-                    if (contents.hasOwnProperty("pages")){
+                    if (contents.hasOwnProperty("pages")) {
                         pages = contents.pages;
                         if (state === "PROCESSING")
                             updatePageNumber();
                     }
-                    if (contents.hasOwnProperty("imagePage")){
+                    if (contents.hasOwnProperty("imagePage")) {
                         imagePage = contents.imagePage
                         if (state === "GENERATING_IMAGES")
                             updateImagePageNumber();
                     }
-                    if (contents.hasOwnProperty("imagePages")){
+                    if (contents.hasOwnProperty("imagePages")) {
                         imagePages = contents.imagePages
                         if (state === "GENERATING_IMAGES")
                             updateImagePageNumber();
@@ -171,9 +163,9 @@ const Status = props => {
         wsStart();
     });
     return (
-        <div style={{display: "grid", gridTemplateColumns: "50%"}}>
+        <div style={{ display: "grid", gridTemplateColumns: "50%" }}>
             {/* Header including subheader */}
-            <div className="" style={{gridColumn: "span 2"}}>
+            <div className="" style={{ gridColumn: "span 2" }}>
                 <div className="ParagraphIntroDiv">
                     <h1>Statistics for the Preprocessing Layer</h1>
                     <p>The main function of this site is to display specific statistics of how many files
@@ -183,7 +175,7 @@ const Status = props => {
             </div>
 
             {/* Section for Nordjysk statistics */}
-            <div className="GroupSpecificlDiv"  style={{gridColumn: "1", gridRow: "2"}}>
+            <div className="GroupSpecificlDiv" style={{ gridColumn: "1", gridRow: "2" }}>
                 <h2>Nordjysk Status of parsing:</h2>
                 <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
@@ -198,71 +190,60 @@ const Status = props => {
 
 
             {/* Section for Grundfoss statistics */}
-            <div id="groupB" className="GroupSpecificlDiv" style={{justifyContent: "left",gridColumn: "2", gridRow: "2"}}>
-                <h2>Group B | Grundfos Manuals</h2>
-                <p><strong>Welcome to the Grundfos preprocessing interface!</strong> <br/>Currently, the following functionalities has been / will be implemented:
-                <ul>
-                    <li>
-                        Execute the program with the push of a button!
-                    </li>
-                    <li>
-                        A list with downloadable PDFs and JSONs
-                    </li>
-                    <li>
-                        Real-time PDF-viewer
-                    </li>
-                </ul>
-                </p> 
-                <hr/>
-                <div>
-                    <div id="no_ws_connection">
-                        <br />
-                        <Alert variant="warning">
-                            <Alert.Heading>No Connection</Alert.Heading>
+            <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
+                <div style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
+                    <h2>Grundfos</h2>
+
+                    <div>
+                        <div id="no_ws_connection">
+                            <br />
+                            <Alert variant="warning">
+                                <Alert.Heading>No Connection</Alert.Heading>
                                 <p>
                                     Disconnected from the preprocessing server. Check your internet connection, and validate that the server is running.
                                 </p>
                             </Alert>
-                    </div>
-
-                    <div id="primaryProgressBar" class="ProgressBarOuter">
-                        <div class="ProgressBarTitle"></div>
-                            <strong>&nbsp;<span id="primaryProgressBarLegend"></span></strong>
-                        <div>
-                            <br/>
-                            <strong>
-                                <p style={{float: "left", fontSize:"0.75rem", marginRight:"1vw"}}>PDFs Progress:</p>
-                                <ProgressBar now={0} animated label="" />
-                            </strong>
                         </div>
-                        
-                    </div>
-                    <br/>
-                    <div id="secondaryProgressBar" class="ProgressBarOuter">
+
+                        <div id="primaryProgressBar" class="ProgressBarOuter">
+                            <div class="ProgressBarTitle"></div>
+                            <strong>&nbsp;<span id="primaryProgressBarLegend"><a target="_blank" href="status"> </a></span></strong>
+                            <div>
+                                <br />
+                                <strong>
+                                    <p style={{ float: "left", fontSize: "0.75rem", marginRight: "1vw" }}>PDFs Progress:</p>
+                                    <ProgressBar now={0} animated label="" />
+                                </strong>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div id="secondaryProgressBar" class="ProgressBarOuter">
                             <div>
                                 <strong>
-                                    <p style={{float: "left", fontSize:"0.75rem", marginRight:"1vw"}}>Page Progress:</p>
+                                    <p style={{ float: "left", fontSize: "0.75rem", marginRight: "1vw" }}>Page Progress:</p>
                                     <ProgressBar now={0} animated label="" variant="info" />
                                 </strong>
-                            </div>                        
-                    </div>
-                    
-                    <div id="success_message">
-                        <br />
-                        <Alert variant="success">
-                            <Alert.Heading>The program finished!</Alert.Heading>
+                            </div>
+                        </div>
+
+                        <div id="success_message">
+                            <br />
+                            <Alert variant="success">
+                                <Alert.Heading>The program finished!</Alert.Heading>
 
                             </Alert>
+                        </div>
+                        <br />
                     </div>
-                    <br />
+                    <div class="btn-group" id="buttons" style={{ width: "100%", display: "grid" }}>
+                        <Button variant="primary" style={{ gridRow: "1", gridColumn: "span 3" }} size="lg" >Scrape, Process &amp; Send data </Button>{' '} <br />
+                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "1" }}>Scrape manuals</Button>{' '}
+                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "2" }}>Process manuals</Button>{' '}
+                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "3" }}>Send data</Button>{' '}
+                    </div>
+                    {/*<img src={GrundfosLogo} style={{width: "100%", height: "auto", backgroundRepeat: "no-repeat", backgroundPosition: "center", display: "block", opacity: "0.10"}} alt="" /> */}
                 </div>
-                <div class="btn-group" id="buttons" style={{width:"100%"}}>
-                <Button variant="primary" size="lg" >Execute</Button>{' '}
-                <Button variant="primary" style={{width:"10%"}}>Scrape <br/> manuals</Button>{' '}
-                <Button variant="primary" style={{width:"10%"}}>Process <br/> manuals</Button>{' '}
-                <Button variant="primary" style={{width:"10%"}}>Send <br/> data</Button>{' '}
-                </div>
-                {/*<img src={GrundfosLogo} style={{width: "100%", height: "auto", backgroundRepeat: "no-repeat", backgroundPosition: "center", display: "block", opacity: "0.10"}} alt="" /> */}
             </div>
 
 
