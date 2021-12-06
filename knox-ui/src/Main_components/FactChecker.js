@@ -2,19 +2,40 @@ import React from "react";
 import "../Css/FactChecker.css";
 import { useState, useMemo, useEffect } from "react";
 import "../Css/SearchResult.css";
+import SearchBar from "../Shared_components/SearchBar";
 
 const FactChecker = (props) => {
   const [triples, setTriples] = useState([]);
+  const [showingTriples, setShowingTriples] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   const firstRender = useMemo(() => {
     fetch("http://localhost:8000/gettriples")
       .then((response) => response.json())
-      .then((json) => setTriples(json))
+      .then((json) => {
+        setTriples(json);
+        setShowingTriples(json);
+      })
       .catch((e) => console.log(e))
-      .finally(() => {
-        console.log(triples);
-      });
+      .finally(() => {});
   }, []);
+
+  const search = (terms) => {
+    terms = terms.toLowerCase().split(" ");
+    let result = [];
+    triples.forEach((triple) => {
+      terms.forEach((term) => {
+        if (
+          triple.s.toLowerCase().includes(term) ||
+          triple.r.toLowerCase().includes(term) ||
+          triple.t.toLowerCase().includes(term)
+        ) {
+          if (!result.includes(triple)) result.push(triple);
+        }
+      });
+    });
+    setShowingTriples(result);
+  };
 
   const onClick = async (triple) => {
     let newArr = [...triples];
@@ -41,15 +62,20 @@ const FactChecker = (props) => {
         <div className="HeaderDiv">
           <h1>Fact Checker</h1>
           <h2>Click on a triple to factcheck it!</h2>
-          {triples && (
+          {showingTriples && (
             <h3>
               A total of {triples.length} triples was found from 60 entities and
               15 Wikipedia articles.
             </h3>
           )}
+          <SearchBar
+            searchText="Enter your search"
+            onClick={search}
+            loadingState={searching}
+          />
         </div>
-        {triples &&
-          triples.map((triple) => (
+        {showingTriples &&
+          showingTriples.map((triple) => (
             <div
               className="searchResultFactCheckerDiv"
               onClick={() => onClick(triple)}
