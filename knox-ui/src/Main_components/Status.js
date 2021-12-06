@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import '../Css/Status.css'
 import axios from "axios";
