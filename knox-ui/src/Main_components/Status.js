@@ -33,7 +33,7 @@ const Status = props => {
 
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
-                        { title: 'Parsed json', value: value.count || 0, color: '#E38627' },
+                        { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
                         { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
                     ]}
                 />
