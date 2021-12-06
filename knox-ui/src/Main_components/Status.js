@@ -30,6 +30,10 @@ const Status = props => {
             let pages = 0;
             let imagePage = 0;
             let imagePages = 0;
+            let currentDownloadFile = 0;
+            let totalDownloadFiles = 0;
+            let currentScrapeLink = 0;
+            let totalScrapeLinks = 0;
 
             let setState = ((newState) => {
                 state = newState
@@ -47,11 +51,22 @@ const Status = props => {
                 secondaryProgressBarOuter.style.display = "none";
                 document.getElementById("no_ws_connection").style.display = "none";
                 document.getElementById("success_message").style.display = "none";
+                document.getElementById("loading_message").style.display = "none";
                 document.getElementById("buttons").style.display = "none";
 
                 switch (state) {
                     case "IDLE":
                         document.getElementById("buttons").style.display = "grid";
+                        break;
+                    case "SCRAPING":
+                        primaryProgressBarOuter.style.display = "initial";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "Current link being scraped: ";
+                        break;
+                    case "DOWNLOADING":
+                        primaryProgressBarOuter.style.display = "initial";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "Current PDF file being downloaded: ";
                         break;
                     case "PROCESSING":
                         primaryProgressBarOuter.style.display = "initial";
@@ -99,6 +114,18 @@ const Status = props => {
 
             let updateImagePageNumber = (() => {
                 updateProgressBar(primaryProgressBar, imagePage, imagePages, "Page");
+            });
+
+            let updateDownloadFileNumber = (() => {
+                updateProgressBar(primaryProgressBar, currentDownloadFile, totalDownloadFiles, "PDF");
+            });
+
+            let updateScrapeLink = (() => {
+                primaryProgressBar.style.width = (100 - (totalScrapeLinks - currentScrapeLink)) + "%";
+                primaryProgressBar.textContent = "Link" + " " + currentScrapeLink + " of " + totalScrapeLinks;
+                primaryProgressBar.setAttribute("aria-valuemax", totalScrapeLinks);
+                primaryProgressBar.setAttribute("aria-valuemin", totalScrapeLinks - 100);
+                primaryProgressBar.setAttribute("aria-valuenow", currentScrapeLink);
             });
 
             let updateProgressBar = ((elm, minVal, maxVal, type) => {
@@ -153,6 +180,30 @@ const Status = props => {
                         imagePages = contents.imagePages
                         if (state === "GENERATING_IMAGES")
                             updateImagePageNumber();
+                    }
+
+                    if (contents.hasOwnProperty("currentDownloadFile")) {
+                        currentDownloadFile = contents.currentDownloadFile;
+                        if (state === "DOWNLOADING")
+                            updateDownloadFileNumber();
+                    }
+
+                    if (contents.hasOwnProperty("totalDownloadFiles")) {
+                        totalDownloadFiles = contents.totalDownloadFiles;
+                        if (state === "DOWNLOADING")
+                            updateDownloadFileNumber();
+                    }
+
+                    if (contents.hasOwnProperty("currentScrapeLink")) {
+                        currentScrapeLink = contents.currentScrapeLink;
+                        if (state === "SCRAPING")
+                            updateScrapeLink();
+                    }
+
+                    if (contents.hasOwnProperty("totalScrapeLinks")) {
+                        totalScrapeLinks = contents.totalScrapeLinks;
+                        if (state === "SCRAPING")
+                            updateScrapeLink();
                     }
                 }
             }
@@ -270,11 +321,18 @@ const Status = props => {
 
                             </Alert>
                         </div>
-                        <br />
+
+                        <div id="loading_message">
+                            <br />
+                            <Alert variant="info">
+                                <Alert.Heading>Loading...</Alert.Heading>
+
+                            </Alert>
+                        </div>
                     </div>
-                    <div class="btn-group" id="buttons" style={{ width: "100%", display: "grid" }}>
+                    <div class="btn-group" id="buttons" style={{ width: "100%" }}>
                         <Button id="executeAllButton" type="button" variant="primary" style={{ gridRow: "1", gridColumn: "span 3" }} size="lg">Scrape, Process &amp; Send data </Button>{' '} <br />
-                        <Button id="scrapeButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "1" }}>Scrape manuals</Button>{' '}
+                        <Button id="scrapeButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "1" }}>Scrape 100 links and download</Button>{' '}
                         <Button id="processButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "2" }}>Process manuals</Button>{' '}
                         <Button id="sendButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "3" }}>Send data</Button>{' '}
                     </div>

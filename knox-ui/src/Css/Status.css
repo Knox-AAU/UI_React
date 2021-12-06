@@ -36,6 +36,7 @@
     text-align: center;
     margin-bottom: 10vh; 
     margin-right: 5vh;
+    display:none;
 }
 
 #buttons button{
