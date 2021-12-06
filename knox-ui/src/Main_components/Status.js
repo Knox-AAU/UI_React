@@ -47,8 +47,12 @@ const Status = props => {
                 secondaryProgressBarOuter.style.display = "none";
                 document.getElementById("no_ws_connection").style.display = "none";
                 document.getElementById("success_message").style.display = "none";
+                document.getElementById("buttons").style.display = "none";
 
                 switch (state) {
+                    case "IDLE":
+                        document.getElementById("buttons").style.display = "grid";
+                        break;
                     case "PROCESSING":
                         primaryProgressBarOuter.style.display = "initial";
                         secondaryProgressBarOuter.style.display = "initial";
@@ -153,6 +157,38 @@ const Status = props => {
                 }
             }
 
+            const jsonBaseObject = {
+                "target": "grundfos_preprocessing",
+                "type": "executeCommands",
+                "contents": [],
+            };
+
+            document.getElementById("executeAllButton").addEventListener("click", () => {
+                let jsonObject = JSON.parse(JSON.stringify(jsonBaseObject));
+                jsonObject.contents.push({ "commandType": "SCRAPE" });
+                jsonObject.contents.push({ "commandType": "PROCESS" });
+                jsonObject.contents.push({ "commandType": "SEND" });
+                ws.send(JSON.stringify(jsonObject));
+            });
+
+            document.getElementById("scrapeButton").addEventListener("click", () => {
+                let jsonObject = JSON.parse(JSON.stringify(jsonBaseObject));
+                jsonObject.contents.push({ "commandType": "SCRAPE" });
+                ws.send(JSON.stringify(jsonObject));
+            });
+
+            document.getElementById("processButton").addEventListener("click", () => {
+                let jsonObject = JSON.parse(JSON.stringify(jsonBaseObject));
+                jsonObject.contents.push({ "commandType": "PROCESS" });
+                ws.send(JSON.stringify(jsonObject));
+            });
+
+            document.getElementById("sendButton").addEventListener("click", () => {
+                let jsonObject = JSON.parse(JSON.stringify(jsonBaseObject));
+                jsonObject.contents.push({ "commandType": "SEND" });
+                ws.send(JSON.stringify(jsonObject));
+            });
+
             ws.onclose = (e) => {
                 setTimeout(() => {
                     setState("CLIENT_WARNING");
@@ -237,10 +273,10 @@ const Status = props => {
                         <br />
                     </div>
                     <div class="btn-group" id="buttons" style={{ width: "100%", display: "grid" }}>
-                        <Button variant="primary" style={{ gridRow: "1", gridColumn: "span 3" }} size="lg" >Scrape, Process &amp; Send data </Button>{' '} <br />
-                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "1" }}>Scrape manuals</Button>{' '}
-                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "2" }}>Process manuals</Button>{' '}
-                        <Button variant="primary" style={{ gridRow: "2", gridColumn: "3" }}>Send data</Button>{' '}
+                        <Button id="executeAllButton" type="button" variant="primary" style={{ gridRow: "1", gridColumn: "span 3" }} size="lg">Scrape, Process &amp; Send data </Button>{' '} <br />
+                        <Button id="scrapeButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "1" }}>Scrape manuals</Button>{' '}
+                        <Button id="processButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "2" }}>Process manuals</Button>{' '}
+                        <Button id="sendButton" type="button" variant="primary" style={{ gridRow: "2", gridColumn: "3" }}>Send data</Button>{' '}
                     </div>
                     {/*<img src={GrundfosLogo} style={{width: "100%", height: "auto", backgroundRepeat: "no-repeat", backgroundPosition: "center", display: "block", opacity: "0.10"}} alt="" /> */}
                 </div>
