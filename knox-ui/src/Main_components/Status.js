@@ -14,9 +14,6 @@ const Status = props => {
       });
     }, []);
   
-    if (!value) return null;
-    //fetch("http://127.0.0.1:5000/collection_count?col=1.0").then(response => response.json()).then(setPost(reponse["count"])).catch(err=>console.log(err));
-
     return (
         <div>
             {/* Header including subheader */}
@@ -36,7 +33,7 @@ const Status = props => {
 
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
-                        { title: 'Parsed json', value: value.count, color: '#E38627' },
+                        { title: 'Parsed json', value: value.count || 0, color: '#E38627' },
                         { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
                     ]}
                 />
