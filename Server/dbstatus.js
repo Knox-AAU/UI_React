@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 const { performance } = require('perf_hooks');
 
-//const pingInterval = 600000; // ping every 10 minutes
-const pingInterval = 1000; // ping every second
+const pingInterval = 600000; // ping every 10 minutes
 const statusEntryCount = 10;
 
 const responses = [];
@@ -12,7 +11,6 @@ pingServer();
 function pingServer() {
 	const startTime = performance.now();
 
-	//fetch(`https://jsonplaceholder.typicode.com/todos/1`)
 	fetch("http://localhost:8081/api/wordCount/status")
 		.then(res => {
 			console.log(res);
