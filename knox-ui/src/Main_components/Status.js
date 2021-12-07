@@ -1,10 +1,17 @@
 import '../Css/Status.css';
 import GrundfosLogo from '../Img/grundfos_logo.svg'
 import React, { useEffect } from 'react'
-import { PieChart } from 'react-minimal-pie-chart'
+
+// Grundfos dependencies
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+
+// Nordjyske dependencies
+import axios from "axios";
+import DatabaseStatus from "./DatabaseStatus";
+import Visualiser from '../Shared_components/Visualiser';
+import { PieChart } from 'react-minimal-pie-chart'
 
 const Status = props => {
     useEffect(() => {
@@ -249,6 +256,16 @@ const Status = props => {
         }
         wsStart();
     });
+
+    const [value, setValue] = React.useState(null);
+
+    React.useEffect(() => {
+      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
+        setValue(response.data);
+        console.log(response.data)
+      });
+    }, []);
+
     return (
         <div style={{ display: "grid", gridTemplateColumns: "50%" }}>
             {/* Header including subheader */}
@@ -263,19 +280,24 @@ const Status = props => {
 
             {/* Section for Nordjysk statistics */}
             <div className="GroupSpecificlDiv" style={{ gridColumn: "1", gridRow: "2" }}>
-                <h2>Nordjysk Status of parsing:</h2>
-                <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
+                <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
+                    <h2>Nordjysk Status of parsing:</h2>
+                    <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
-                <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
-                    data={[
-                        { title: 'One', value: 10, color: '#E38627' },
-                        { title: 'Two', value: 15, color: '#C13C37' },
-                    ]}
-                />
+                    <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
+                        data={[
+                            { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
+                            { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
+                        ]}
+                    />
+                </div>
+
+                {/* Section for Nordjyske statistics */}
+                <div className="GroupSpecificlDiv">
+                    <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
+                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
+                </div>
             </div>
-
-
-
             {/* Section for Grundfoss statistics */}
             <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
                 <div style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
@@ -340,22 +362,17 @@ const Status = props => {
                 </div>
             </div>
 
-
-
-
             {/* Section for Database statistics */}
-            <div className="GroupSpecificlDiv">
-                <h2>Some kind of database data:</h2>
+            <div data-testid="databaseDiv" className="GroupSpecificlDiv">
+                <h3>WordCount database status</h3>
+                <DatabaseStatus/>
             </div>
-
         </div>
     )
 }
 
-
 Status.propTypes = {
 
 }
-
 
 export default Status
