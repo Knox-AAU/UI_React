@@ -13,7 +13,6 @@ function pingServer() {
 
 	fetch("http://localhost:8081/api/wordCount/status")
 		.then(res => {
-			console.log(res);
 			let status = {
 				statusCode: res.status,
 				responseTime: performance.now() - startTime
