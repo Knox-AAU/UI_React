@@ -43,13 +43,13 @@ class DatabaseStatus extends Component {
 
             return displayResponse(text, circleClass);
         }
-        else if (response.statusCode == 404) {
+        else if (response.statusCode === 404) {
             const text = `Error: API did not respond.`;
             const circleClass = <div className="db-status-circle db-status-circle-red"/>;
 
             return displayResponse(text, circleClass);
         }
-        else if (response.statusCode == 503) {
+        else if (response.statusCode === 503) {
             const text = `Error: API responded but got no respones from WordCount database.`;
             const circleClass = <div className="db-status-circle db-status-circle-red"/>;
 
