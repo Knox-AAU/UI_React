@@ -1,10 +1,21 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import '../Css/Status.css';
+import axios from "axios";
 import DatabaseStatus from "./DatabaseStatus";
 import Visualiser from '../Shared_components/Visualiser';
 
 const Status = props => {
+    
+    const [value, setValue] = React.useState(null);
+
+    React.useEffect(() => {
+      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
+        setValue(response.data);
+        console.log(response.data)
+      });
+    }, []);
+  
     return (
         <div>
             {/* Header including subheader */}
@@ -24,8 +35,8 @@ const Status = props => {
 
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
-                        { title: 'One', value: 10, color: '#E38627' },
-                        { title: 'Two', value: 15, color: '#C13C37' },
+                        { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
+                        { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
                     ]}
                 />
             </div>
