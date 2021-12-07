@@ -33,7 +33,7 @@ const Status = props => {
             <div data-testid="grundfosskDiv" className="GroupSpecificlDiv">
                 <h2>Grundfoss Status of parsing:</h2>
             </div>
-            
+
             {/* Section for Nordjyske statistics */}
             <div className="GroupSpecificlDiv">
                 <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
@@ -42,7 +42,7 @@ const Status = props => {
 
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
-                <h2>Some kind of database data:</h2>
+                <h3>WordCount database status</h3>
                 <DatabaseStatus/>
             </div>
         </div>
