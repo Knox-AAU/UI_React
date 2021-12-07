@@ -1,9 +1,21 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import '../Css/Status.css';
-
+import axios from "axios";
+import DatabaseStatus from "./DatabaseStatus";
+import Visualiser from '../Shared_components/Visualiser';
 
 const Status = props => {
+    
+    const [value, setValue] = React.useState(null);
+
+    React.useEffect(() => {
+      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
+        setValue(response.data);
+        console.log(response.data)
+      });
+    }, []);
+  
     return (
         <div>
             {/* Header including subheader */}
@@ -23,35 +35,33 @@ const Status = props => {
 
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
-                        { title: 'One', value: 10, color: '#E38627' },
-                        { title: 'Two', value: 15, color: '#C13C37' },
+                        { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
+                        { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
                     ]}
                 />
             </div>
-
-
-
             {/* Section for Grundfoss statistics */}
             <div data-testid="grundfosskDiv" className="GroupSpecificlDiv">
                 <h2>Grundfoss Status of parsing:</h2>
             </div>
 
-
-
+            {/* Section for Nordjyske statistics */}
+            <div className="GroupSpecificlDiv">
+                <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
+                <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
+            </div>
 
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
-                <h2>Some kind of database data:</h2>
+                <h3>WordCount database status</h3>
+                <DatabaseStatus/>
             </div>
-
         </div>
     )
 }
 
-
 Status.propTypes = {
 
 }
-
 
 export default Status
