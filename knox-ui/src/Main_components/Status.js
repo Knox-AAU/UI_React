@@ -54,7 +54,8 @@ const Status = props => {
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
                 <h3>WordCount database status</h3>
-                <DatabaseStatus/>
+                <DatabaseStatus port="8000" apiName="wordCountStatus" dbName="WordCount"/>
+                <DatabaseStatus port="8000" apiName="rdfStatus" dbName="RDF"/>
             </div>
         </div>
     )
