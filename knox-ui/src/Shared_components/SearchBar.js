@@ -76,6 +76,7 @@ function SearchBar({ searchText, onClick, loadingState}) {
 
             SuggesterConnection.on("suggestionResponse", (response) => {
                 console.log("Før",suggesterObject.Results[0])
+                console.log(response)
                 suggesterObject = JSON.parse(response);
                 setSuggesterResponse(suggesterObject)
                 console.log("Efter", suggesterObject.Results[0])
@@ -100,7 +101,7 @@ function SearchBar({ searchText, onClick, loadingState}) {
 
     const sendMessage = async (message) => {
         try {
-            await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequestTest", JSON.stringify(testObject))
+            await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", JSON.stringify(testObject))
         } catch (e) {
             console.log(e);
         }
