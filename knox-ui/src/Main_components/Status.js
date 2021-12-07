@@ -1,6 +1,7 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import '../Css/Status.css';
+import DatabaseStatus from "./DatabaseStatus";
 import Visualiser from '../Shared_components/Visualiser';
 
 const Status = props => {
@@ -28,37 +29,28 @@ const Status = props => {
                     ]}
                 />
             </div>
-
-
-
             {/* Section for Grundfoss statistics */}
             <div data-testid="grundfosskDiv" className="GroupSpecificlDiv">
                 <h2>Grundfoss Status of parsing:</h2>
             </div>
-
-
-
+            
             {/* Section for Nordjyske statistics */}
             <div className="GroupSpecificlDiv">
                 <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
                 <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
             </div>
 
-
-
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
                 <h2>Some kind of database data:</h2>
+                <DatabaseStatus/>
             </div>
-
         </div>
     )
 }
 
-
 Status.propTypes = {
 
 }
-
 
 export default Status

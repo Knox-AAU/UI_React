@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
-
+const dbStatus = require('./dbstatus');
 
 const app = express();
 const serverPort= 8000;
@@ -71,6 +71,10 @@ app.get("/VirtualAssistant/node", (req,res)=>{
       console.log(e)
     })
 })
+
+app.get("/dbstatus", (req, res) => {
+  res.json(dbStatus.getStatus(req, res));
+});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
