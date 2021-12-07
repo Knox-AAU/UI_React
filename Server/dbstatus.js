@@ -13,35 +13,36 @@ function pingServer() {
 
 	fetch("http://localhost:8081/api/wordCount/status")
 		.then(res => {
-			let status = {
-				statusCode: res.status,
-				responseTime: performance.now() - startTime
-			};
-
-			responses.push(status);
-	
-			if (responses.length >= statusEntryCount) {
-				responses.shift();
-			}
+			addStatus({statusCode: res.status, responseTime: performance.now() - startTime});
 		})
         .catch(e => {
-			console.log(e);
+			addStatus({statusCode: 404, responseTime: -1});
 		});
 	
 	setTimeout(pingServer, pingInterval);
+}
+
+function addStatus(status) {
+	responses.push(status);
+
+	if (responses.length >= statusEntryCount) {
+		responses.shift();
+	}
 }
 
 function getStatus() {
 	let averageResponseTime = 0;
 
 	for (let i = 0; i < responses.length; i++) {
-		averageResponseTime += responses[i].responseTime;
+		if (responses[i].statusCode != 404) {
+			averageResponseTime += responses[i].responseTime;
+		}
 	}
 
 	averageResponseTime /= responses.length;
 	
 	return {
-		status: responses[responses.length - 1],
+		statusCode: responses[responses.length - 1].statusCode,
 		averageResponseTime: averageResponseTime
 	};
 }

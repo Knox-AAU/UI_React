@@ -6,7 +6,7 @@ class DatabaseStatus extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            status: []
+            response: []
         };
     }
 
@@ -16,7 +16,7 @@ class DatabaseStatus extends Component {
             .then((result) => {
                 this.setState({
                     isLoaded: true,
-                    status: result
+                    response: result
                 });
             },
             (error) => {
@@ -29,31 +29,48 @@ class DatabaseStatus extends Component {
     }
 
     render() {
-        const { error, isLoaded, status } = this.state;
+        const { error, isLoaded, response } = this.state;
 
-        if (error) {
-            return (
-                <div className="db-status-container">
-                    <div className="db-status-circle db-status-circle-red"/>
-                    <span className="db-status-text">Error: {error.message}.</span>
-                </div>
-            );
-        } else if (!isLoaded) {
-            return (
-                <div className="db-status-container">
-                    <div className="db-status-circle"/>
-                    <span className="db-status-text">Getting database status...</span>
-                </div>
-            );
-        } else {
-            return (
-                <div className="db-status-container">
-                    <div className="db-status-circle db-status-circle-green"/>
-                    <span className="db-status-text">WordCount response time: {Math.round(status.averageResponseTime)} ms.</span>
-                </div>
-            );
+        if (!isLoaded) {
+            const text = 'Getting database status...';
+            const circleClass = <div className="db-status-circle"/>;
+
+            return displayResponse(text, circleClass);
+        } 
+        else if (error) {
+            const text = `Error: ${error.message}`;
+            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
+
+            return displayResponse(text, circleClass);
+        }
+        else if (response.statusCode == 404) {
+            const text = `Error: API did not respond.`;
+            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
+
+            return displayResponse(text, circleClass);
+        }
+        else if (response.statusCode == 503) {
+            const text = `Error: API responded but got no respones from WordCount database.`;
+            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
+
+            return displayResponse(text, circleClass);
+        }
+        else {
+            const text = `WordCount response time: ${Math.round(response.averageResponseTime)} ms.`;
+            const circleClass = <div className="db-status-circle db-status-circle-green"/>;
+
+            return displayResponse(text, circleClass)
         }
     }
+}
+
+function displayResponse(text, circleClass) {
+    return (
+        <div className="db-status-container">
+            {circleClass}
+            <span className="db-status-text">{text}</span>
+        </div>
+    );
 }
 
 export default DatabaseStatus;
