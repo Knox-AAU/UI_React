@@ -10,12 +10,6 @@ describe("GroupDiv component", () => {
         expect(nordjysk).toBeTruthy();
     })
 
-    test("Rendered grundfoss div", () => {
-        const { queryByTestId } = render(<Components />);
-        const grundfoss = queryByTestId("grundfosskDiv");
-        expect(grundfoss).toBeTruthy();
-    })
-
     test("Rendered database div", () => {
         const { queryByTestId } = render(<Components />);
         const database = queryByTestId("databaseDiv");
