@@ -17,24 +17,36 @@ import ReactDOM from 'react-dom';
 function SearchBar({ searchText, onClick, loadingState}) {
     const [searchTerms, setSearchTerms] = useState();
     const [showSuggester, setShowSuggester] = useState(false);
+    let searchtermscurrent = "";
 
     const searchBarFocus = () => {
-        setShowSuggester(true)
+        if(searchtermscurrent !="" && searchtermscurrent != null){
+            setShowSuggester(true)
+        }
     };
     const SearchBarUnfocus = () => setShowSuggester(false);
 
     const handleKeypress = e => e.key === "Enter" && sendSearch()
     const sendSearch = () => {
         onClick(searchTerms.value)
+        sendForEvaluation(searchTerms.value)
         searchTerms.value = ""
+        searchtermscurrent = ""
         setShowSuggester(false)
     }
 
     const searchFieldChange = e => {
         setSearchTerms(e.target)
-        setSuggesterData(e.target.value)
-        console.log(SuggesterData)
-        sendMessage(SuggesterData)
+        searchtermscurrent = e.target.value
+        if(searchtermscurrent !="" && searchtermscurrent != null){
+            setShowSuggester(true)
+            setSuggesterData(searchtermscurrent)
+            console.log("Here" + searchtermscurrent)
+            sendMessage(searchtermscurrent)
+        }
+        else{
+            setShowSuggester(false)
+        }
 
     }
 
@@ -55,7 +67,7 @@ function SearchBar({ searchText, onClick, loadingState}) {
     let SuggesterConnection;
 
     let testObject = {
-        Sentence: SuggesterData,
+        Sentence: "",
         OrderBy: "ASC",
         MaxResults: 5,
     };
@@ -98,8 +110,15 @@ function SearchBar({ searchText, onClick, loadingState}) {
             timer = setInterval(joinRoom, 10000)
         }
     }
-
+    const sendForEvaluation = async (message) => {
+        try {
+            await connection.invoke("SendGroupMessage", connection.connectionId, "evalutateSentence", message)
+        } catch (e) {
+            console.log(e);
+        }
+    }
     const sendMessage = async (message) => {
+        testObject["Sentence"] = message 
         try {
             await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", JSON.stringify(testObject))
         } catch (e) {
@@ -146,4 +165,3 @@ SearchBar.propTypes = {
 }
 
 export default SearchBar
-
