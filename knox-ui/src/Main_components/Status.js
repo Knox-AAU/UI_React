@@ -24,7 +24,7 @@ const Status = props => {
         secondaryProgressBar.textContent = ""
 
         let wsStart = () => {
-            let ws = new WebSocket("ws://knox-master01.srv.aau.dk/statsWebsocket");
+            let ws = new WebSocket("ws://localhost:8000/statsWebsocket");
 
             ws.onopen = (e) => {
                 console.log("Connection to grundfos preprocessing ws established.");
