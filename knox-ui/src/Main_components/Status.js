@@ -129,7 +129,7 @@ const Status = props => {
 
             let updateScrapeLink = (() => {
                 primaryProgressBar.style.width = (100 - (totalScrapeLinks - currentScrapeLink)) + "%";
-                primaryProgressBar.textContent = "Link" + " " + currentScrapeLink + " of " + totalScrapeLinks;
+                primaryProgressBar.textContent = "Link " + currentScrapeLink + " of " + totalScrapeLinks;
                 primaryProgressBar.setAttribute("aria-valuemax", totalScrapeLinks);
                 primaryProgressBar.setAttribute("aria-valuemin", totalScrapeLinks - 100);
                 primaryProgressBar.setAttribute("aria-valuenow", currentScrapeLink);
