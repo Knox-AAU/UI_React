@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get("/search",(req,res)=>{
   const searchText = req.query.input
   const sources = req.query.sources
-  fetch("http://knox-master01/accessapi/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(sources))
+  fetch("http://knox-master01.srv.aau.dk/accessapi/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(sources))
     .then(response => response.json())
     .then(json=>res.json(json))
     .catch(e=>{
@@ -39,7 +39,7 @@ app.get("/search",(req,res)=>{
 
 app.get("/getpdf*", (req,res)=>{
   const id = req.query.id
-  fetch("http://knox-master01/accessapi/api/getpdf?id="+id,)
+  fetch("http://knox-master01.srv.aau.dk/accessapi/api/getpdf?id="+id,)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
       res.status=500;
@@ -51,7 +51,7 @@ app.get("/getpdf*", (req,res)=>{
 app.post("/visualiseNer", async (req, res) => {
   try {
     const options = { method: "POST", body: JSON.stringify(req.body) }
-    const response = await fetch("http://knox-master01/visualiseNer/", options)
+    const response = await fetch("http://knox-master01.srv.aau.dk/visualiseNer/visualiseNer/", options)
     if(!response.ok)
       throw new Error(response.status)
     response.body.pipe(res)
@@ -63,7 +63,7 @@ app.post("/visualiseNer", async (req, res) => {
 
 app.get("/VirtualAssistant/node", (req,res)=>{
   const id = req.query.id
-  fetch(`http://knox-master01/accessapi/api/VirtualAssistant/node?id=${id}`,)
+  fetch(`http://knox-master01.srv.aau.dk/accessapi/api/VirtualAssistant/node?id=${id}`,)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
       res.status=500;
