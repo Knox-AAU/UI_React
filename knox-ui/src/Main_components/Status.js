@@ -24,7 +24,7 @@ const Status = props => {
         secondaryProgressBar.textContent = ""
 
         let wsStart = () => {
-            let ws = new WebSocket("ws://localhost:1337/");
+            let ws = new WebSocket("ws://192.38.49.149:1337/");
 
             ws.onopen = (e) => {
                 console.log("Connection to grundfos preprocessing ws established.");
