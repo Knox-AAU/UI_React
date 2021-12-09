@@ -38,7 +38,7 @@ class DbStatus {
 			.then(res => {
 				this.addStatus({statusCode: res.status, responseTime: performance.now() - startTime});
 			})
-			.catch(e => {
+			.catch(() => {
 				this.addStatus({statusCode: 404});
 			});
 		
