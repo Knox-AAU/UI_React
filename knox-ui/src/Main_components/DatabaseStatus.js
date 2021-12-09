@@ -58,7 +58,7 @@ class DatabaseStatus extends Component {
                 `Error: ${dbName} API did not respond.`, this.redCircle
             );
         }
-        else if (response.statusCode === 503) {
+        else if (response.statusCode === 500) {
             return displayResponse(
                 `Error: API responded but got no response from the ${dbName} database.`, this.redCircle
             );
