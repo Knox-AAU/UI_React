@@ -4,6 +4,9 @@ const fetch = require('node-fetch');
 const cors = require('cors');
 const dbStatus = require('./dbstatus');
 
+const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
+const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
+
 const app = express();
 const serverPort= 8000;
 
@@ -72,12 +75,16 @@ app.get("/VirtualAssistant/node", (req,res)=>{
     })
 })
 
-app.get("/dbstatus", (req, res) => {
-  res.json(dbStatus.getStatus(req, res));
+app.get("/wordCountStatus", (req, res) => {
+  res.json(wordCountStatus.getStatus(req, res));
+});
+
+app.get("/rdfStatus", (req, res) => {
+  res.json(rdfStatus.getStatus(req, res));
 });
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(serverPort, ()=>console.log("Listening at " + serverPort) );
+app.listen(serverPort, () => console.log("Listening at " + serverPort));
