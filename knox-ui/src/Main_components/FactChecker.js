@@ -82,7 +82,15 @@ const FactChecker = (props) => {
             >
               <h2>
                 {"<" + triple.s + "> <" + triple.r + "> <" + triple.t + ">"}
-                {triple.passage != null && <h4>"{triple.passage}"</h4>}
+                {triple.passage != null &&
+                  triple.passage.map((passage) => (
+                    <>
+                      <h3>{passage.passage}</h3>
+                      <h4>Score: {passage.score}</h4>
+                      <h4>Link: {passage.link} </h4>
+                      <br />
+                    </>
+                  ))}
               </h2>
             </div>
           ))}
