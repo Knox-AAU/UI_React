@@ -292,10 +292,10 @@ const Status = props => {
                     />
                 </div>
 
-                {/* Section for Nordjyske statistics */}
+                {/* Section for Nordjyske and Grundfos statistics */}
                 <div className="GroupSpecificlDiv">
-                    <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
-                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
+                    <h2>Nordjyske/Grundfos Named Enitity Recognition (NER) Visualiser:</h2>
+                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" url2="/generateKG/" />
                 </div>
             </div>
             {/* Section for Grundfoss statistics */}
