@@ -34,6 +34,8 @@ const Status = props => {
             let totalDownloadFiles = 0;
             let currentScrapeLink = 0;
             let totalScrapeLinks = 0;
+            let currentJsonFile = 0;
+            let totalJsonFiles = 0;
 
             let setState = ((newState) => {
                 state = newState
@@ -90,6 +92,11 @@ const Status = props => {
                         document.getElementById("buttons").style.display = "none";
                         document.getElementById("no_ws_connection").style.display = "block";
                         break;
+                    case "SENDING":
+                        primaryProgressBarOuter.style.display = "initial";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "Current JSON file being sent: ";
+                        break;
                     case "FINISHED":
                         primaryProgressBar.textContent = "Finished!";
                         secondaryProgressBar.textContent = "Finished!";
@@ -120,9 +127,13 @@ const Status = props => {
                 updateProgressBar(primaryProgressBar, currentDownloadFile, totalDownloadFiles, "PDF");
             });
 
+            let updateJsonFileSent = (() => {
+                updateProgressBar(primaryProgressBar, currentJsonFile, totalJsonFiles, "JSON");
+            });
+
             let updateScrapeLink = (() => {
                 primaryProgressBar.style.width = (100 - (totalScrapeLinks - currentScrapeLink)) + "%";
-                primaryProgressBar.textContent = "Link" + " " + currentScrapeLink + " of " + totalScrapeLinks;
+                primaryProgressBar.textContent = "Link " + currentScrapeLink + " of " + totalScrapeLinks;
                 primaryProgressBar.setAttribute("aria-valuemax", totalScrapeLinks);
                 primaryProgressBar.setAttribute("aria-valuemin", totalScrapeLinks - 100);
                 primaryProgressBar.setAttribute("aria-valuenow", currentScrapeLink);
@@ -204,6 +215,22 @@ const Status = props => {
                         totalScrapeLinks = contents.totalScrapeLinks;
                         if (state === "SCRAPING")
                             updateScrapeLink();
+                    }
+
+                    if (contents.hasOwnProperty("currentJsonFile")) {
+                        currentJsonFile = contents.currentJsonFile;
+                        if (state === "SENDING")
+                            updateJsonFileSent();
+                    }
+
+                    if (contents.hasOwnProperty("totalJsonFiles")) {
+                        totalJsonFiles = contents.totalJsonFiles;
+                        if (state === "SENDING")
+                            updateJsonFileSent();
+                    }
+
+                    if (contents.hasOwnProperty("currentJsonFileName")) {
+                        document.getElementById("primaryProgressBarLegend").getElementsByTagName("a")[0].textContent = contents.currentJsonFileName;
                     }
                 }
             }
