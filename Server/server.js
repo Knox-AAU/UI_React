@@ -1,17 +1,3 @@
-const express = require('express');
-const path = require('path');
-const fetch = require('node-fetch');
-const cors = require('cors');
-const dbStatus = require('./dbstatus');
-
-const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
-const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
-
-const app = express();
-const serverPort= 8000;
-
-app.use(express.json());
-
 /*
 #################################################################
 #################################################################
@@ -24,6 +10,28 @@ app.use(express.json());
 #################################################################
 #################################################################
 */
+
+const express = require('express');
+const path = require('path');
+const fetch = require('node-fetch');
+const cors = require('cors');
+const dbStatus = require('./dbstatus');
+const httpProxy = require('http-proxy');
+
+const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
+const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
+
+const app = express();
+const serverPort = 8000;
+
+// Proxy used for websockets
+const wsProxy = httpProxy.createProxyServer({
+  target: 'http://knox-master01.srv.aau.dk/',
+  ws: true
+});
+
+app.use(express.json()); 
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -87,4 +95,20 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(serverPort, () => console.log("Listening at " + serverPort));
+const server = app.listen(serverPort, () => console.log("Listening at " + serverPort));
+// On client starting ws connection: upgrade http connection to ws connection
+server.on('upgrade', (req, socket, head, error) => {
+  socket.on('error', err => {
+    console.error("Error upgrading websocket to socket connection!");
+    console.error(err); // Catch socket error
+  });
+
+  wsProxy.ws(req, socket, head);
+});
+
+wsProxy.on('error', (err) => {
+  if (err.message == "getaddrinfo ENOTFOUND knox-master01.srv.aau.dk")
+    console.error("Could not find server knox-master01.srv.aau.dk. Are you connected to AAU network?");
+  else
+    console.error(err);
+});
