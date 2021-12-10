@@ -18,6 +18,9 @@ const cors = require('cors');
 const dbStatus = require('./dbstatus');
 const httpProxy = require('http-proxy');
 
+const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
+const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
+
 const app = express();
 const serverPort = 8000;
 
@@ -80,8 +83,12 @@ app.get("/VirtualAssistant/node", (req,res)=>{
     })
 })
 
-app.get("/dbstatus", (req, res) => {
-  res.json(dbStatus.getStatus(req, res));
+app.get("/wordCountStatus", (req, res) => {
+  res.json(wordCountStatus.getStatus(req, res));
+});
+
+app.get("/rdfStatus", (req, res) => {
+  res.json(rdfStatus.getStatus(req, res));
 });
 
 app.get('/*', (req, res) => {
