@@ -7,11 +7,11 @@ name: Docker Publish
 
 on:
   push:
-    branches: [ main, development ]
+    branches: [ main ]
     # Publish /semver tags as releases.
     tags: [ '*.*.*' ]
   pull_request:
-    branches: [ main, development ]
+    branches: [ main ]
   workflow_dispatch:
 
 env:
