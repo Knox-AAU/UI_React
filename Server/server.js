@@ -26,7 +26,7 @@ const serverPort = 8000;
 
 // Proxy used for websockets
 const wsProxy = httpProxy.createProxyServer({
-  target: 'http://knox-master01.srv.aau.dk/statsWebsocket',
+  target: 'http://knox-master01.srv.aau.dk/',
   ws: true
 });
 
@@ -97,7 +97,12 @@ app.get('/*', (req, res) => {
 
 const server = app.listen(serverPort, () => console.log("Listening at " + serverPort));
 // On client starting ws connection: upgrade http connection to ws connection
-server.on('upgrade', (req, socket, head) => {
+server.on('upgrade', (req, socket, head, error) => {
+  socket.on('error', err => {
+    console.error("Error upgrading websocket to socket connection!");
+    console.error(err); // Catch socket error
+  });
+
   wsProxy.ws(req, socket, head);
 });
 
