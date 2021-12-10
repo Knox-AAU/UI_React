@@ -42,7 +42,7 @@ class DbStatus {
 				this.addStatus({statusCode: 404});
 			});
 		
-		setTimeout(this.pingServer, pingInterval);
+		setTimeout(() => {this.pingServer()}, pingInterval);
 
 		return this;
 	}
