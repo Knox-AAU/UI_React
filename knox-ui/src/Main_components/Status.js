@@ -24,7 +24,7 @@ const Status = props => {
         secondaryProgressBar.textContent = ""
 
         let wsStart = () => {
-            let ws = new WebSocket("ws://localhost:1337/");
+            let ws = new WebSocket("ws://localhost:8000/statsWebsocket/");
 
             ws.onopen = (e) => {
                 console.log("Connection to grundfos preprocessing ws established.");
@@ -129,7 +129,7 @@ const Status = props => {
 
             let updateScrapeLink = (() => {
                 primaryProgressBar.style.width = (100 - (totalScrapeLinks - currentScrapeLink)) + "%";
-                primaryProgressBar.textContent = "Link" + " " + currentScrapeLink + " of " + totalScrapeLinks;
+                primaryProgressBar.textContent = "Link " + currentScrapeLink + " of " + totalScrapeLinks;
                 primaryProgressBar.setAttribute("aria-valuemax", totalScrapeLinks);
                 primaryProgressBar.setAttribute("aria-valuemin", totalScrapeLinks - 100);
                 primaryProgressBar.setAttribute("aria-valuenow", currentScrapeLink);
@@ -300,7 +300,7 @@ const Status = props => {
             </div>
             {/* Section for Grundfoss statistics */}
             <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
-                <div style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
+                <div data-testid="grundfosskDiv" style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
                     <h2>Grundfos</h2>
 
                     <div>
