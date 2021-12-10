@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const { performance } = require('perf_hooks');
 
-const pingInterval = 50000; // ping every 10 minutes
+const pingInterval = 600000; // ping every 10 minutes
 const statusEntryCount = 10;
 
 class DbStatus {
