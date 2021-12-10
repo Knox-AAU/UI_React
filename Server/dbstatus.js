@@ -43,8 +43,6 @@ class DbStatus {
 			});
 		
 		setTimeout(this.pingServer, pingInterval);
-
-		return this;
 	}
 
 	addStatus(status) {
