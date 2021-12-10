@@ -21,7 +21,7 @@ const Home = (SuggesterConnection) => {
             return
         }
         setSearching(true)
-        fetch("http://localhost:8000/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
+        fetch("http://localhost:8000/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
             .catch(e => console.log(e))
