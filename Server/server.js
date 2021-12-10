@@ -16,20 +16,6 @@ const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const dbStatus = require('./dbstatus');
-
-const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
-const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
-
-const app = express();
-const serverPort= 8000;
-
-app.use(express.json());
-
-const express = require('express');
-const path = require('path');
-const fetch = require('node-fetch');
-const cors = require('cors');
-const dbStatus = require('./dbstatus');
 const httpProxy = require('http-proxy');
 
 const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
