@@ -10,8 +10,8 @@ on:
     - cron: '15 23 * * *'
   push:
     branches: [ main, development ]
-  pull_request:
-    branches: [ main, development ]
+  #pull_request:
+  #  branches: [ main, development ]
   workflow_dispatch:
 
 env:
