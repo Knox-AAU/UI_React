@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const { performance } = require('perf_hooks');
 
-const pingInterval = 600000; // ping every 10 minutes
+const pingInterval = 50000; // ping every 10 minutes
 const statusEntryCount = 10;
 
 class DbStatus {
@@ -42,7 +42,7 @@ class DbStatus {
 				this.addStatus({statusCode: 404});
 			});
 		
-		setTimeout(this.pingServer, pingInterval);
+		setTimeout(() => {this.pingServer()}, pingInterval);
 
 		return this;
 	}
