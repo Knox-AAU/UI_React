@@ -53,15 +53,17 @@ const Visualiser = props => {
     }
 
     return (
-        <div className="visualise-wrapper">
+        <div className="visualise-wrapper knowledgelayerelement">
             <div className="visualiser-text-input">
                 <input type='text' onChange={changeHandler} />
                 <select onChange={e => {console.log(e); setPublisher(e.target.options.selectedIndex)}}>
                     { props.publishers.map(publisher => <option value={publisher}>{publisher}</option>) }
                 </select>
             </div>
-            <button onClick={clickHandlerNer} className="visualiser-button">Visualise</button>
-            <button onClick={clickHandlerKG} className="kg-button">Show Triples</button>
+            <div class="NJGFButtons">
+              <button onClick={clickHandlerNer} className="visualiser-button">Visualise</button>
+              <button onClick={clickHandlerKG} className="visualiser-button">Show Triples</button>
+            </div>
             <div className="visualiser-text">
                 <h3>Result</h3>
                 {!ResponseError ? parse(ResponsePayload) : <div className="visualiser-error"><b>{ResponsePayload}</b></div>}

@@ -292,11 +292,11 @@ const Status = props => {
                     />
                 </div>
 
-                {/* Section for Nordjyske and Grundfos statistics */}
-                <div className="GroupSpecificlDiv">
-                    <h2>Nordjyske/Grundfos Named Enitity Recognition (NER) Visualiser:</h2>
-                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" url2="/generateKG/" />
-                </div>
+            </div>
+            {/* Section for Nordjyske and Grundfos statistics */}
+            <div className="GroupSpecificlDiv knowledgelayerbox">
+            <h2 className="knowledgelayerelement">Nordjyske/Grundfos Named Enitity Recognition (NER) Visualiser:</h2>
+            <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" url2="/generateKG/" />
             </div>
             {/* Section for Grundfoss statistics */}
             <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
