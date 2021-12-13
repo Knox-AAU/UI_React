@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ChatBot, { Loading } from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import dateFormat from 'dateformat';
+import botAvatar from '../Img/Wall.png';
 
 //Anything without explicit comments is taken (almost) directly from react-simple-chatbot Wikidata example
 //https://lucasbassetti.com.br/react-simple-chatbot/#/docs/wikipedia
@@ -180,6 +181,7 @@ class VirtualAssistant extends Component {
       headerTitle = "Virtual Assistant" //Title at the top of the chat interface
       hideUserAvatar = {true} //Hides the user avatar, can also be shown and changed if needed
       botDelay = {800} //The delay where the bot is "writing", to seem more like an actual person
+      botAvatar={botAvatar} //Chatbot picture
 
       //The actual steps the chat bot goes through to communicate with the user
       steps={[
