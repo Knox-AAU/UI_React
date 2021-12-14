@@ -12,11 +12,11 @@ const FactChecker = props => {
     return (
         <div className="ContentOfPage">
             <div className='SearchBarPlacement'>
-                <div className="HeaderDiv">
+                <div data-testid="headerDiv" className="HeaderDiv">
                     <h1 >Fact Checker</h1>
                     <h2 >It is possible to fact check the data of the toolbox!</h2>
                 </div>
-                <SearchBar
+                <SearchBar 
                     searchText="Enter potential truth"
                     onClick={onClick}
                 />
