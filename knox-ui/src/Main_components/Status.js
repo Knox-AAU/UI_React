@@ -31,7 +31,6 @@ const Status = props => {
             {/* Section for Nordjysk statistics */}
             <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
                 <h2>Nordjysk Status of parsing:</h2>
-                <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
 
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
@@ -39,6 +38,8 @@ const Status = props => {
                         { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
                     ]}
                 />
+                <p>Yellow is parsed</p>
+                <p>red is not yet parsed</p>
             </div>
             {/* Section for Grundfoss statistics */}
             <div data-testid="grundfosskDiv" className="GroupSpecificlDiv">
