@@ -1,3 +1,10 @@
+const express = require("express");
+const path = require("path");
+const fetch = require("node-fetch");
+const cors = require("cors");
+const app = express();
+const serverPort = 8000;
+
 /*
 #################################################################
 #################################################################
@@ -34,31 +41,71 @@ const wsProxy = httpProxy.createProxyServer({
 app.use(express.json()); 
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, "build")));
+app.use(express.json());
 
-app.get("/search",(req,res)=>{
-  const searchText = req.query.input
-  const sources = req.query.sources
-  fetch("http://knox-master01.srv.aau.dk/accessapi/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(sources))
-    .then(response => response.json())
-    .then(json=>res.json(json))
-    .catch(e=>{
-      res.status=500;
-      res.send(e)
-      console.log(e)
-    })
-})
+app.get("/search", (req, res) => {
+  const searchText = req.query.input;
+  const sources = req.query.sources;
+  fetch(
+    "http://localhost:8081/api/search?input=" +
+      encodeURI(searchText) +
+      "&sources=" +
+      encodeURI(sources)
+  )
+    .then((response) => response.json())
+    .then((json) => res.json(json))
+    .catch((e) => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+    });
+});
 
-app.get("/getpdf*", (req,res)=>{
-  const id = req.query.id
-  fetch("http://knox-master01.srv.aau.dk/accessapi/api/getpdf?id="+id,)
-    .then(response=>response.body.pipe(res))
-    .catch(e=>{
-      res.status=500;
-      res.send(e)
-      console.log(e)
-    })
-})
+app.get("/getpdf*", (req, res) => {
+  const id = req.query.id;
+  fetch("http://localhost:8081/api/getpdf?id=" + id)
+    .then((response) => response.body.pipe(res))
+    .catch((e) => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+    });
+});
+
+app.get("/gettriples", (req, res) => {
+  fetch("http://localhost:4605/Triple")
+    .then((response) => response.json())
+    .then((json) => res.json(json))
+    .catch((e) => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+    });
+});
+
+app.post("/getpassage", (req, res) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(req.body),
+  };
+  fetch("http://localhost:4605/Triple", requestOptions)
+    .then((response) => response.json())
+    .then((json) => res.json(json))
+    .catch((e) => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+    });
+});
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.post("/visualiseNer", async (req, res) => {
   try {

@@ -1,16 +1,27 @@
 .searchResultDiv {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.searchResultDiv h2 a{
-    color: #3874CB;
-    text-decoration: none;
+.searchResultDiv h2 a {
+  color: #3874cb;
+  text-decoration: none;
 }
 
 #scoreField {
-    white-space: nowrap;
-    padding-left: 20px;
+  white-space: nowrap;
+  padding-left: 20px;
+}
 
+.searchResultFactCheckerDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.searchResultFactCheckerDiv h2 {
+  color: #3874cb;
+  text-decoration: none;
 }
