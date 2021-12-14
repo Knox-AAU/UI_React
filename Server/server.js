@@ -71,7 +71,7 @@ app.get("/getpdf*", (req, res) => {
 });
 
 app.get("/gettriples", (req, res) => {
-  fetch("http://knox-master01.srv.aau.dk/accessapi/factchecker/Triple")
+  fetch("http://knox-master01.srv.aau.dk/factchecker/Triple")
     .then((response) => response.json())
     .then((json) => res.json(json))
     .catch((e) => {
@@ -90,7 +90,7 @@ app.post("/getpassage", (req, res) => {
     },
     body: JSON.stringify(req.body),
   };
-  fetch("http://knox-master01.srv.aau.dk/accessapi/factchecker/Triple", requestOptions)
+  fetch("http://knox-master01.srv.aau.dk/factchecker/Triple", requestOptions)
     .then((response) => response.json())
     .then((json) => res.json(json))
     .catch((e) => {
