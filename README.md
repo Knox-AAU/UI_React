@@ -3,6 +3,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+More info about the UI on the [Knox wiki](https://wiki.knox.cs.aau.dk/en/User-interface/REACT-Getting-Started).
+
+In order to install all the packages needed to run the site locally, use the following command in knox-ui directory:
+
+### `npm install`
+
 ## Available Scripts
 
 In the knox-ui directory, you can run:

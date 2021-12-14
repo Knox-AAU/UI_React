@@ -8,10 +8,16 @@ class DatabaseStatus extends Component {
             isLoaded: false,
             response: []
         };
+        this.greenCircle = <div className="db-status-circle"/>;
+        this.yellowCircle = <div className="db-status-circle db-status-circle-yellow"/>;
+        this.redCircle = <div className="db-status-circle db-status-circle-red"/>;
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/dbstatus")
+        const api = this.props.apiName;
+        const port = this.props.port;
+
+        fetch(`http://localhost:${port}/${api}`)
             .then(res => res.json())
             .then((result) => {
                 this.setState({
@@ -30,36 +36,37 @@ class DatabaseStatus extends Component {
 
     render() {
         const { error, isLoaded, response } = this.state;
+        const dbName = this.props.dbName;
 
         if (!isLoaded) {
-            const text = 'Getting database status...';
-            const circleClass = <div className="db-status-circle"/>;
-
-            return displayResponse(text, circleClass);
-        } 
+            return displayResponse(
+                `Getting ${dbName} database status...`, this.yellowCircle
+            );
+        }
         else if (error) {
-            const text = `Error: ${error.message}`;
-            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
-
-            return displayResponse(text, circleClass);
+            return displayResponse(
+                `${dbName} error: ${error.message}`, this.redCircle
+            );
+        }
+        else if (!response) {
+            return displayResponse(
+                `Error: Server contains no data about the ${dbName} API.`, this.redCircle
+            );
         }
         else if (response.statusCode === 404) {
-            const text = `Error: API did not respond.`;
-            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
-
-            return displayResponse(text, circleClass);
+            return displayResponse(
+                `Error: ${dbName} API did not respond.`, this.redCircle
+            );
         }
-        else if (response.statusCode === 503) {
-            const text = `Error: API responded but got no respones from WordCount database.`;
-            const circleClass = <div className="db-status-circle db-status-circle-red"/>;
-
-            return displayResponse(text, circleClass);
+        else if (response.statusCode === 500) {
+            return displayResponse(
+                `Error: API responded but got no response from the ${dbName} database.`, this.redCircle
+            );
         }
         else {
-            const text = `WordCount response time: ${Math.round(response.averageResponseTime)} ms.`;
-            const circleClass = <div className="db-status-circle db-status-circle-green"/>;
-
-            return displayResponse(text, circleClass)
+            return displayResponse(
+                `${dbName} response time: ${Math.round(response.averageResponseTime)} ms.`, this.greenCircle
+            )
         }
     }
 }

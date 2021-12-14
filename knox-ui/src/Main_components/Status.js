@@ -24,7 +24,7 @@ const Status = props => {
         secondaryProgressBar.textContent = ""
 
         let wsStart = () => {
-            let ws = new WebSocket("ws://localhost:1337/");
+            let ws = new WebSocket("ws://localhost:8000/statsWebsocket/");
 
             ws.onopen = (e) => {
                 console.log("Connection to grundfos preprocessing ws established.");
@@ -300,7 +300,7 @@ const Status = props => {
             </div>
             {/* Section for Grundfoss statistics */}
             <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
-                <div style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
+                <div data-testid="grundfosskDiv" style={{backgroundColor: "rgba(255, 255, 255, 0.8)", margin:"0", minHeight: "100%"}}>
                     <h2>Grundfos</h2>
 
                     <div>
@@ -365,7 +365,8 @@ const Status = props => {
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
                 <h3>WordCount database status</h3>
-                <DatabaseStatus/>
+                <DatabaseStatus port="8000" apiName="wordCountStatus" dbName="WordCount"/>
+                <DatabaseStatus port="8000" apiName="rdfStatus" dbName="RDF"/>
             </div>
         </div>
     )
