@@ -50,4 +50,15 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+app.get("/NordjyskeCount", (req,res)=>{
+  fetch(`http://knox-master01.srv.aau.dk/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0`,)
+    .then(response=>response.body.pipe(res))
+    .catch(e=>{
+      res.status=500;
+      res.send(e)
+      console.log(e)
+    })
+})
+
+
 app.listen(serverPort, ()=>console.log("Listening at " + serverPort) );

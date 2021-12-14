@@ -8,7 +8,7 @@ const Status = props => {
     const [value, setValue] = React.useState(null);
 
     React.useEffect(() => {
-      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
+      axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
         setValue(response.data);
         console.log(response.data)
       });
