@@ -109,7 +109,7 @@ app.get('/*', (req, res) => {
 });
 
 app.get("/NordjyskeCount", (req,res)=>{
-  fetch(`http://knox-master01.srv.aau.dk/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0`,)
+  fetch(`http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count?db=Nordjyske&col=1.0`,)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
       res.status=500;
