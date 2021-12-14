@@ -17,6 +17,7 @@ const fetch = require('node-fetch');
 const cors = require('cors');
 const dbStatus = require('./dbstatus');
 const httpProxy = require('http-proxy');
+const { URL, URLSearchParams } = require('url');
 
 const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
 const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
@@ -109,9 +110,10 @@ app.get('/*', (req, res) => {
 });
 
 app.get("/NordjyskeCount", (req,res)=>{
-  let url = new URL("http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count")
-  let params = {"db":"Nordjyske", "col":"1.0"}
-  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+  let url = new URL('http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count')
+  let params = {"db":"Nordjyske", "col":"1.0"} // or:
+  url.search = new URLSearchParams(params).toString();
+
   fetch(url)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
