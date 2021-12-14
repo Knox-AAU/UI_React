@@ -18,8 +18,8 @@ const cors = require('cors');
 const dbStatus = require('./dbstatus');
 const httpProxy = require('http-proxy');
 
-const wordCountStatus = new dbStatus("http://localhost:8081/api/wordCount/status");
-const rdfStatus = new dbStatus("http://localhost:8081/api/rdf/status");
+const wordCountStatus = new dbStatus("http://knox-master01.srv.aau.dk/accessapi/api/wordCount/status");
+const rdfStatus = new dbStatus("http://knox-master01.srv.aau.dk/accessapi/api/rdf/status");
 
 const app = express();
 const serverPort = 8000;
