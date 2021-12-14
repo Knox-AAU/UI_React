@@ -1,10 +1,73 @@
 .GroupSpecificlDiv {
-    margin-bottom: 10vh; 
-    margin-left: 2vw;
+    margin-bottom: 1vh; 
+    margin-left: 5vh;
+    margin-right: 5vh;
+    float: left;
+    
+}
+
+#groupB {
+    text-align:center;
 }
 
 .ParagraphIntroDiv {
     margin-bottom: 5vh;
+    text-align: center;
+}
+
+.ProgressBarTitle{
+    font-size: 140%;
+}
+
+#fileName{
+    font-size:70%;
+}
+
+.ProgressBarOuter{
+    display:none;
+}
+
+#success_message{
+    display:none;
+}
+
+#buttons{
+    width:100%;
+    text-align: center;
+    margin-bottom: 10vh; 
+    margin-right: 5vh;
+    display:none;
+}
+
+#buttons button{
+    margin: 1vh;
+    border-radius: .3rem;
+}
+
+.alert{
+    margin:0 !important;
+}
+
+.btn-group button {
+    background-color: #076fd1; /* Green background */
+    border: 2px solid #0456aa; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    font-weight: bold;
+  }
+
+.btn-group button:hover {
+    background-color: #0850d6;
+}
+
+#no_ws_connection{
+    display:none;
+}
+
+.ProgressBarTitle{
+    display:inline-block;
 }
 
 .db-status-container {
