@@ -45,7 +45,7 @@ app.get("/search", (req, res) => {
   const searchText = req.query.input;
   const sources = req.query.sources;
   fetch(
-    "http://localhost:8081/api/search?input=" +
+    "http://knox-master01.srv.aau.dk/accessapi/api/search?input=" +
       encodeURI(searchText) +
       "&sources=" +
       encodeURI(sources)
@@ -61,7 +61,7 @@ app.get("/search", (req, res) => {
 
 app.get("/getpdf*", (req, res) => {
   const id = req.query.id;
-  fetch("http://localhost:8081/api/getpdf?id=" + id)
+  fetch("http://knox-master01.srv.aau.dk/accessapi/api/getpdf?id=" + id)
     .then((response) => response.body.pipe(res))
     .catch((e) => {
       res.status = 500;
@@ -71,7 +71,7 @@ app.get("/getpdf*", (req, res) => {
 });
 
 app.get("/gettriples", (req, res) => {
-  fetch("http://localhost:8081/factchecker/Triple")
+  fetch("http://knox-master01.srv.aau.dk/accessapi/factchecker/Triple")
     .then((response) => response.json())
     .then((json) => res.json(json))
     .catch((e) => {
@@ -90,7 +90,7 @@ app.post("/getpassage", (req, res) => {
     },
     body: JSON.stringify(req.body),
   };
-  fetch("http://localhost:8081/factchecker/Triple", requestOptions)
+  fetch("http://knox-master01.srv.aau.dk/accessapi/factchecker/Triple", requestOptions)
     .then((response) => response.json())
     .then((json) => res.json(json))
     .catch((e) => {
