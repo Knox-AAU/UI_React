@@ -112,7 +112,7 @@ app.get('/*', (req, res) => {
 app.get("/NordjyskeCount", (req,res)=>{
   let url = new URL('http://knox-master01.srv.aau.dk/')
   fetch(url)
-    .then(response=>response.body.pipe(res))
+    .then(response=> res.send(response))
     .catch(e=>{
       res.status=500;
       res.send(e)
