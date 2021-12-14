@@ -260,7 +260,7 @@ const Status = props => {
     const [value, setValue] = React.useState(null);
 
     React.useEffect(() => {
-      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
+      axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
         setValue(response.data);
         console.log(response.data)
       });
@@ -279,19 +279,17 @@ const Status = props => {
             </div>
 
             {/* Section for Nordjysk statistics */}
-            <div className="GroupSpecificlDiv" style={{ gridColumn: "1", gridRow: "2" }}>
-                <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
-                    <h2>Nordjysk Status of parsing:</h2>
-                    <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
+            <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
+                <h2>Nordjysk Status of parsing:</h2>
 
-                    <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
-                        data={[
-                            { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
-                            { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
-                        ]}
-                    />
-                </div>
-
+                <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
+                    data={[
+                        { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
+                        { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
+                    ]}
+                />
+                <p>Yellow is parsed</p>
+                <p>red is not yet parsed</p>
             </div>
             {/* Section for Nordjyske and Grundfos statistics */}
             <div className="GroupSpecificlDiv knowledgelayerbox">
