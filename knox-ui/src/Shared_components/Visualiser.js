@@ -19,7 +19,7 @@ const Visualiser = props => {
     const sendNerRequest = async value => {
         try {
             const payload = JSON.stringify({'publisher': props.publishers[Publisher], 'text': value})
-            const response = await axios.post(props.url, payload, {
+            const response = await axios.post(props.urlNer, payload, {
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -37,7 +37,7 @@ const Visualiser = props => {
     const sendKGRequest = async value => {
         try {
             const payload = JSON.stringify({'publisher': props.publishers[Publisher], 'text': value})
-            const response = await axios.post(props.url2, payload, {
+            const response = await axios.post(props.urlKg, payload, {
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -73,8 +73,8 @@ const Visualiser = props => {
 }
 
 Visualiser.propTypes = {
-        url: PropTypes.string.isRequired,
-        url2: PropTypes.string.isRequired,
+        urlNer: PropTypes.string.isRequired,
+        urlKg: PropTypes.string.isRequired,
         publishers: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
