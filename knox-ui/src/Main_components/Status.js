@@ -292,10 +292,10 @@ const Status = props => {
                     />
                 </div>
 
-                {/* Section for Nordjyske statistics */}
-                <div className="GroupSpecificlDiv">
-                    <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
-                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
+                {/* Section for Nordjyske and Grundfos statistics */}
+                <div className="GroupSpecificlDiv knowledgelayerbox">
+                    <h2 className="knowledgelayerelement">Nordjyske/Grundfos Named Enitity Recognition (NER) Visualiser:</h2>
+                    <Visualiser publishers={["NJ", "GF"]} urlNer="/visualiseNer/" urlKg="/generateKG/" />
                 </div>
             </div>
             {/* Section for Grundfoss statistics */}

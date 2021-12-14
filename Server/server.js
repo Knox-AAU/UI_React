@@ -72,6 +72,19 @@ app.post("/visualiseNer", async (req, res) => {
   }
 })
 
+app.post("/generateKG", async (req, res) => {
+  try {
+    const options = { method: "POST", body: JSON.stringify(req.body) }
+    const response = await fetch("http://localhost:5050/generateKG/", options)
+    if(!response.ok)
+      throw new Error(response.status)
+    response.body.pipe(res)
+  }
+  catch (error) {
+    res.status(500).send("Error getting Knowledge Graph. Knowledge Graph generator might be down. Try again later.")
+  }
+})
+
 app.get("/VirtualAssistant/node", (req,res)=>{
   const id = req.query.id
   fetch(`http://knox-master01.srv.aau.dk/accessapi/api/VirtualAssistant/node?id=${id}`,)
