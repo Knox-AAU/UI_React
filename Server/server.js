@@ -109,7 +109,10 @@ app.get('/*', (req, res) => {
 });
 
 app.get("/NordjyskeCount", (req,res)=>{
-  fetch(`http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count?db=Nordjyske&col=1.0`,)
+  let url = new URL("http://knox-master01.srv.aau.dk/MongoJsonAPI")
+  let params = {"db":"Nordjyske", "col":"1.0"}
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+  fetch(url)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
       res.status=500;
