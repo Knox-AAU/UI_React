@@ -1,15 +1,14 @@
 import React from "react";
 import "../Css/FactChecker.css";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import "../Css/SearchResult.css";
 import SearchBar from "../Shared_components/SearchBar";
 
 const FactChecker = (props) => {
   const [triples, setTriples] = useState([]);
   const [showingTriples, setShowingTriples] = useState([]);
-  const [searching, setSearching] = useState(false);
 
-  const firstRender = useMemo(() => {
+  useMemo(() => {
     fetch("http://localhost:8000/gettriples")
       .then((response) => response.json())
       .then((json) => {
@@ -71,7 +70,7 @@ const FactChecker = (props) => {
           <SearchBar
             searchText="Enter your search"
             onClick={search}
-            loadingState={searching}
+            loadingState={false}
           />
         </div>
         {showingTriples &&
