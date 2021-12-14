@@ -76,7 +76,7 @@ app.post("/visualiseNer", async (req, res) => {
 app.post("/generateKG", async (req, res) => {
   try {
     const options = { method: "POST", body: JSON.stringify(req.body) }
-    const response = await fetch("http://localhost:5050/generateKG/", options)
+    const response = await fetch("http://knox-master01.srv.aau.dk/generateKG/generateKG/", options)
     if(!response.ok)
       throw new Error(response.status)
     response.body.pipe(res)
