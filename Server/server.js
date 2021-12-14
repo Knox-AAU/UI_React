@@ -110,10 +110,7 @@ app.get('/*', (req, res) => {
 });
 
 app.get("/NordjyskeCount", (req,res)=>{
-  let url = new URL('http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count')
-  let params = {"db":"Nordjyske", "col":"1.0"} // or:
-  url.search = new URLSearchParams(params).toString();
-
+  let url = new URL('http://knox-master01.srv.aau.dk/')
   fetch(url)
     .then(response=>response.body.pipe(res))
     .catch(e=>{
@@ -121,6 +118,17 @@ app.get("/NordjyskeCount", (req,res)=>{
       res.send(e)
       console.log(e)
     })
+  // let url = new URL('http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count')
+  // let params = {"db":"Nordjyske", "col":"1.0"} // or:
+  // url.search = new URLSearchParams(params).toString();
+
+  // fetch(url)
+  //   .then(response=>response.body.pipe(res))
+  //   .catch(e=>{
+  //     res.status=500;
+  //     res.send(e)
+  //     console.log(e)
+  //   })
 })
 
 const server = app.listen(serverPort, () => console.log("Listening at " + serverPort));
