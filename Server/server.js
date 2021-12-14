@@ -118,8 +118,6 @@ app.get("/NordjyskeCount", (req,res)=>{
     })
 })
 
-app.listen(serverPort, ()=>console.log("Listening at " + serverPort) );
-
 const server = app.listen(serverPort, () => console.log("Listening at " + serverPort));
 // On client starting ws connection: upgrade http connection to ws connection
 server.on('upgrade', (req, socket, head, error) => {
