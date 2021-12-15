@@ -262,7 +262,7 @@ const Status = props => {
     React.useEffect(() => {
       axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
         setValue(response.data);
-        console.log(response.data)
+        console.log(response)
       });
     }, []);
 
@@ -285,7 +285,7 @@ const Status = props => {
                 <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
                     data={[
                         { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
-                        { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
+                        { title: 'Not yet parsed json', value: 53000, color: '#C13C37' },
                     ]}
                 />
                 <p>Yellow is parsed</p>

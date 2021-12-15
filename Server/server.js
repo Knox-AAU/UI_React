@@ -161,25 +161,22 @@ app.get("/rdfStatus", (req, res) => {
   res.json(rdfStatus.getStatus(req, res));
 });
 
-app.get("/NordjyskeCount", (req, res) => {
-  let url = new URL(
-    "http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count"
-  );
-  let params = { db: "Nordjyske", col: "1.0" }; // or:
+app.get("/NordjyskeCount", (req,res)=>{
+  let url = new URL('http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count')
+  let params = {"db":"Nordjyske", "col":"1.0"} 
   url.search = new URLSearchParams(params).toString();
 
   fetch(url)
-    .then((response) => response.body.pipe(res))
-    .catch((e) => {
-      res.status = 500;
-      res.send(e);
-      console.log(e);
-    });
-});
+    .then(response=> res.send(response))
+    .catch(e=>{
+      res.status=500;
+      res.send(`status code: ${res.status} res: ${e}`)
+      console.log(e)
+    })
+})
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 
 const server = app.listen(serverPort, () =>
   console.log("Listening at " + serverPort)
