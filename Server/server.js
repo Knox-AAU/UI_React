@@ -100,10 +100,6 @@ app.post("/getpassage", (req, res) => {
     });
 });
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 app.post("/visualiseNer", async (req, res) => {
   try {
     const options = { method: "POST", body: JSON.stringify(req.body) };
@@ -161,22 +157,25 @@ app.get("/rdfStatus", (req, res) => {
   res.json(rdfStatus.getStatus(req, res));
 });
 
-app.get("/NordjyskeCount", (req,res)=>{
-  let url = new URL('http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count')
-  let params = {"db":"Nordjyske", "col":"1.0"} 
+app.get("/NordjyskeCount", (req, res) => {
+  let url = new URL(
+    "http://knox-master01.srv.aau.dk/MongoJsonAPI/collection_count"
+  );
+  let params = { db: "Nordjyske", col: "1.0" }; // or:
   url.search = new URLSearchParams(params).toString();
 
   fetch(url)
-    .then(response=> res.send(response))
-    .catch(e=>{
-      res.status=500;
-      res.send(`status code: ${res.status} res: ${e}`)
-      console.log(e)
-    })
-})
+    .then((response) => response.body.pipe(res))
+    .catch((e) => {
+      res.status = 500;
+      res.send(e);
+      console.log(e);
+    });
+});
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 const server = app.listen(serverPort, () =>
   console.log("Listening at " + serverPort)
