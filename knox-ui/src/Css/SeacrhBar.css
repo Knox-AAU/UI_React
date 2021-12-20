@@ -8,21 +8,20 @@
     width: 50px;
     border-radius: 25px !important;
     border-style: none !important;
-}
 
 .SearchBarPlacement {
-    margin-top: 5%;
-    width: auto;
-    display: block;
-    margin-right: 7%;
+  margin-top: 5%;
+  width: auto;
+  display: block;
+  margin-right: 7%;
 }
 
 .ImgStyle {
-    height: 30px;
+  height: 30px;
 }
 
 .Loader {
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-    margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 }

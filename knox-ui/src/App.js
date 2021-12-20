@@ -1,5 +1,6 @@
 import React  from 'react';
 import Header from './Shared_components/Header.js';
+import VA from './Shared_components/VirtualAssistant.js';
 import Home from './Main_components/Home.js';
 import {
   BrowserRouter as Router,
@@ -23,6 +24,7 @@ function App() {
       />
       <Router>
         <Header/>
+
         <Switch>
           <Route path="/home">
             <Home/> 
@@ -37,6 +39,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        <VA/>
       </Router>
     </div>
   );

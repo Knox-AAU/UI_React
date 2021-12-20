@@ -18,7 +18,13 @@
         "react-signalr": "^0.1.7",
         "react-spinners": "^0.11.0",
         "react-sticky-box": "^0.9.3",
-        "web-vitals": "^1.1.2"
+        "web-vitals": "^1.1.2",
+        "styled-components": "^5.3.3",
+        "react-simple-chatbot": "^0.6.1",
+        "html-react-parser": "^1.4.0",
+        "dateformat": "^4.6.3",
+        "axios": "^0.24.0"
+
     },
     "scripts": {
         "start": "react-scripts start",

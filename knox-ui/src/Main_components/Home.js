@@ -46,7 +46,7 @@ const Home = (SuggesterConnection) => {
                         onClick={onClick}
                         loadingState={searching}
                     />
-                    <Button
+                    <Button data-testid="advancedButton"
                         onClick={() => setOpen(!open)}
                         aria-controls="example-collapse-text"
                         aria-expanded={open}

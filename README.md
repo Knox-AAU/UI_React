@@ -1,10 +1,17 @@
+![Tests Main](https://github.com/Knox-AAU/React-UI/actions/workflows/react-CI-test.yml/badge.svg)
 # Getting Started with KNOX frontend
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+More info about the UI on the [Knox wiki](https://wiki.knox.cs.aau.dk/en/User-interface/REACT-Getting-Started).
+
+In order to install all the packages needed to run the site locally, use the following command in knox-ui directory:
+
+### `npm install`
+
 ## Available Scripts
 
-In the project directory, you can run:
+In the knox-ui directory, you can run:
 
 ### `npm start`
 
