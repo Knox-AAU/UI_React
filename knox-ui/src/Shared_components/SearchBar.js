@@ -14,15 +14,16 @@ import ReactDOM from 'react-dom';
 
 
 
-function SearchBar({ searchText, onClick, loadingState}) {
+function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const [searchTerms, setSearchTerms] = useState();
     const [showSuggester, setShowSuggester] = useState(false);
     let searchtermscurrent = "";
 
     const searchBarFocus = () => {
         if(searchtermscurrent !="" && searchtermscurrent != null){
-            setShowSuggester(true)
+        setShowSuggester(true)
         }
+
     };
     const SearchBarUnfocus = () => setShowSuggester(false);
 
