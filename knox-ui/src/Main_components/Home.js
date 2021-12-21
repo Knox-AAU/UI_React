@@ -6,14 +6,14 @@ import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
 import '../Css/HomePage.css';
 
-const Home = props => {
+const Home = (SuggesterConnection) => {
     const [open, setOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([])
     const [searching, setSearching] = useState(false);
     const [firstSearchMade, setFirstSearchMade] = useState(false)
     // OBS OBS OBS! if more databases are added, add the names here as well as in the checkboxes on Advanced Sidebar!
     const [advancedOptions, setAdvancedOptions] = useState(["Grundfos A/S", "Nordjyske Medier"])
-
+    
     const onClick = (searchText) => {
         if (searching === true) return
         if (searchText === "" || advancedOptions.length===0) {
@@ -21,7 +21,7 @@ const Home = props => {
             return
         }
         setSearching(true)
-        fetch("http://localhost:8000/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
+        fetch("http://localhost:8000/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
             .catch(e => console.log(e))
@@ -31,6 +31,7 @@ const Home = props => {
             })
     }
 
+
     return (
         <div className="ContentOfPage">
             <div className="SearchWrapper">
@@ -39,6 +40,7 @@ const Home = props => {
                         <h1 >Search Contents</h1>
                         <h2 >It is possible to search between multiple datasets of the toolbox!</h2>
                     </div>
+                    <div style={{display:'inline-flex',width:"100%",position:'relative'}}>
                     <SearchBar
                         searchText="Enter your search"
                         onClick={onClick}
@@ -49,9 +51,11 @@ const Home = props => {
                         aria-controls="example-collapse-text"
                         aria-expanded={open}
                         className="ButtonStyle"
+                        style={{height:"5vh",width:"100px", padding:"0px"}}
                     >
                         Advanced
                     </Button>
+                    </div>
                 </div>
             {/*Adds searchResult to the DOM*/}
             <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>

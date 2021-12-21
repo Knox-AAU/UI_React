@@ -1,12 +1,13 @@
 .SearchBarStyle {
-  height: 5vh;
-  border-radius: 25px !important;
+    height: 5vh;
+    border-radius: 25px !important;
 }
 
 .SearchButtonStyle {
-  height: 5vh;
-  border-radius: 25px !important;
-  border-style: none !important;
+    height: 5vh;
+    width: 50px;
+    border-radius: 25px !important;
+    border-style: none !important;
 }
 
 .SearchBarPlacement {

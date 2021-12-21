@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import Components from "../Header";
+import React from 'react'
 
 // Tests for the header components 
 describe("Components in header", () => {

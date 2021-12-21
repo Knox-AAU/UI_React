@@ -1,0 +1,21 @@
+.SuggesterOuter{
+    width: calc(100% - 50px);
+    position: relative;
+    z-index: 1;
+    top: -45px;
+    border: lightskyblue;
+    border-style: outset;
+    height: 100px;
+    height: fit-content;
+}
+.SuggesterOuter div{
+    width: 100%;
+}
+.SuggesterOuter ul{
+    padding-top: 2.5vh;
+}
+
+.SuggesterOuter ul li{
+    width: 100%;
+    align-items: right;
+}
