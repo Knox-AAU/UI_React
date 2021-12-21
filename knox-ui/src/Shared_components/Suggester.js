@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import propTypes from 'prop-types'
+import React from 'react'
 import '../Css/Suggester.css'
 
 

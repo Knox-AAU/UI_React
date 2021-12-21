@@ -8,8 +8,7 @@ import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
 import '../Css/SeacrhBar.css';
 import Suggester from './Suggester';
-import {HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr';
-import ReactDOM from 'react-dom';
+import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 
 
@@ -20,7 +19,7 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     let searchtermscurrent = "";
 
     const searchBarFocus = () => {
-        if(searchtermscurrent !="" && searchtermscurrent != null){
+        if(searchtermscurrent !=="" && searchtermscurrent !== null){
         setShowSuggester(true)
         }
 
@@ -39,9 +38,8 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const searchFieldChange = e => {
         setSearchTerms(e.target)
         searchtermscurrent = e.target.value
-        if(searchtermscurrent !="" && searchtermscurrent != null){
+        if(searchtermscurrent !=="" && searchtermscurrent != null){
             setShowSuggester(true)
-            setSuggesterData(searchtermscurrent)
             console.log("Here" + searchtermscurrent)
             sendMessage(searchtermscurrent)
         }
@@ -55,7 +53,6 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
 
     //Start connection to SignalR for realtime communication to the suggester
     const [connection, setConnection] = useState();
-    const [SuggesterData, setSuggesterData] = useState();
     let suggesterObject = {
         ResultLength: 0,
         Results:[{
@@ -72,10 +69,6 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
         OrderBy: "ASC",
         MaxResults: 5,
     };
-
-    useEffect(() => {
-        joinRoom();
-    }, []);
     let timer;
     async function joinRoom() {
 
@@ -88,14 +81,9 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
             .build();
 
             SuggesterConnection.on("suggestionResponse", (response) => {
-                console.log("Før",suggesterObject.Results[0])
-                console.log(response)
                 suggesterObject = JSON.parse(response);
                 setSuggesterResponse(suggesterObject)
-                console.log("Efter", suggesterObject.Results[0])
-                console.log(suggesterObject.Results[1])
-                console.log("Object",Object.keys(suggesterObject.Results.length))
-                console.log("value",Object.values(suggesterObject.Results[0].Sentence))
+ 
             });
 
 
@@ -111,6 +99,12 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
             timer = setInterval(joinRoom, 10000)
         }
     }
+
+
+    useEffect(() => {
+        joinRoom();
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
     const sendForEvaluation = async (message) => {
         try {
             await connection.invoke("SendGroupMessage", connection.connectionId, "evalutateSentence", message)
