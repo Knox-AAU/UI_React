@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import Components from "../Status";
+import React from 'react'
 
 // Tests for the group specific div components 
 describe("GroupDiv component", () => {

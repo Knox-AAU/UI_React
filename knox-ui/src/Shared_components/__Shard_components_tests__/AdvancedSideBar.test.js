@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import Components from "../AdvancedSideBar";
+import React from 'react'
 
 // Tests for the AdvancedSideBar components 
 describe("Components in AdvancedSideBar", () => {
