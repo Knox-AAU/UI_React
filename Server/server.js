@@ -1,16 +1,3 @@
-/*
-#################################################################
-#################################################################
-#################################################################
-### TO RUN THE SERVER WRITE NPM RUN BUILD IN KNOX-UI FOLDER.  ###
-###     THEN MOVE THE BUILD FOLDER TO THE SERVER FOLDER.      ###
-###     ON DEPLOYMENT SIMPLY COPY PASTE BUILD FOLDER TO       ###
-###     SERVER FOLDER IN PRODUCTION AND RESTART SERVICE       ###
-#################################################################
-#################################################################
-#################################################################
-*/
-
 const express = require("express");
 const path = require("path");
 const fetch = require("node-fetch");
