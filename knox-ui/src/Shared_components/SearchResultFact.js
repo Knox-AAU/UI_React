@@ -14,8 +14,7 @@ function SearchResult({searchResult}) {
                 return (
                     <div className="passageResultDiv">
                         <p className='text-wrap'>{result.fullPassage}</p>
-                        <p>Final score: {result.score}</p>
-                        <div>Sub scores:</div>
+                        <div>Algo scores:</div>
                         {
                             Object.entries(result.keyValuePairs).map((key) => {
                                 return (
