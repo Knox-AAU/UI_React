@@ -4,14 +4,16 @@ import SearchBar from '../Shared_components/SearchBar';
 import { useState } from 'react';
 import PaginatedSearchResults from '../Shared_components/PaginatedSearchResultsFact'
 import '../Css/HomePage.css';
+import DatabaseStatus from "./DatabaseStatus";
 import AdvancedSidebar from '../Shared_components/AdvancedSideBarFact'
 
 
 const FactChecker = props => {
-    const [searchResults, setSearchResults] = useState([])
+    const [searchResults, setSearchResults] = useState([]);
+    const [confidence, setConfidence] = useState(0);
     const [open, setOpen] = useState(false);
     const [searching, setSearching] = useState(false);
-    const [firstSearchMade, setFirstSearchMade] = useState(false)
+    const [firstSearchMade, setFirstSearchMade] = useState(false);
     const EnumMaps = {
         "DefaultPassageExtraction": 0,
         "Rake": 1,
@@ -31,16 +33,6 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
             setSearchResults([])
             return
         }
-        if (searchText === "gettriple") {
-            fetch("http://localhost:4605/Triple", {
-            method: "GET",
-            Headers: {
-                'Access-Control-Allow-Origin': "*",
-                'Content-Type': 'application/json'
-            }
-            }).then((x) => x.json())
-            .then((data) => console.log(data));
-        } else {
             var Items = [];
 
             var item = {
@@ -82,6 +74,13 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
             advancedOptions.forEach(e => {
                 if (e === "SimRank") body.ConfidenceEnum = 1;
                 else if (e === "Levenshtein") body.PassageRankings.push(EnumMaps["Levenshtein"]);
+                else if (e === "Jaccard") body.PassageRankings.push(EnumMaps["Jaccard"]);
+                else if (e === "Cosine") body.PassageRankings.push(EnumMaps["Cosine"]);
+                else if (e === "WordEmbedding") body.PassageRankings.push(EnumMaps["WordEmbedding"]);
+                else if (e === "TMWIIS") body.PassageRankings.push(EnumMaps["TMWIIS"]);
+                else if (e === "TFIDF") body.ArticleRetrieval = EnumMaps["TFIDF"];
+                else if (e === "Rake") body.PassageExtraction = EnumMaps["Rake"];
+                else if (e === "DefaultPassageExtraction") body.PassageExtraction = EnumMaps["DefaultPassageExtraction"];
             });
 
             body = JSON.stringify(body);
@@ -99,6 +98,8 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
             .then()
             .then(json =>  {
                 setSearchResults(json.articles);
+                console.log({"CONF":json.confidence});
+                setConfidence(json.confidence);
                 setSearching(false)
                 setFirstSearchMade(true)
             }
@@ -108,7 +109,6 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
                 console.log(advancedOptions);
             })
         }
-    }
 
     return (
         <div className="ContentOfPage">
@@ -121,6 +121,7 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
                     searchText="Enter potential truth"
                     onClick={onClick}
                 />
+                <DatabaseStatus port="4605" apiName="Triple/HealthCheck" dbName="FacterChecker HealthCheck"/>
             <Button data-testid="advancedButton"
                         onClick={() => setOpen(!open)}
                         aria-controls="example-collapse-text"
