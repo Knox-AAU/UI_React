@@ -88,7 +88,7 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
             myHeaders.append('Content-Type', 'application/json; charset=utf-8');
             myHeaders.append('Access-Control-Allow-Origin', "*");
             myHeaders.append('Access-Control-Allow-Headers', "Content-Type, Accept");
-            fetch("http://localhost:4605/Triple/AlgChooser", {
+            fetch("http://localhost:8080/Triple/AlgChooser", {
                 method: 'POST',
                 headers: myHeaders,
                 mode: 'cors',
@@ -121,7 +121,7 @@ const [advancedOptions, setAdvancedOptions] = useState(["DefaultPassageExtractio
                     searchText="Enter potential truth"
                     onClick={onClick}
                 />
-                <DatabaseStatus port="4605" apiName="Triple/HealthCheck" dbName="FacterChecker HealthCheck"/>
+                <DatabaseStatus port="8080" apiName="Triple/HealthCheck/v1" dbName="FacterChecker HealthCheck"/>
             <Button data-testid="advancedButton"
                         onClick={() => setOpen(!open)}
                         aria-controls="example-collapse-text"
