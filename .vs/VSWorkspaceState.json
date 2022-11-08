@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\knox-ui",
+    "\\knox-ui\\public",
+    "\\knox-ui\\src",
+    "\\knox-ui\\src\\Img",
+    "\\knox-ui\\src\\Main_components",
+    "\\knox-ui\\src\\Main_components\\__Main_components_tests__",
+    "\\knox-ui\\src\\Shared_components\\__Shard_components_tests__"
+  ],
+  "SelectedNode": "\\knox-ui\\src\\Main_components\\DatabaseStatus.js",
+  "PreviewInSolutionExplorer": false
+}

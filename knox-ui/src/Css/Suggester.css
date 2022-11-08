@@ -1,4 +1,4 @@
-.SuggesterOuter{
+/*.SuggesterOuter{
     width: calc(100% - 50px);
     position: relative;
     z-index: 1;
@@ -18,4 +18,4 @@
 .SuggesterOuter ul li{
     width: 100%;
     align-items: right;
-}
+}*/

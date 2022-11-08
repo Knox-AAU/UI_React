@@ -7,24 +7,24 @@ import propTypes from 'prop-types'
 import { useState } from 'react';
 import { BarLoader } from 'react-spinners'
 import '../Css/SeacrhBar.css';
-import Suggester from './Suggester';
+/*import Suggester from './Suggester';*/
 import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 
 
 
-function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
+function SearchBar({ searchText, onClick, loadingState/*, enableSuggester*/}) {
     const [searchTerms, setSearchTerms] = useState();
-    const [showSuggester, setShowSuggester] = useState(false);
+/*    const [showSuggester, setShowSuggester] = useState(false);*/
     let searchtermscurrent = "";
 
-    const searchBarFocus = () => {
+/*    const searchBarFocus = () => {
         if(searchtermscurrent !=="" && searchtermscurrent !== null){
         setShowSuggester(true)
         }
 
-    };
-    const SearchBarUnfocus = () => setShowSuggester(false);
+    };*/
+/*    const SearchBarUnfocus = () => setShowSuggester(false);*/
 
     const handleKeypress = e => e.key === "Enter" && sendSearch()
     const sendSearch = () => {
@@ -32,27 +32,27 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
         sendForEvaluation(searchTerms.value)
         searchTerms.value = ""
         searchtermscurrent = ""
-        setShowSuggester(false)
+        /*setShowSuggester(false)*/
     }
 
     const searchFieldChange = e => {
         setSearchTerms(e.target)
         searchtermscurrent = e.target.value
         if(searchtermscurrent !=="" && searchtermscurrent != null){
-            setShowSuggester(true)
+            /*setShowSuggester(true)*/
             console.log("Here" + searchtermscurrent)
             sendMessage(searchtermscurrent)
         }
-        else{
+/*        else{
             setShowSuggester(false)
-        }
+        }*/
 
     }
 
     
 
     //Start connection to SignalR for realtime communication to the suggester
-    const [connection, setConnection] = useState();
+/*    const [connection, setConnection] = useState();
     let suggesterObject = {
         ResultLength: 0,
         Results:[{
@@ -98,9 +98,9 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
             console.log(e);
             timer = setInterval(joinRoom, 10000)
         }
-    }
+    }*/
 
-
+/*
     useEffect(() => {
         joinRoom();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -148,11 +148,11 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
             </InputGroup>
         </div>
     )
-}
+}*/
 SearchBar.defaultProps = {
     searchText: "Enter your search",
     loadingState: false,
-    showSuggester: false,
+/*    showSuggester: false,*/
 }
 SearchBar.propTypes = {
     searchText: propTypes.string,
