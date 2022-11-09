@@ -1,135 +1,152 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import StickyBox from "react-sticky-box";
+import Card from "@mui/material/Card";
+import Stack from '@mui/material/Stack';
+import TextField from "@mui/material/TextField";
+import FormGroup from '@mui/material/FormGroup';
+import Autocomplete from '@mui/material/Autocomplete';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import DatePicker from "./CustomDatePicker";
+import Checkbox from './CustomCheckbox';
 import "../Css/AdvancedSidebar.css";
 
-//Måske
-/*import dayjs, { Dayjs } from "dayjs";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-*/
-
-function AdvancedSideBar({ open, advancedOptions, setAdvancedOptions }) {
-  const HandleCheck = (name, isChecked) => {
-    if (isChecked) setAdvancedOptions([...advancedOptions, name]);
-    else setAdvancedOptions(advancedOptions.filter((x) => x !== name));
-  };
-
-  /*const [value, setValue] =
-    (React.useState < Dayjs) | (null > dayjs("2014-08-18T21:11:54"));
-
-  const handleChange = (newValue: Dayjs | null) => {
-    setValue(newValue);
-  };*/
+export default function AdvancedSideBar({ open, advancedOptions, setAdvancedOptions }) {
 
   return (
-    <div className="CollapseDiv">
-      <Collapse in={open} dimension="width">
-        <StickyBox offsetTop={50}>
-          <div>
-            <Card
-              data-testid="card"
-              body
-              style={{
-                background: "#3874CB",
-                width: "400px",
-                height: "94vh",
-                border: "0px",
-                borderRadius: "0px",
-              }}
-            >
-              <div className="sidebar_component">
-                <h2> Filter Datasets</h2>
-                <div className="checkbox">
-                  <ul className="nobullets">
-                    <li>
-                      <label>
-                        <p className="sidebar_option_text">Grundfos</p>
-                        <input
-                          type="checkbox"
-                          id="option0"
-                          name="Grundfos A/S"
-                          defaultChecked={true}
-                          onChange={(e) =>
-                            HandleCheck(e.target.name, e.target.checked)
-                          }
-                        />
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <p className="sidebar_option_text">Nordjyske</p>
-                        <input
-                          type="checkbox"
-                          id="option1"
-                          name="Nordjyske Medier"
-                          defaultChecked={true}
-                          onChange={(e) =>
-                            HandleCheck(e.target.name, e.target.checked)
-                          }
-                        />
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </Card>
-          </div>
-          <div>
-            <Card
-              data-testid="card"
-              body
-              style={{
-                background: "#3874CB",
-                width: "400px",
-                height: "94vh",
-                border: "0px",
-                borderRadius: "0px",
-              }}
-            >
-              <div className="sidebar_component">
-                <h2> Advanced search</h2>
-                <Stack spacing={3}>
-                  <div>
-                    <TextField
-                      id="standard-search"
-                      label="Author name"
-                      type="search"
-                      variant="standard"
-                    />
-                  </div>
-                  <div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <Stack spacing={3}>
-                        <DesktopDatePicker
-                          label="From date"
-                          inputFormat="DD/MM/YYYY"
-                          value={value}
-                          onChange={handleChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                        <DesktopDatePicker
-                          label="To date"
-                          inputFormat="DD/MM/YYYY"
-                          value={value}
-                          onChange={handleChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                      </Stack>
-                    </LocalizationProvider>
-                  </div>
-                </Stack>
-              </div>
-            </Card>
-          </div>
-        </StickyBox>
-      </Collapse>
-    </div>
+      <div>
+        <Collapse in={open} dimension="width" >
+            <StickyBox offsetTop={50} className="sidebar">
+                <Card>
+                    <DBSelectComponent header="Databases" options={advancedOptions} setOptions={setAdvancedOptions}/>
+                    <AuthorComponent header="Authors"/>
+                    <CategoryComponent header="Categories"/>
+                    <TimePeriodComponent header="Time period"/>
+                </Card>
+            </StickyBox>
+        </Collapse>
+      </div>
   );
 }
 
-export default AdvancedSideBar;
+function DBSelectComponent({header, options, setOptions}) {
+    // https://mui.com/material-ui/react-checkbox/
+
+    return (
+        <div className="sidebar_component">
+            <h5>{header}</h5>
+            <FormGroup>
+                <Checkbox name="Grundfos A/S" options={options} set_options={setOptions} />
+                <Checkbox name="Nordjyske medier" options={options} set_options={setOptions} />
+            </FormGroup>
+        </div>
+    );
+}
+
+function TimePeriodComponent({header}) {
+
+    return (
+        <div className="sidebar_component">
+            <h5>{header}</h5>
+            <div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack spacing={3}>
+                        <DatePicker label="From"/>
+                        <DatePicker label="To"/>
+                    </Stack>
+                </LocalizationProvider>
+            </div>
+        </div>
+    );
+}
+
+function AuthorComponent({header}) {
+    const authors = [
+        {firstname: 'TODO', middleName: '', lastname: 'GetAuthors'}
+    ]
+
+    // https://mui.com/material-ui/react-autocomplete/
+    return (
+        <div className="sidebar_component">
+            <h5>{header}</h5>
+            <div>
+                <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={authors}
+                    getOptionLabel={(option) => option.middleName.length >= 1
+                        ? option.firstname + ' ' + option.middleName[0] + '. ' + option.lastname
+                        : option.firstname + ' ' + option.lastname}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Authors"
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    color: '#ffffff'
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#ffffff',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#dedede',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#ffffff',
+                                    }
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </div>
+        </div>
+    );
+}
+
+function CategoryComponent({header}) {
+    const authors = [
+        {category: 'TODO GetCategories', number: 0}
+    ]
+
+    // https://mui.com/material-ui/react-autocomplete/
+    return (
+        <div className="sidebar_component">
+            <h5>{header}</h5>
+            <div>
+                <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={authors}
+                    getOptionLabel={(option) => option.category}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Categories"
+                            sx={{
+                                '& .MuiInputLabel-root': {
+                                    color: '#ffffff'
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#ffffff',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#dedede',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#ffffff',
+                                    }
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </div>
+        </div>
+    );
+}

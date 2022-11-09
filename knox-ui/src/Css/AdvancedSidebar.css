@@ -1,43 +1,16 @@
-/* Sidebar css */
+.sidebar {
+    background: #3874CB;
+    width: 300px;
+    height: 94vh;
+    border: 0;
+    padding: 10px;
+}
 
 .sidebar_component {
-    margin: auto;
-    margin-top: 20px;
-    padding: 7px;
-    width: 80%;
-    border-radius: 5px;
     background: #6895D7;
-    position: relative;
+    padding: 10px;
 }
 
-.sidebar_component h2 {
-    margin-top: 10px;
-    color: white;
-    text-align: center;
-}
-
-
-.nobullets {
-    padding-left: 0;
-    list-style-type: none;
-    columns: 2;
-}
-
-.checkbox label {
-    text-align: left;
-    word-break: break-word;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2px;
-    margin-bottom: 5px;
-}
-
-.sidebar_option_text {
-    margin: 0;
-}
-
-.checkbox ul li label {
-    display: flex;
-    align-items: center;
+.sidebar_component h5 {
     color: white;
 }
