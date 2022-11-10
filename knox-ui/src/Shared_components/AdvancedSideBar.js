@@ -12,7 +12,7 @@ import DatePicker from "./CustomDatePicker";
 import Checkbox from './CustomCheckbox';
 import "../Css/AdvancedSidebar.css";
 
-export default function AdvancedSideBar({ open, advancedOptions, setAdvancedOptions }) {
+export default function AdvancedSideBar({ open, advancedOptions, setAdvancedOptions, authorList, categoryList }) {
 
   return (
       <div>
@@ -20,8 +20,8 @@ export default function AdvancedSideBar({ open, advancedOptions, setAdvancedOpti
             <StickyBox offsetTop={50} className="sidebar">
                 <Card>
                     <DBSelectComponent header="Databases" options={advancedOptions} setOptions={setAdvancedOptions}/>
-                    <AuthorComponent header="Authors"/>
-                    <CategoryComponent header="Categories"/>
+                    <AuthorComponent header="Authors" authors={authorList}/>
+                    <CategoryComponent header="Categories" categories={categoryList}/>
                     <TimePeriodComponent header="Time period"/>
                 </Card>
             </StickyBox>
@@ -61,23 +61,19 @@ function TimePeriodComponent({header}) {
     );
 }
 
-function AuthorComponent({header}) {
-    const authors = [
-        {firstname: 'TODO', middleName: '', lastname: 'GetAuthors'}
-    ]
-
+function AuthorComponent({header, authors}) {
     // https://mui.com/material-ui/react-autocomplete/
+
     return (
         <div className="sidebar_component">
             <h5>{header}</h5>
             <div>
                 <Autocomplete
+                    loading={true}
                     multiple
                     id="tags-outlined"
                     options={authors}
-                    getOptionLabel={(option) => option.middleName.length >= 1
-                        ? option.firstname + ' ' + option.middleName[0] + '. ' + option.lastname
-                        : option.firstname + ' ' + option.lastname}
+                    getOptionLabel={(option) => option.firstname + ' ' + option.lastname}
                     filterSelectedOptions
                     renderInput={(params) => (
                         <TextField
@@ -107,20 +103,18 @@ function AuthorComponent({header}) {
     );
 }
 
-function CategoryComponent({header}) {
-    const authors = [
-        {category: 'TODO GetCategories', number: 0}
-    ]
-
+function CategoryComponent({header, categories}) {
     // https://mui.com/material-ui/react-autocomplete/
+
     return (
         <div className="sidebar_component">
             <h5>{header}</h5>
             <div>
                 <Autocomplete
+                    loading={true}
                     multiple
                     id="tags-outlined"
-                    options={authors}
+                    options={categories}
                     getOptionLabel={(option) => option.category}
                     filterSelectedOptions
                     renderInput={(params) => (

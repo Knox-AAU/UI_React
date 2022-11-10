@@ -4,6 +4,7 @@ import SearchBar from '../Shared_components/SearchBar';
 import { useState } from 'react';
 import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
 import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
+import {GetAuthors,  GetCategories } from '../Shared_components/AdvancedSideBarHelper';
 import '../Css/HomePage.css';
 
 const Home = (SuggesterConnection) => {
@@ -13,7 +14,10 @@ const Home = (SuggesterConnection) => {
     const [firstSearchMade, setFirstSearchMade] = useState(false)
     // OBS OBS OBS! if more databases are added, add the names here as well as in the checkboxes on Advanced Sidebar!
     const [advancedOptions, setAdvancedOptions] = useState(["Grundfos A/S", "Nordjyske Medier"])
-    
+
+    const authors = GetAuthors();
+    const categories = GetCategories();
+
     const onClick = (searchText) => {
         if (searching === true) return
         if (searchText === "" || advancedOptions.length===0) {
@@ -60,7 +64,13 @@ const Home = (SuggesterConnection) => {
             {/*Adds searchResult to the DOM*/}
             <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
             </div>
-            <AdvancedSidebar open={open} advancedOptions={advancedOptions} setAdvancedOptions={setAdvancedOptions}/>
+            <AdvancedSidebar
+                open={open}
+                advancedOptions={advancedOptions}
+                setAdvancedOptions={setAdvancedOptions}
+                authorList={authors}
+                categoryList={categories}
+            />
         </div>
 
     )
