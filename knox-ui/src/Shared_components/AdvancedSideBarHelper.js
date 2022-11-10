@@ -1,5 +1,5 @@
-const authorEndpoint = 'http://localhost:5501/document-data-api/authors';
-const categoriesEndpoint = 'http://localhost:5501/document-data-api/categories';
+const authorEndpoint = 'http://localhost:8000/api/document-data-api/authors';
+const categoriesEndpoint = 'http://localhost:8000/api/document-data-api/categories';
 
 export class Author {
     firstname;
