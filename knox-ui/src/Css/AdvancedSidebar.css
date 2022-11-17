@@ -1,16 +1,16 @@
 .sidebar {
-    background: #3874CB;
+    background: #3874cb;
     width: 300px;
-    height: 94vh;
     border: 0;
-    padding: 10px;
+    padding: 15px;
+    height: 94.6vh;
+    color: #ffffff;
 }
 
-.sidebar_component {
-    background: #6895D7;
-    padding: 10px;
+.sidebar-component {
+    padding: 20px 0px 0px 0px;
 }
 
-.sidebar_component h5 {
-    color: white;
+.sidebar-component-top {
+    padding: 0px;
 }

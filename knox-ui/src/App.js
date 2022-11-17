@@ -40,7 +40,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
-        {/* <VA/> */}
+        {/* <VA/> (Look at VirtualAssistant.js) */}
       </Router>
     </div>
   );

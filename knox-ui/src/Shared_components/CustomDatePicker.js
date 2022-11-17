@@ -1,21 +1,20 @@
 import React from "react";
 import dayjs from "dayjs";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 
 // https://mui.com/x/react-date-pickers/date-picker/
-function CustomDatePicker({label}) {
-    const color = '#ffffff';
+function CustomDatePicker({label, child}) {
     const [value, setValue] = React.useState(dayjs());
 
     const handleChange = (newValue) => {
         setValue(newValue);
     };
 
-    // Skal måske udskiftes med: https://mui.com/x/react-date-pickers/date-range-picker/
     return (
         <DatePicker
-            views={['year', 'month']}
+            views={['year', 'month', 'day']}
+            inputFormat='DD/MM/YYYY'
             maxDate={new dayjs()}
             label={label}
             value={value}
@@ -24,21 +23,20 @@ function CustomDatePicker({label}) {
                 <TextField
                     {...params}
                     sx={{
-                        input: { color },
-                        label: { color },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
-                                borderColor: '#ffffff',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: '#dedede',
+                            borderColor: '#ffffff',
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#ffffff',
-                            }}
+                            borderColor: '#ffffff',
+                            },
+                        },
                     }}
-                /> }
-        />
+                />
+            }
+        >
+            {child}
+        </DatePicker>
     );
 }
 
