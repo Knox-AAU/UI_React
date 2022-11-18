@@ -1,40 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import SearchBar from '../Shared_components/SearchBar';
-import { useState } from 'react';
-import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
-import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
-import GetSources from '../Services/SourcesService';
+import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults';
+import AdvancedSidebar from '../Shared_components/AdvancedSideBar';
+import GetSearchResult from '../Services/SearchService';
+import SearchOptions from '../Models/SearchOptionsModel';
 import '../Css/HomePage.css';
 
+//Completed
+//TODO: Need to use SearchOptions (instead of advancedOptions)
+//TODO: Save sidebar settings in SearchOptions
+//TODO: Change to use SearchService (instead of using fetch in Home)
+
+//Incomplete
+//TODO: Add ratelimiting on services (might help: https://stackoverflow.com/questions/33946228/rate-limit-a-javascript-function)
+//TODO: Add env file to project (npm install dotenv --save) (https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project)
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isFirstSearchMade, setIsFirstSearchMade] = useState(false);
-    const [advancedOptions, setAdvancedOptions] = useState(GetSources());
+    const [searchOptions, setSearchOptions] = useState(new SearchOptions());
 
     const onClick = (searchText) => {
-        if (isSearching === true) { 
+        if (isSearching === true) {
             return;
         }
 
-        if (searchText === "" || advancedOptions.length === 0) {
+        //TODO: måske tilføj at man kan lave en search på bare advanced settings
+        if (searchOptions.searchText === '' || searchOptions.sources.length === 0) {
             setSearchResults([]);
             return;
         }
 
+        setSearchOptions([searchOptions.searchText = searchText]);
+
         setIsSearching(true);
-        //TODO: Change to use SearchService
-        fetch("http://localhost:8000/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
-            .then(response => response.json())
-            .then(json => setSearchResults(json.result))
-            .catch(e => console.log(e))
-            .finally(() => {
-                setIsSearching(false)
-                setIsFirstSearchMade(true)
-            }
+        setSearchResults(
+            GetSearchResult(
+                searchOptions,
+                setIsSearching, 
+                setIsFirstSearchMade
+            )
         );
     };
 
@@ -53,7 +61,8 @@ const Home = () => {
                         onClick={onClick}
                         loadingState={isSearching}
                     />
-                    <Button data-testid="advancedButton"
+                    <Button
+                        data-testid="advancedButton"
                         onClick={() => setIsOpen(!isOpen)}
                         aria-controls="example-collapse-text"
                         aria-expanded={isOpen}
@@ -64,23 +73,19 @@ const Home = () => {
                     </Button>
                     </div>
                 </div>
-            {/*Adds searchResult to the DOM*/}
-                <PaginatedSearchResults itemsPerPage={25}
-                                        searchResults={searchResults}
-                                        isFirstSearchMade={isFirstSearchMade}
+                <PaginatedSearchResults
+                    itemsPerPage={25}
+                    searchResults={searchResults}
+                    isFirstSearchMade={isFirstSearchMade}
                 />
             </div>
             <AdvancedSidebar
                 isOpen={isOpen}
-                advancedOptions={advancedOptions}
-                setAdvancedOptions={setAdvancedOptions}
+                options={searchOptions}
+                setOptions={setSearchOptions}
             />
         </div>
     );
-}
-
-Home.propTypes = {
-
 }
 
 export default Home

@@ -1,8 +1,8 @@
 //TODO: Move to ENV file
-const searchURL = 'http://localhost:8000/api/document-data-api/search?';
+const baseSearchURL = 'http://localhost:8000/api/document-data-api/search?';
 
-export function SearchURLBuilder(searchOptions) {
-    let search = searchURL
+function SearchURLBuilder(searchOptions) {
+    let search = baseSearchURL
 
     search += 'words=' + searchOptions.searchText.replace(' ', ',');
     
@@ -32,7 +32,9 @@ export function SearchURLBuilder(searchOptions) {
     return search;
 }
 
-export function GetSearchResults(searchURL, setSearching, setFirstSearchMade) {
+export function GetSearchResults(searchOptions, setSearching, setFirstSearchMade) {
+    let searchURL = SearchURLBuilder(searchOptions);
+
     let result =  fetch(searchURL)
                         .then(response => response.json())
                         .catch(e => { return []; });

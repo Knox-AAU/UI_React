@@ -9,7 +9,7 @@ import "../Css/AdvancedSidebar.css";
 import GetAuthors from '../Services/AuthorsService';
 import GetCategories from "../Services/CategoriesService";
 
-export default function AdvancedSideBar({ isOpen, advancedOptions, setAdvancedOptions }) {
+export default function AdvancedSideBar({ isOpen, options, setOptions }) {
 
     return (
         <Collapse
@@ -17,25 +17,25 @@ export default function AdvancedSideBar({ isOpen, advancedOptions, setAdvancedOp
             timeout={20}>
             <ThemeProvider theme={ThemeOptions}>
                 <div className='sidebar'>
-                    <DBSelectComponent
+                    <SourcesSelectComponent
                         header="Databases"
-                        options={advancedOptions}
-                        setOptions={setAdvancedOptions}
+                        options={options}
+                        setOptions={setOptions}
                     />
                     <AuthorComponent
                         header="Authors"
-                        options={advancedOptions}
-                        setOptions={setAdvancedOptions}
+                        options={options}
+                        setOptions={setOptions}
                     />
                     <CategoryComponent
                         header="Categories"
-                        options={advancedOptions}
-                        setOptions={setAdvancedOptions}
+                        options={options}
+                        setOptions={setOptions}
                     />
                     <TimePeriodComponent
                         header="Time period"
-                        options={advancedOptions}
-                        setOptions={setAdvancedOptions}
+                        options={options}
+                        setOptions={setOptions}
                     />
                 </div>
             </ThemeProvider>
@@ -43,7 +43,7 @@ export default function AdvancedSideBar({ isOpen, advancedOptions, setAdvancedOp
     );
 }
 
-function DBSelectComponent({header, options, setOptions}) {
+function SourcesSelectComponent({header, options, setOptions}) {
     let checkboxes = CreateCheckbox(options, setOptions);
 
     return (
@@ -64,8 +64,8 @@ function TimePeriodComponent({header, options, setOptions}) {
             <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
-                        <DatePicker label="From"/>
-                        <DatePicker label="To"/>
+                        <DatePicker label="From" options={options} setOptions={setOptions} />
+                        <DatePicker label="To" options={options} setOptions={setOptions} />
                     </Stack>
                 </LocalizationProvider>
             </div>
@@ -75,6 +75,9 @@ function TimePeriodComponent({header, options, setOptions}) {
 
 function AuthorComponent({header, options, setOptions}) {
     let authors = GetAuthors();
+    const handleChange = (change) => {
+        setOptions([options.authors = change.value]);
+    }
 
     return (
         <div className='sidebar-component'>
@@ -91,18 +94,19 @@ function AuthorComponent({header, options, setOptions}) {
                         }
                       }
                 }}
-                    loading={true}
-                    multiple
-                    id="tags-outlined"
-                    options={authors}
-                    getOptionLabel={(option) => option.firstname + ' ' + option.lastname}
-                    filterSelectedOptions
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label='e.g. Anders Andersen'
-                        />
-                    )}
+                onChange={(change) => handleChange(change)}
+                loading={true}
+                multiple={true}
+                id="tags-outlined"
+                options={authors}
+                getOptionLabel={(option) => option.firstname + ' ' + option.lastname}
+                filterSelectedOptions={true}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label='e.g. Anders Andersen'
+                    />
+                )}
                 />
             </div>
         </div>
@@ -111,6 +115,9 @@ function AuthorComponent({header, options, setOptions}) {
 
 function CategoryComponent({header, options, setOptions}) {
     let categories = GetCategories();
+    const handleChange = (change) => {
+        setOptions([options.categories = change.value]);
+    }
 
     return (
         <div className='sidebar-component'>
@@ -127,11 +134,12 @@ function CategoryComponent({header, options, setOptions}) {
                             }
                         }
                     }}
+                    onChange={(change) => handleChange(change)}
                     loading={true}
-                    multiple
+                    multiple={true}
                     options={categories}
                     getOptionLabel={(option) => option.category}
-                    filterSelectedOptions
+                    filterSelectedOptions={true}
                     renderInput={(params) => (
                         <TextField
                             {...params}

@@ -3,7 +3,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MuiCheckbox from "@mui/material/Checkbox";
 import GetSources from "../Services/SourcesService";
 
-export function CreateCheckbox(dbOptions, options, setOptions) {
+export function CreateCheckbox(options, setOptions) {
     let sources = GetSources();
     let result;
 
@@ -14,26 +14,25 @@ export function CreateCheckbox(dbOptions, options, setOptions) {
     return result;
 }
 
-export function Checkbox({ dbOption, options, setOptions}) {
+export function Checkbox({ sourceName, options, setOptions}) {
     const handleCheck= (name, isChecked) => {
         if (isChecked) {
-            setOptions([...options, name]);
+            setOptions([...options.sources, name]);
         } else {
-            setOptions(options.filter(x => x !== name));
+            setOptions(options.sources.filter(x => x !== name));
         }
     }
 
     return (
         <FormControlLabel
-            label={dbOption}
+            label={sourceName}
             sx={{
                 color: '#ffffff',
             }}
             control={
                 <MuiCheckbox
-                    className="default_checkbox"
                     defaultChecked
-                    name={dbOption}
+                    name={sourceName}
                     onChange={(e) => handleCheck(e.target.name,e.target.checked)}
                     sx={{
                         color: '#ffffff',
