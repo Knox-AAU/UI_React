@@ -13,14 +13,14 @@ import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 
 
-function SearchBar({ searchText, onClick, loadingState/*, enableSuggester*/}) {
+function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const [searchTerms, setSearchTerms] = useState();
     const [showSuggester, setShowSuggester] = useState(false);
     let searchtermscurrent = "";
 
     const searchBarFocus = () => {
-        if(searchtermscurrent !=="" && searchtermscurrent !== null){
-        setShowSuggester(true)
+        if(searchtermscurrent !== '' && searchtermscurrent !== null && enableSuggester !== false){
+            setShowSuggester(true);
         }
 
     };
@@ -28,23 +28,22 @@ function SearchBar({ searchText, onClick, loadingState/*, enableSuggester*/}) {
 
     const handleKeypress = e => e.key === "Enter" && sendSearch();
     const sendSearch = () => {
-        onClick(searchTerms.value)
-        sendForEvaluation(searchTerms.value)
-        searchTerms.value = ""
-        searchtermscurrent = ""
-        setShowSuggester(false)
+        onClick(searchTerms.value);
+        sendForEvaluation(searchTerms.value);
+        searchTerms.value = "";
+        searchtermscurrent = "";
+        setShowSuggester(false);
     }
 
     const searchFieldChange = e => {
-        setSearchTerms(e.target)
-        searchtermscurrent = e.target.value
-        if(searchtermscurrent !=="" && searchtermscurrent != null){
-            setShowSuggester(true)
-            console.log("Here" + searchtermscurrent)
-            sendMessage(searchtermscurrent)
+        setSearchTerms(e.target);
+        searchtermscurrent = e.target.value;
+        if(searchtermscurrent !== '' && searchtermscurrent != null) {
+            setShowSuggester(true);
+            sendMessage(searchtermscurrent);
         }
-        else{
-            setShowSuggester(false)
+        else {
+            setShowSuggester(false);
         }
     }
 
@@ -114,7 +113,7 @@ function SearchBar({ searchText, onClick, loadingState/*, enableSuggester*/}) {
         try {
             await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", JSON.stringify(testObject))
         } catch (e) {
-            console.log(e);
+            console.warn(e);
         }
     }
 

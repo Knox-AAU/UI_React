@@ -7,16 +7,12 @@ import GetSearchResult from '../Services/SearchService';
 import SearchOptions from '../Models/SearchOptionsModel';
 import '../Css/HomePage.css';
 
-//Completed
-//TODO: Need to use SearchOptions (instead of advancedOptions)
-//TODO: Save sidebar settings in SearchOptions
-//TODO: Change to use SearchService (instead of using fetch in Home)
-
 //Incomplete
 //TODO: Add ratelimiting on services (might help: https://stackoverflow.com/questions/33946228/rate-limit-a-javascript-function)
 //TODO: Add env file to project (npm install dotenv --save) (https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project)
 
 const Home = () => {
+    const useSuggester = false; //Suggester temp dissable
     const [isOpen, setIsOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -29,12 +25,13 @@ const Home = () => {
         }
 
         //TODO: måske tilføj at man kan lave en search på bare advanced settings
-        if (searchOptions.searchText === '' || searchOptions.sources.length === 0) {
+        if (searchText === undefined /* || searchOptions.sources === undefined */ || searchText === '' /* || searchOptions.sources.length === 0 */) {
             setSearchResults([]);
             return;
         }
 
         setSearchOptions([searchOptions.searchText = searchText]);
+        console.log(searchOptions);
 
         setIsSearching(true);
         setSearchResults(
@@ -60,6 +57,7 @@ const Home = () => {
                         searchText="Enter your search"
                         onClick={onClick}
                         loadingState={isSearching}
+                        enableSuggester={useSuggester}
                     />
                     <Button
                         data-testid="advancedButton"
