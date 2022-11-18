@@ -8,34 +8,35 @@ import GetSources from '../Services/SourcesService';
 import '../Css/HomePage.css';
 
 
-const Home = (SuggesterConnection) => {
-    const [open, setOpen] = useState(false);
+const Home = () => {
+    const [isOpen, setIsOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
-    const [searching, setSearching] = useState(false);
-    const [firstSearchMade, setFirstSearchMade] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
+    const [isFirstSearchMade, setIsFirstSearchMade] = useState(false);
     const [advancedOptions, setAdvancedOptions] = useState(GetSources());
 
     const onClick = (searchText) => {
-        if (searching === true) { 
-            return; 
+        if (isSearching === true) { 
+            return;
         }
 
-        if (searchText === "" || advancedOptions.length===0) {
+        if (searchText === "" || advancedOptions.length === 0) {
             setSearchResults([]);
             return;
         }
 
-        setSearching(true);
+        setIsSearching(true);
+        //TODO: Change to use SearchService
         fetch("http://localhost:8000/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
             .then(response => response.json())
             .then(json => setSearchResults(json.result))
             .catch(e => console.log(e))
             .finally(() => {
-                setSearching(false)
-                setFirstSearchMade(true)
+                setIsSearching(false)
+                setIsFirstSearchMade(true)
             }
         );
-    }
+    };
 
 
     return (
@@ -50,12 +51,12 @@ const Home = (SuggesterConnection) => {
                     <SearchBar
                         searchText="Enter your search"
                         onClick={onClick}
-                        loadingState={searching}
+                        loadingState={isSearching}
                     />
                     <Button data-testid="advancedButton"
-                        onClick={() => setOpen(!open)}
+                        onClick={() => setIsOpen(!isOpen)}
                         aria-controls="example-collapse-text"
-                        aria-expanded={open}
+                        aria-expanded={isOpen}
                         className="ButtonStyle"
                         style={{height:"5vh",width:"100px", padding:"0px"}}
                     >
@@ -66,16 +67,16 @@ const Home = (SuggesterConnection) => {
             {/*Adds searchResult to the DOM*/}
                 <PaginatedSearchResults itemsPerPage={25}
                                         searchResults={searchResults}
-                                        firstSearchMade={firstSearchMade}
+                                        isFirstSearchMade={isFirstSearchMade}
                 />
             </div>
             <AdvancedSidebar
-                open={open}
+                isOpen={isOpen}
                 advancedOptions={advancedOptions}
                 setAdvancedOptions={setAdvancedOptions}
             />
         </div>
-    )
+    );
 }
 
 Home.propTypes = {

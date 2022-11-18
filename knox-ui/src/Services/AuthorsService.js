@@ -1,3 +1,4 @@
+//TODO: Move to ENV file
 const authorsEndpoint = 'http://localhost:8000/api/document-data-api/authors';
 
 export class Author {
