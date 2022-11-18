@@ -1,21 +1,7 @@
+import Author from '../Models/AuthorModel';
+
 //TODO: Move to ENV file
 const authorsEndpoint = 'http://localhost:8000/api/document-data-api/authors';
-
-export class Author {
-    firstname;
-    middleName;
-    lastname;
-
-    constructor(firstname, middleName, lastname) {
-        this.firstname = firstname;
-        this.middleName = middleName;
-        this.lastname = lastname;
-    }
-
-    static from(json) {
-        return Object.assign(new Author(), json);
-    }
-}
 
 export function GetAuthors() {
     let authorList = [];

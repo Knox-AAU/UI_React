@@ -1,15 +1,7 @@
+import Category from '../Models/CategoryModel';
+
 //TODO: Move to ENV file
 const categoriesEndpoint = 'http://localhost:8000/api/document-data-api/categories';
-
-export class Category {
-    id;
-    name;
-
-    constructor(id, name) {
-        this.id = id;
-        this.name = name;
-    }
-}
 
 export function GetCategories() {
     let categoryList = [];

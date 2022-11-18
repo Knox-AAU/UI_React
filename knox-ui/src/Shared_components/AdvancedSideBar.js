@@ -9,20 +9,34 @@ import "../Css/AdvancedSidebar.css";
 import GetAuthors from '../Services/AuthorsService';
 import GetCategories from "../Services/CategoriesService";
 
-export default function AdvancedSideBar({ open, advancedOptions, setAdvancedOptions }) {
-    const authors = GetAuthors();
-    const categories = GetCategories();
+export default function AdvancedSideBar({ isOpen, advancedOptions, setAdvancedOptions }) {
 
     return (
         <Collapse
-            in={open}
+            in={isOpen}
             timeout={20}>
             <ThemeProvider theme={ThemeOptions}>
                 <div className='sidebar'>
-                    <DBSelectComponent header="Databases" options={advancedOptions} setOptions={setAdvancedOptions} />
-                    <AuthorComponent header="Authors" authors={authors} />
-                    <CategoryComponent header="Categories" categories={categories} />
-                    <TimePeriodComponent header="Time period" />
+                    <DBSelectComponent
+                        header="Databases"
+                        options={advancedOptions}
+                        setOptions={setAdvancedOptions}
+                    />
+                    <AuthorComponent
+                        header="Authors"
+                        options={advancedOptions}
+                        setOptions={setAdvancedOptions}
+                    />
+                    <CategoryComponent
+                        header="Categories"
+                        options={advancedOptions}
+                        setOptions={setAdvancedOptions}
+                    />
+                    <TimePeriodComponent
+                        header="Time period"
+                        options={advancedOptions}
+                        setOptions={setAdvancedOptions}
+                    />
                 </div>
             </ThemeProvider>
         </Collapse>
@@ -42,7 +56,7 @@ function DBSelectComponent({header, options, setOptions}) {
     );
 }
 
-function TimePeriodComponent({header}) {
+function TimePeriodComponent({header, options, setOptions}) {
 
     return (
         <div className='sidebar-component'>
@@ -59,8 +73,8 @@ function TimePeriodComponent({header}) {
     );
 }
 
-function AuthorComponent({header, authors}) {
-    // https://mui.com/material-ui/react-autocomplete/
+function AuthorComponent({header, options, setOptions}) {
+    let authors = GetAuthors();
 
     return (
         <div className='sidebar-component'>
@@ -68,14 +82,14 @@ function AuthorComponent({header, authors}) {
             <div>
                 <Autocomplete
                 sx={{
-                      '& .MuiOutlinedInput-root': {
+                    '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                          borderColor: '#ffffff',
+                            borderColor: '#ffffff'
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#ffffff',
-                        },
-                      },
+                            borderColor: '#ffffff'
+                        }
+                      }
                 }}
                     loading={true}
                     multiple
@@ -95,8 +109,8 @@ function AuthorComponent({header, authors}) {
     );
 }
 
-function CategoryComponent({header, categories}) {
-    // https://mui.com/material-ui/react-autocomplete/
+function CategoryComponent({header, options, setOptions}) {
+    let categories = GetCategories();
 
     return (
         <div className='sidebar-component'>
@@ -106,12 +120,12 @@ function CategoryComponent({header, categories}) {
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
-                            borderColor: '#ffffff',
+                                borderColor: '#ffffff'
                             },
                             '&.Mui-focused fieldset': {
-                            borderColor: '#ffffff',
-                            },
-                        },
+                                borderColor: '#ffffff'
+                            }
+                        }
                     }}
                     loading={true}
                     multiple
