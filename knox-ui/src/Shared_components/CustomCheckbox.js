@@ -7,6 +7,14 @@ export function CreateCheckbox(options, setOptions) {
     let sources = GetSources();
     let result;
 
+    if (sources.length > 0) {
+        result = Checkbox(sources[0], options, setOptions);
+
+        for(let i = 1; i < sources.length; i++) {
+            result += Checkbox(sources[i], options, setOptions);
+        }
+    }
+
     for(let i = 0; i < sources.length; i++) {
         result += Checkbox(sources[i], options, setOptions);
     }
@@ -14,10 +22,12 @@ export function CreateCheckbox(options, setOptions) {
     return result;
 }
 
-export function Checkbox({ sourceName, options, setOptions}) {
+export function Checkbox(sourceName, options, setOptions) {
     const handleCheck= (name, isChecked) => {
         if (isChecked) {
-            setOptions([...options.sources, name]);
+            setOptions(previousState => {
+                return {...previousState, sources: name}
+            });
         } else {
             setOptions(options.sources.filter(x => x !== name));
         }

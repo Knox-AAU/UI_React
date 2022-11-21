@@ -75,9 +75,12 @@ function TimePeriodComponent({header, options, setOptions}) {
 
 function AuthorComponent({header, options, setOptions}) {
     let authors = GetAuthors();
-    const handleChange = (change) => {
-        setOptions([options.authors = change.value]);
-    }
+
+    const handleChange = (value) => {
+        setOptions(previousState => {
+            return {...previousState, authors: value}
+        });
+    };
 
     return (
         <div className='sidebar-component'>
@@ -100,6 +103,7 @@ function AuthorComponent({header, options, setOptions}) {
                 id="tags-outlined"
                 options={authors}
                 getOptionLabel={(option) => option.firstname + ' ' + option.lastname}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 filterSelectedOptions={true}
                 renderInput={(params) => (
                     <TextField
@@ -115,9 +119,12 @@ function AuthorComponent({header, options, setOptions}) {
 
 function CategoryComponent({header, options, setOptions}) {
     let categories = GetCategories();
-    const handleChange = (change) => {
-        setOptions([options.categories = change.value]);
-    }
+
+    const handleChange = (value) => {
+        setOptions(previousState => {
+            return {...previousState, categories: value}
+        });
+    };
 
     return (
         <div className='sidebar-component'>
@@ -134,12 +141,13 @@ function CategoryComponent({header, options, setOptions}) {
                             }
                         }
                     }}
-                    onChange={(change) => handleChange(change)}
+                    onChange={(e, value) => handleChange(value)}
                     loading={true}
-                    multiple={true}
+                    multiple
                     options={categories}
-                    getOptionLabel={(option) => option.category}
-                    filterSelectedOptions={true}
+                    getOptionLabel={(option) => option.name}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    filterSelectedOptions
                     renderInput={(params) => (
                         <TextField
                             {...params}

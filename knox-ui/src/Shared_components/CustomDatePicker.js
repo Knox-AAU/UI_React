@@ -7,10 +7,14 @@ function CustomDatePicker({label, options, setOptions, child}) {
     const [value, setValue] = React.useState(dayjs());
 
     const handleChange = (newValue) => {
-        if (label === 'To') {
-            setOptions([options.afterDate, newValue]);
-        } else if (label === 'From') {
-            setOptions([options.beforeDate, newValue]);
+        if (!isNaN(newValue) && label === "To") {
+            setOptions(previousState => {
+                return {...previousState, afterDate: newValue.toISOString()}
+            });
+        } else if (!isNaN(newValue) && label === "From") {
+            setOptions(previousState => {
+                return {...previousState, beforeDate: newValue.toISOString()}
+            });
         }
 
         setValue(newValue);
@@ -21,19 +25,19 @@ function CustomDatePicker({label, options, setOptions, child}) {
             views={['year', 'month', 'day']}
             inputFormat='DD/MM/YYYY'
             maxDate={new dayjs()}
+            onChange={(change) => handleChange(change)}
             label={label}
             value={value}
-            onChange={handleChange}
             renderInput={(params) =>
                 <TextField
                     {...params}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
-                            borderColor: '#ffffff',
+                                borderColor: '#ffffff'
                             },
                             '&.Mui-focused fieldset': {
-                            borderColor: '#ffffff',
+                                borderColor: '#ffffff'
                             },
                         },
                     }}

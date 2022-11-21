@@ -4,31 +4,50 @@ const baseSearchURL = 'http://localhost:8000/api/document-data-api/search?';
 function SearchURLBuilder(searchOptions) {
     let search = baseSearchURL
 
-    search += 'words=' + searchOptions.searchText.replace(' ', ',');
-    
+    search += 'words=' + searchOptions.searchText.replace(/ /g, ',');
+
     if(searchOptions.sources !== undefined) {
-        let options = searchOptions.sources.join(',');
+        let idArray = [];
+
+        for (let i = 0; i < searchOptions.sources.length; i++) {
+            idArray[i] = searchOptions.sources[i].id;
+        }
+
+        let options = idArray.join(',');
         search += '&sourceId=' + options;
     }
 
     if(searchOptions.authors !== undefined) {
-        let options = searchOptions.authors.join(',');
+        let idArray = [];
+
+        for (let i = 0; i < searchOptions.authors.length; i++) {
+            idArray[i] = searchOptions.authors[i].id;
+        }
+
+        let options = idArray.join(',');
         search += '&author=' + options;
     }
 
     if(searchOptions.categories !== undefined) {
-        let options = searchOptions.categories.join(',');
+        let idArray = [];
+
+        for (let i = 0; i < searchOptions.categories.length; i++) {
+            idArray[i] = searchOptions.categories[i].id;
+        }
+
+        let options = idArray.join(',');
         search += '&categoryId=' + options;
     }
 
     if(searchOptions.beforeDate !== undefined) {
-        search += '&beforeDate=' + searchOptions.beforeDate;
+        search += '&beforeDate=' + encodeURIComponent(searchOptions.beforeDate);
     }
 
     if(searchOptions.afterDate !== undefined) {
-        search += '&afterDate=' + searchOptions.afterDate;
+        search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
     }
 
+    console.log(search);
     return search;
 }
 
@@ -37,7 +56,7 @@ export function GetSearchResults(searchOptions, setSearching, setFirstSearchMade
 
     let result =  fetch(searchURL)
                         .then(response => response.json())
-                        .catch(e => { return []; });
+                        .catch(() => { return []; });
     
     setSearching(false);
     setFirstSearchMade(true);
