@@ -7,10 +7,6 @@ import GetSearchResult from '../Services/SearchService';
 import SearchOptions from '../Models/SearchOptionsModel';
 import '../Css/HomePage.css';
 
-//Incomplete
-//TODO: Add ratelimiting on services (might help: https://stackoverflow.com/questions/33946228/rate-limit-a-javascript-function)
-//TODO: Add env file to project (npm install dotenv --save) (https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project)
-
 const Home = () => {
     const useSuggester = false; //Suggester temp dissable
     const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +20,12 @@ const Home = () => {
             return;
         }
 
-        //TODO: måske tilføj at man kan lave en search på bare advanced settings
-        if (searchText === undefined /* || searchOptions.sources === undefined */ || searchText === '' /* || searchOptions.sources.length === 0 */) {
+        if (searchText === undefined || searchOptions.sources === undefined || searchText === '' || searchOptions.sources.length === 0 ) {
             setSearchResults([]);
             return;
         }
 
-        setSearchOptions([searchOptions.searchText = searchText]);
-        console.log(searchOptions);
-
+        setSearchOptions(searchOptions.searchText = searchText);
         setIsSearching(true);
         setSearchResults(
             GetSearchResult(

@@ -1,7 +1,6 @@
 import Author from '../Models/AuthorModel';
 
-//TODO: Move to ENV file
-const authorsEndpoint = 'http://localhost:8000/api/document-data-api/authors';
+const authorsEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/authors';
 
 export function GetAuthors() {
     let authorList = [];

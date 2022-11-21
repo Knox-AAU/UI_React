@@ -1,7 +1,6 @@
 import Category from '../Models/CategoryModel';
 
-//TODO: Move to ENV file
-const categoriesEndpoint = 'http://localhost:8000/api/document-data-api/categories';
+const categoriesEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/categories';
 
 export function GetCategories() {
     let categoryList = [];

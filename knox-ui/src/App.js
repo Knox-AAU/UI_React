@@ -11,7 +11,6 @@ import FactChecker from './Main_components/FactChecker.js';
 import Status from './Main_components/Status.js';
 
 
-
 function App() {
 
   return (

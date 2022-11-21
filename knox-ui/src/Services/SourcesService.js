@@ -1,7 +1,6 @@
 import Source from '../Models/SourceModel';
 
-//TODO: Move to ENV file
-const sourcesEndpoint = 'http://localhost:8000/api/document-data-api/sources';
+const sourcesEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/sources';
 
 export function GetSources() {
     let sourceList = [];

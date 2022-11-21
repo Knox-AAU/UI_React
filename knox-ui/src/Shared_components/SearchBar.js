@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
-//import SearchIcon from '../Img/search-solid.svg'
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import propTypes from 'prop-types'
@@ -19,8 +18,8 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     let searchtermscurrent = "";
 
     const searchBarFocus = () => {
-        if(searchtermscurrent !== '' && searchtermscurrent !== null && enableSuggester !== false){
-            setShowSuggester(true);
+        if(searchtermscurrent !== '' && searchtermscurrent !== null) {
+            setShowSuggester(enableSuggester);
         }
 
     };
@@ -103,7 +102,7 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
 
     const sendForEvaluation = async (message) => {
         try {
-            await connection.invoke("SendGroupMessage", connection.connectionId, "evalutateSentence", message)
+            //await connection.invoke("SendGroupMessage", connection.connectionId, "evalutateSentence", message)
         } catch (e) {
             console.log(e);
         }
@@ -111,7 +110,7 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const sendMessage = async (message) => {
         testObject["Sentence"] = message 
         try {
-            await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", JSON.stringify(testObject))
+            //await connection.invoke("SendGroupMessage", connection.connectionId, "suggestionRequest", JSON.stringify(testObject))
         } catch (e) {
             console.warn(e);
         }

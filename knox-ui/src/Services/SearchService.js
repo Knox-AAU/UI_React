@@ -1,5 +1,4 @@
-//TODO: Move to ENV file
-const baseSearchURL = 'http://localhost:8000/api/document-data-api/search?';
+const baseSearchURL = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/search?';
 
 function SearchURLBuilder(searchOptions) {
     let search = baseSearchURL
@@ -53,7 +52,7 @@ function SearchURLBuilder(searchOptions) {
 export function GetSearchResults(searchOptions, setSearching, setFirstSearchMade) {
     let searchURL = SearchURLBuilder(searchOptions);
 
-    let result =  fetch(searchURL)
+    let result = fetch(searchURL)
                         .then(response => response.json())
                         .catch(() => { return []; });
     
