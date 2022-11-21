@@ -47,7 +47,6 @@ function SearchURLBuilder(searchOptions) {
         search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
     }
 
-    console.log(search);
     return search;
 }
 
