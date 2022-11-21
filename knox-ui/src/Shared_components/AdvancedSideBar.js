@@ -8,6 +8,7 @@ import CreateCheckbox from './CustomCheckbox';
 import "../Css/AdvancedSidebar.css";
 import GetAuthors from '../Services/AuthorsService';
 import GetCategories from "../Services/CategoriesService";
+import GetSources from "../Services/SourcesService";
 
 export default function AdvancedSideBar({ isOpen, options, setOptions }) {
 
@@ -44,7 +45,8 @@ export default function AdvancedSideBar({ isOpen, options, setOptions }) {
 }
 
 function SourcesSelectComponent({header, options, setOptions}) {
-    let checkboxes = CreateCheckbox(options, setOptions);
+    let sources = GetSources();
+    let checkboxes = CreateCheckbox(sources, options, setOptions);
 
     return (
         <div className='sidebar-component-top'>

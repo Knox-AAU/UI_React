@@ -3,7 +3,6 @@ import '../Css/Suggester.css'
 
 
 function Suggester(props) {
-    //Line 11 to 25 should be moved out
 
     return (
         <div className="SuggesterOuter">

@@ -7,7 +7,7 @@ export function GetAuthors() {
 
     let response = fetch(authorsEndpoint)
                     .then((response) => response.json())
-                    .catch(e => { return []; });
+                    .catch(() => { return []; });
 
     for (let jsonContent in response) {
         let author = new Author(jsonContent);

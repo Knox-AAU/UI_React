@@ -7,7 +7,7 @@ export function GetCategories() {
 
     let response = fetch(categoriesEndpoint)
                     .then((response) => response.json())
-                    .catch(e => { return []; });
+                    .catch(() => { return []; });
 
     for (let jsonContent in response) {
         let category = new Category(jsonContent);

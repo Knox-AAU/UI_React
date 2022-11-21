@@ -10,8 +10,6 @@ import Suggester from './Suggester';
 import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 
-
-
 function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const [searchTerms, setSearchTerms] = useState();
     const [showSuggester, setShowSuggester] = useState(false);

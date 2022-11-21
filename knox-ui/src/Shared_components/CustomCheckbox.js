@@ -1,10 +1,8 @@
 import React from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MuiCheckbox from "@mui/material/Checkbox";
-import GetSources from "../Services/SourcesService";
 
-export function CreateCheckbox(options, setOptions) {
-    let sources = GetSources();
+export function CreateCheckbox(sources, options, setOptions) {
     let result;
 
     if (sources.length > 0) {
