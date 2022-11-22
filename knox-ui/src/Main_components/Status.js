@@ -390,7 +390,7 @@ const Status = props => {
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
                 <h3>Database status</h3>
-                <DatabaseStatus port="5501" apiName="Document data API" dbName="Document Data"/>
+                <DatabaseStatus port="5501" apiName="Document Data API" dbName="Document Data"/>
                 <DatabaseStatus port="8000" apiName="rdfStatus" dbName="RDF"/>
             </div>
         </div>

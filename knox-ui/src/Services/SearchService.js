@@ -18,7 +18,7 @@ function SearchURLBuilder(searchOptions) {
     }
 
     let sourcesOptions = sourcesArray.join(',');
-    search += '&sourceId=' + sourcesOptions;
+    search += '&sourceIds=' + sourcesOptions;
 
     if(searchOptions.authors !== undefined) {
         let idArray = [];
@@ -28,7 +28,7 @@ function SearchURLBuilder(searchOptions) {
         }
 
         let options = idArray.join(',');
-        search += '&author=' + options;
+        search += '&authors=' + options;
     }
 
     if(searchOptions.categories !== undefined) {
@@ -39,7 +39,7 @@ function SearchURLBuilder(searchOptions) {
         }
 
         let options = idArray.join(',');
-        search += '&categoryId=' + options;
+        search += '&categoryIds=' + options;
     }
 
     if(searchOptions.beforeDate !== undefined) {

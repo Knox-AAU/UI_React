@@ -20,7 +20,7 @@ const Home = () => {
             return;
         }
 
-        if (searchText !== undefined || searchText !== '') {
+        if (searchText !== undefined || searchText.trim() !== '') {
             setSearchOptions(searchOptions.searchText = searchText);
             setIsSearching(true);
             setSearchResults(
