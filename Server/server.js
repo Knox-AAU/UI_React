@@ -19,8 +19,8 @@ const dbStatus = require("./dbstatus");
 const httpProxy = require("http-proxy");
 const { URL, URLSearchParams } = require("url");
 
-const wordCountStatus = new dbStatus(
-  "http://knox-master01.srv.aau.dk/accessapi/api/wordCount/status"
+const documentDataAPIStatus = new dbStatus(
+  "http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/status"
 );
 const rdfStatus = new dbStatus(
   "http://knox-master01.srv.aau.dk/accessapi/api/rdf/status"
@@ -149,8 +149,8 @@ app.get("/VirtualAssistant/node", (req, res) => {
     });
 });
 
-app.get("/wordCountStatus", (req, res) => {
-  res.json(wordCountStatus.getStatus(req, res));
+app.get("/document-data-api-status", (req, res) => {
+  res.json(documentDataAPIStatus.getStatus(req, res));
 });
 
 app.get("/rdfStatus", (req, res) => {

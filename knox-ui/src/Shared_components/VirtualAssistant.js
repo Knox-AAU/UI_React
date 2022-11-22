@@ -5,6 +5,10 @@ import { ThemeProvider } from 'styled-components';
 import dateFormat from 'dateformat';
 import botAvatar from '../Img/Wall.png';
 
+// Virtual assistant has been commented out since it is currently not working and producing multiple errors.
+// It is recommended that the virtual assistant should be rewritten using a non-deprecated library.
+// An example of this could be the react-chatbot-kit (https://www.npmjs.com/package/react-chatbot-kit).
+
 //Anything without explicit comments is taken (almost) directly from react-simple-chatbot Wikidata example
 //https://lucasbassetti.com.br/react-simple-chatbot/#/docs/wikipedia
 

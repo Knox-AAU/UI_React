@@ -1,35 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import SearchBar from '../Shared_components/SearchBar';
-import { useState } from 'react';
-import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults'
-import AdvancedSidebar from '../Shared_components/AdvancedSideBar'
+import PaginatedSearchResults from '../Shared_components/PaginatedSearchResults';
+import AdvancedSidebar from '../Shared_components/AdvancedSideBar';
+import GetSearchResult from '../Services/SearchService';
+import SearchOptions from '../Models/SearchOptionsModel';
 import '../Css/HomePage.css';
 
-const Home = (SuggesterConnection) => {
-    const [open, setOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([])
-    const [searching, setSearching] = useState(false);
-    const [firstSearchMade, setFirstSearchMade] = useState(false)
-    // OBS OBS OBS! if more databases are added, add the names here as well as in the checkboxes on Advanced Sidebar!
-    const [advancedOptions, setAdvancedOptions] = useState(["Grundfos A/S", "Nordjyske Medier"])
-    
+const Home = () => {
+    const useSuggester = false; //Suggester temp dissable
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [isFirstSearchMade, setIsFirstSearchMade] = useState(false);
+    const [searchOptions, setSearchOptions] = useState(new SearchOptions());
+
     const onClick = (searchText) => {
-        if (searching === true) return
-        if (searchText === "" || advancedOptions.length===0) {
-            setSearchResults([])
-            return
+        if (isSearching === true) {
+            return;
         }
-        setSearching(true)
-        fetch("http://localhost:8000/api/search?input=" + encodeURI(searchText)+"&sources=" + encodeURI(advancedOptions.join(",")))
-            .then(response => response.json())
-            .then(json => setSearchResults(json.result))
-            .catch(e => console.log(e))
-            .finally(() => {
-                setSearching(false)
-                setFirstSearchMade(true)
-            })
-    }
+
+        if (searchText !== undefined || searchText.trim() !== '') {
+            setSearchOptions(searchOptions.searchText = searchText);
+            setIsSearching(true);
+            setSearchResults(
+                GetSearchResult(
+                    searchOptions,
+                    setIsSearching,
+                    setIsFirstSearchMade
+                )
+            );
+        } else {
+            setSearchResults([]);
+        }
+    };
 
 
     return (
@@ -44,12 +48,14 @@ const Home = (SuggesterConnection) => {
                     <SearchBar
                         searchText="Enter your search"
                         onClick={onClick}
-                        loadingState={searching}
+                        loadingState={isSearching}
+                        enableSuggester={useSuggester}
                     />
-                    <Button data-testid="advancedButton"
-                        onClick={() => setOpen(!open)}
+                    <Button
+                        data-testid="advancedButton"
+                        onClick={() => setIsOpen(!isOpen)}
                         aria-controls="example-collapse-text"
-                        aria-expanded={open}
+                        aria-expanded={isOpen}
                         className="ButtonStyle"
                         style={{height:"5vh",width:"100px", padding:"0px"}}
                     >
@@ -57,17 +63,19 @@ const Home = (SuggesterConnection) => {
                     </Button>
                     </div>
                 </div>
-            {/*Adds searchResult to the DOM*/}
-            <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} firstSearchMade={firstSearchMade}/>
+                <PaginatedSearchResults
+                    itemsPerPage={25}
+                    searchResults={searchResults}
+                    isFirstSearchMade={isFirstSearchMade}
+                />
             </div>
-            <AdvancedSidebar open={open} advancedOptions={advancedOptions} setAdvancedOptions={setAdvancedOptions}/>
+            <AdvancedSidebar
+                isOpen={isOpen}
+                options={searchOptions}
+                setOptions={setSearchOptions}
+            />
         </div>
-
-    )
-}
-
-Home.propTypes = {
-
+    );
 }
 
 export default Home

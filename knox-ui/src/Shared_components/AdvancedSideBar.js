@@ -1,61 +1,163 @@
-import React from 'react'
-import Card from 'react-bootstrap/Card'
-import Collapse from 'react-bootstrap/Collapse'
-import StickyBox from "react-sticky-box";
-import "../Css/AdvancedSidebar.css"
+import React from "react";
+import { Stack, TextField, FormGroup, Autocomplete, Collapse, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import ThemeOptions from "../Themes/AdvancedSidebarTheme";
+import DatePicker from "./CustomDatePicker";
+import CreateCheckbox from './CustomCheckbox';
+import "../Css/AdvancedSidebar.css";
+import GetAuthors from '../Services/AuthorsService';
+import GetCategories from "../Services/CategoriesService";
+import GetSources from "../Services/SourcesService";
 
-function AdvancedSideBar({open,advancedOptions, setAdvancedOptions}) {
+export default function AdvancedSideBar({ isOpen, options, setOptions }) {
 
-    const HandleCheck= (name, isChecked)=>{
-        if(isChecked) setAdvancedOptions([...advancedOptions, name])
-        else setAdvancedOptions(advancedOptions.filter(x=>x!==name))
-        
-    }
-    
     return (
-    <div className="CollapseDiv">
-                    <Collapse in={open} dimension="width">
-                        <StickyBox offsetTop={50}>
-                            <div>
-                                <Card data-testid="card" body style={{
-                                        background: "#3874CB",
-                                        width: '400px',
-                                        height: "94vh",
-                                        border:"0px",
-                                        borderRadius: "0px" }}>
-                                    <div className="sidebar_component">
-                                        <h2 > Filter Datasets</h2>
-                                        <div className="checkbox">
-                                            <ul className="nobullets">
-                                                <li>
-                                                    <label>
-                                                        <p className="sidebar_option_text">Grundfos</p>
-                                                        <input type="checkbox"
-                                                            id="option0"
-                                                            name="Grundfos A/S"
-                                                            defaultChecked={true}
-                                                            onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <label>
-                                                        <p className="sidebar_option_text">Nordjyske</p>
-                                                        <input type="checkbox"
-                                                            id="option1"
-                                                            name="Nordjyske Medier"
-                                                            defaultChecked={true}
-                                                            onChange={(e)=>HandleCheck(e.target.name,e.target.checked)}/>
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </div>
-                        </StickyBox>
-                    </Collapse>
+        <Collapse
+            in={isOpen}
+            timeout={20}>
+            <ThemeProvider theme={ThemeOptions}>
+                <div className='sidebar'>
+                    <SourcesSelectComponent
+                        header="Databases"
+                        options={options}
+                        setOptions={setOptions}
+                    />
+                    <AuthorComponent
+                        header="Authors"
+                        options={options}
+                        setOptions={setOptions}
+                    />
+                    <CategoryComponent
+                        header="Categories"
+                        options={options}
+                        setOptions={setOptions}
+                    />
+                    <TimePeriodComponent
+                        header="Time period"
+                        options={options}
+                        setOptions={setOptions}
+                    />
                 </div>
-                )
+            </ThemeProvider>
+        </Collapse>
+    );
 }
 
-export default AdvancedSideBar
+function SourcesSelectComponent({header, options, setOptions}) {
+    let sources = GetSources();
+    let checkboxes = CreateCheckbox(sources, options, setOptions);
+
+    return (
+        <div className='sidebar-component-top'>
+            <h5>{header}</h5>
+            <FormGroup>
+                {checkboxes}
+            </FormGroup>
+        </div>
+    );
+}
+
+function TimePeriodComponent({header, setOptions}) {
+
+    return (
+        <div className='sidebar-component'>
+            <h5>{header}</h5>
+            <div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack spacing={3}>
+                        <DatePicker label="From" setOptions={setOptions} />
+                        <DatePicker label="To" setOptions={setOptions} />
+                    </Stack>
+                </LocalizationProvider>
+            </div>
+        </div>
+    );
+}
+
+function AuthorComponent({header, setOptions}) {
+    let authors = GetAuthors();
+
+    const handleChange = (value) => {
+        setOptions(previousState => {
+            return {...previousState, authors: value}
+        });
+    };
+
+    return (
+        <div className='sidebar-component'>
+            <h5>{header}</h5>
+            <div>
+                <Autocomplete
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: '#ffffff'
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#ffffff'
+                        }
+                      }
+                }}
+                onChange={(change) => handleChange(change)}
+                loading={true}
+                multiple={true}
+                id="tags-outlined"
+                options={authors}
+                getOptionLabel={(option) => option.firstname + ' ' + option.lastname}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                filterSelectedOptions={true}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label='e.g. Anders Andersen'
+                    />
+                )}
+                />
+            </div>
+        </div>
+    );
+}
+
+function CategoryComponent({header, setOptions}) {
+    let categories = GetCategories();
+
+    const handleChange = (value) => {
+        setOptions(previousState => {
+            return {...previousState, categories: value}
+        });
+    };
+
+    return (
+        <div className='sidebar-component'>
+            <h5>{header}</h5>
+            <div>
+                <Autocomplete
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ffffff'
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#ffffff'
+                            }
+                        }
+                    }}
+                    onChange={(e, value) => handleChange(value)}
+                    loading={true}
+                    multiple
+                    options={categories}
+                    getOptionLabel={(option) => option.name}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label='e.g. Sport'
+                        />
+                    )}
+                />
+            </div>
+        </div>
+    );
+}

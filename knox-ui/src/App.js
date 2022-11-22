@@ -1,6 +1,6 @@
 import React  from 'react';
 import Header from './Shared_components/Header.js';
-import VA from './Shared_components/VirtualAssistant.js';
+//import VA from './Shared_components/VirtualAssistant.js';
 import Home from './Main_components/Home.js';
 import {
   BrowserRouter as Router,
@@ -11,8 +11,8 @@ import FactChecker from './Main_components/FactChecker.js';
 import Status from './Main_components/Status.js';
 
 
-
 function App() {
+
   return (
     
     <div className="App">
@@ -39,7 +39,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
-        <VA/>
+        {/* <VA/> (Look at VirtualAssistant.js) */}
       </Router>
     </div>
   );
