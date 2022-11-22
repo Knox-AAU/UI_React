@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 
-// Custom MUI theme
 const ThemeOptions = createTheme({
     palette: {
         type: 'light',
@@ -46,7 +45,7 @@ const ThemeOptions = createTheme({
                     padding: 10,
                     color: '#ffffff',
                     '& .MuiButtonBase-root': {
-                        color: '#000000'
+                        color: '#ffffff'
                     },
                     '& .MuiPickersDay-root': {
                         color: '#000000',

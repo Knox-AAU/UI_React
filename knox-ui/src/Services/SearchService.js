@@ -1,3 +1,5 @@
+import GetSources from "./SourcesService";
+
 const baseSearchURL = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/search?';
 
 function SearchURLBuilder(searchOptions) {
@@ -5,16 +7,18 @@ function SearchURLBuilder(searchOptions) {
 
     search += 'words=' + searchOptions.searchText.replace(/ /g, ',');
 
-    if(searchOptions.sources !== undefined) {
-        let idArray = [];
-
-        for (let i = 0; i < searchOptions.sources.length; i++) {
-            idArray[i] = searchOptions.sources[i].id;
-        }
-
-        let options = idArray.join(',');
-        search += '&sourceId=' + options;
+    if(searchOptions.sources === undefined) {
+        searchOptions.sources = GetSources();
     }
+
+    let sourcesArray = [];
+
+    for (let i = 0; i < searchOptions.sources.length; i++) {
+        sourcesArray[i] = searchOptions.sources[i].id;
+    }
+
+    let sourcesOptions = sourcesArray.join(',');
+    search += '&sourceId=' + sourcesOptions;
 
     if(searchOptions.authors !== undefined) {
         let idArray = [];
@@ -46,6 +50,7 @@ function SearchURLBuilder(searchOptions) {
         search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
     }
 
+    console.log('URL: ' + search);
     return search;
 }
 

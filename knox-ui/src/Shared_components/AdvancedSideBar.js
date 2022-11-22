@@ -58,7 +58,7 @@ function SourcesSelectComponent({header, options, setOptions}) {
     );
 }
 
-function TimePeriodComponent({header, options, setOptions}) {
+function TimePeriodComponent({header, setOptions}) {
 
     return (
         <div className='sidebar-component'>
@@ -66,8 +66,8 @@ function TimePeriodComponent({header, options, setOptions}) {
             <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
-                        <DatePicker label="From" options={options} setOptions={setOptions} />
-                        <DatePicker label="To" options={options} setOptions={setOptions} />
+                        <DatePicker label="From" setOptions={setOptions} />
+                        <DatePicker label="To" setOptions={setOptions} />
                     </Stack>
                 </LocalizationProvider>
             </div>
@@ -75,7 +75,7 @@ function TimePeriodComponent({header, options, setOptions}) {
     );
 }
 
-function AuthorComponent({header, options, setOptions}) {
+function AuthorComponent({header, setOptions}) {
     let authors = GetAuthors();
 
     const handleChange = (value) => {
@@ -119,7 +119,7 @@ function AuthorComponent({header, options, setOptions}) {
     );
 }
 
-function CategoryComponent({header, options, setOptions}) {
+function CategoryComponent({header, setOptions}) {
     let categories = GetCategories();
 
     const handleChange = (value) => {

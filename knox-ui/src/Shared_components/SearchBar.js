@@ -144,7 +144,7 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
 SearchBar.defaultProps = {
     searchText: "Enter your search",
     loadingState: false,
-/*    showSuggester: false,*/
+    showSuggester: false
 }
 SearchBar.propTypes = {
     searchText: propTypes.string,

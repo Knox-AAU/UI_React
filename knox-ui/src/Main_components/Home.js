@@ -20,20 +20,19 @@ const Home = () => {
             return;
         }
 
-        if (searchText === undefined || searchOptions.sources === undefined || searchText === '' || searchOptions.sources.length === 0 ) {
+        if (searchText !== undefined || searchText !== '') {
+            setSearchOptions(searchOptions.searchText = searchText);
+            setIsSearching(true);
+            setSearchResults(
+                GetSearchResult(
+                    searchOptions,
+                    setIsSearching,
+                    setIsFirstSearchMade
+                )
+            );
+        } else {
             setSearchResults([]);
-            return;
         }
-
-        setSearchOptions(searchOptions.searchText = searchText);
-        setIsSearching(true);
-        setSearchResults(
-            GetSearchResult(
-                searchOptions,
-                setIsSearching, 
-                setIsFirstSearchMade
-            )
-        );
     };
 
 
