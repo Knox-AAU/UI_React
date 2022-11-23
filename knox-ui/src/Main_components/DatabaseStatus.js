@@ -8,7 +8,7 @@ class DatabaseStatus extends Component {
             isLoaded: false,
             response: []
         };
-        this.greenCircle = <div className="db-status-circle"/>;
+        this.greenCircle = <div className="db-status-circle db-status-circle-green"/>;
         this.yellowCircle = <div className="db-status-circle db-status-circle-yellow"/>;
         this.redCircle = <div className="db-status-circle db-status-circle-red"/>;
     }

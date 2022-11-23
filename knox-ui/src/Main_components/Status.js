@@ -364,6 +364,8 @@ const Status = props => {
 
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
+                <h3>FactChecker status</h3>
+                <DatabaseStatus port="4600" apiName="Triple/HealthCheck/v1" dbName="Triple"/>
                 <h3>WordCount database status</h3>
                 <DatabaseStatus port="8000" apiName="wordCountStatus" dbName="WordCount"/>
                 <DatabaseStatus port="8000" apiName="rdfStatus" dbName="RDF"/>
