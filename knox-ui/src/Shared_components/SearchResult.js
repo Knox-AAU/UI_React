@@ -12,6 +12,7 @@ function SearchResult({searchResult}) {
     );
     const relevance = searchResult.relevance;
 
+    //TODO: Move link to env file
     return (
             <div className="searchResultDiv">
                 <h2 ><a href= {"http://localhost:8000/getpdf?id=" + document.id} target="_blank" rel="noopener noreferrer">{document.title}</a></h2>

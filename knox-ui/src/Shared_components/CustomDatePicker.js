@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 
-function CustomDatePicker({label, options, setOptions, child}) {
+function CustomDatePicker({label, setOptions, child}) {
     const [value, setValue] = React.useState(dayjs());
 
     const handleChange = (newValue) => {

@@ -1,6 +1,6 @@
 import Source from '../Models/SourceModel';
 
-const sourcesEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/sources';
+const sourcesEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_SEARCH_ENDPOINT;
 
 export function GetSources() {
     let sourceList = [];

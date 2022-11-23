@@ -17,6 +17,7 @@ class DatabaseStatus extends Component {
         const api = this.props.apiName;
         const port = this.props.port;
 
+        //TODO: Move link to env file
         fetch(`http://localhost:${port}/${api}`)
             .then(res => res.json())
             .then((result) => {

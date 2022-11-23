@@ -1,6 +1,6 @@
 import Author from '../Models/AuthorModel';
 
-const authorsEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/authors';
+const authorsEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_AUTHORS_ENDPOINT;
 
 export function GetAuthors() {
     let authorList = [];

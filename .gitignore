@@ -1,5 +1,8 @@
 **/.vs/
 knox-ui/.vs/slnx.sqlite
 
+# Dependency directories
+**/node_modules/
+
 # Webstorm cache directory
 .idea/
