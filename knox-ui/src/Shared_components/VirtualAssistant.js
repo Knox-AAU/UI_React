@@ -32,7 +32,6 @@ class VirtualAssistant extends Component {
       const { steps } = this.props;
       const search = steps.search.value; //Gets the information from the step with id search
       //The UI server runs on port 8000 on the same node, and pipes to query to the access API
-        //TODO: Move link to env file
       const queryUrl = `http://localhost:8000/VirtualAssistant/node?id=${encodeURI(search)}`;
       
       //Fetches the response from the knowledge graph
