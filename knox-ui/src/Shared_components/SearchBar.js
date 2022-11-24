@@ -101,7 +101,6 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     const sendForEvaluation = async (message) => {
         try {
             //await connection.invoke("SendGroupMessage", connection.connectionId, "evalutateSentence", message)
-            console.log(connection);
         } catch (e) {
             console.log(e);
         }
