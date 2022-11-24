@@ -69,7 +69,6 @@ function SearchBar({ searchText, onClick, loadingState, enableSuggester}) {
     async function joinRoom() {
 
         try {
-            //TODO: Move link to env file
             clearInterval(timer)
             SuggesterConnection = new HubConnectionBuilder()
             .withUrl("http://localhost:8081/suggestorHub")

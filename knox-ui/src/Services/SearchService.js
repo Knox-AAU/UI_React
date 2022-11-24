@@ -50,7 +50,6 @@ function SearchURLBuilder(searchOptions) {
         search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
     }
 
-    console.log('URL: ' + search);
     return search;
 }
 

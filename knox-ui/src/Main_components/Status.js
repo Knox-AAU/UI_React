@@ -24,7 +24,6 @@ const Status = props => {
         secondaryProgressBar.textContent = ""
 
         let wsStart = () => {
-            //TODO: Move link to env file
             let ws = new WebSocket("ws://localhost:8000/statsWebsocket/");
 
             ws.onopen = (e) => {
@@ -172,7 +171,6 @@ const Status = props => {
                         let progressBar = document.getElementById("primaryProgressBarLegend");
                         let link = progressBar.getElementsByTagName("a")[0];
                         link.textContent = contents.fileName;
-                        //TODO: Move link to env file
                         link.href = `http://net.grundfos.com/Appl/ccmsservices/public/literature/filedata/${contents.fileName}`;
                     }
                     if (contents.hasOwnProperty("numberOfPDFs")) {
@@ -289,7 +287,6 @@ const Status = props => {
     const [value, setValue] = React.useState(null);
 
     React.useEffect(() => {
-        //TODO: Move link to env file
       axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
         setValue(response.data);
         console.log(response)

@@ -9,7 +9,6 @@ const FactChecker = (props) => {
   const [showingTriples, setShowingTriples] = useState([]);
 
   useMemo(() => {
-    //TODO: Move link to env file
     fetch("http://localhost:8000/gettriples")
       .then((response) => response.json())
       .then((json) => {
@@ -47,7 +46,7 @@ const FactChecker = (props) => {
       },
       body: JSON.stringify(triple),
     };
-    //TODO: Move link to env file
+
     await fetch("http://localhost:8000/getpassage", requestOptions)
       .then((response) => response.json())
       .then((json) => (newArr[newArr.indexOf(triple)].passage = json.passage))
