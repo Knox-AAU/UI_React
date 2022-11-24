@@ -6,7 +6,7 @@ import GetSources from "../Services/SourcesService";
 export function CreateCheckbox(sources, options, setOptions) {
     let result = [];
 
-    if (sources.length > 0) {
+    if (sources !== undefined) {
         for(let i = 0; i < sources.length; i++) {
             result[i] = (<Checkbox source={sources[i]} key={sources[i].id} options={options} setOptions={setOptions} />);
         }

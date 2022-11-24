@@ -1,6 +1,6 @@
 import Category from '../Models/CategoryModel';
 
-const categoriesEndpoint = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/categories';
+const categoriesEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_CATEGORIES_ENDPOINT;
 
 export function GetCategories() {
     let categoryList = [];

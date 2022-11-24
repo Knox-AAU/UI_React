@@ -32,6 +32,7 @@ const Home = () => {
             );
         } else {
             setSearchResults([]);
+            setIsSearching(false);
         }
     };
 

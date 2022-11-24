@@ -1,6 +1,6 @@
 import GetSources from "./SourcesService";
 
-const baseSearchURL = 'http://knox-master01.srv.aau.dk/accessapi/api/document-data-api/search?';
+const baseSearchURL = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_SEARCH_ENDPOINT;
 
 function SearchURLBuilder(searchOptions) {
     let search = baseSearchURL
@@ -50,7 +50,6 @@ function SearchURLBuilder(searchOptions) {
         search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
     }
 
-    console.log('URL: ' + search);
     return search;
 }
 

@@ -46,6 +46,7 @@ const FactChecker = (props) => {
       },
       body: JSON.stringify(triple),
     };
+
     await fetch("http://localhost:8000/getpassage", requestOptions)
       .then((response) => response.json())
       .then((json) => (newArr[newArr.indexOf(triple)].passage = json.passage))
