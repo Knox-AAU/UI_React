@@ -1,20 +1,30 @@
-import Author from '../Models/AuthorModel';
+const authorsEndpoint = process.env.REACT_APP_ACCESS_API + '/document-data/authors';
 
-const authorsEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_AUTHORS_ENDPOINT;
-
-export function GetAuthors() {
-    let authorList = [];
-
-    let response = fetch(authorsEndpoint)
-                    .then((response) => response.json())
-                    .catch(() => { return []; });
-
-    for (let jsonContent in response) {
-        let author = new Author(jsonContent);
-        authorList.push(author);
+export async function GetAuthors() {
+    try {
+        let response = await fetch(authorsEndpoint, {
+            headers: {
+                origin: "localhost"
+            }
+        });
+        let json = await response.json();
+        if (response.ok) {
+            return json;
+        }
+        else {
+            let details = "";
+            for (const [key, value] of Object.entries(json.errors)) {
+                console.log(value);
+                details += key + ": " + value.join(' ');
+            }
+            console.warn("Unable to fetch authors: " + response.statusText + " (" + details + ")");
+            return [];
+        }
     }
-
-    return authorList;
+    catch (e) {
+        console.error('An error occurred while fetching authors: ' + e);
+        return [];
+    }
 }
 
 export default GetAuthors;

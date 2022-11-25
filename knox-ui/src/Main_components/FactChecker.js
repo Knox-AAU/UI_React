@@ -2,7 +2,7 @@ import React from "react";
 import "../Css/FactChecker.css";
 import { useState, useMemo } from "react";
 import "../Css/SearchResult.css";
-import SearchBar from "../Shared_components/SearchBar";
+import SearchBar from "../Shared_components/Search/SearchBar";
 
 const FactChecker = (props) => {
   const [triples, setTriples] = useState([]);

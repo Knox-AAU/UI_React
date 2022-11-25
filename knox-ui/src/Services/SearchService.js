@@ -1,69 +1,39 @@
 import GetSources from "./SourcesService";
 
-const baseSearchURL = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_SEARCH_ENDPOINT;
+const baseSearchURL = process.env.REACT_APP_ACCESS_API + '/search?';
 
-function SearchURLBuilder(searchOptions) {
+// Expected URL example (decoded): "words=this,is,a,test&sourceIds=1&sourceIds=2&authors=Anders Andersen&authors=Per Petersen&categoryIds=1&categoryIds=2&beforeDate=2010-01-01T10:00:00Z&afterDate=2010-31-12T10:00:00Z"
+function SearchURLBuilder(input, sources, authors, categories, beforeDate, afterDate) {
     let search = baseSearchURL
+    search += 'words=' + input.replace(/ /g, ',');
 
-    search += 'words=' + searchOptions.searchText.replace(/ /g, ',');
-
-    if(searchOptions.sources === undefined) {
-        searchOptions.sources = GetSources();
+    for (const id of sources ?? []) {
+        search += '&sourceIds=' + id;
     }
-
-    let sourcesArray = [];
-
-    for (let i = 0; i < searchOptions.sources.length; i++) {
-        sourcesArray[i] = searchOptions.sources[i].id;
+    for (const name of authors ?? []) {
+        search += '&authors=' + name;
     }
-
-    let sourcesOptions = sourcesArray.join(',');
-    search += '&sourceIds=' + sourcesOptions;
-
-    if(searchOptions.authors !== undefined) {
-        let idArray = [];
-
-        for (let i = 0; i < searchOptions.authors.length; i++) {
-            idArray[i] = searchOptions.authors[i].id;
-        }
-
-        let options = idArray.join(',');
-        search += '&authors=' + options;
+    for (const category of categories ?? []) {
+        search += '&categoryIds=' + category.id;
     }
-
-    if(searchOptions.categories !== undefined) {
-        let idArray = [];
-
-        for (let i = 0; i < searchOptions.categories.length; i++) {
-            idArray[i] = searchOptions.categories[i].id;
-        }
-
-        let options = idArray.join(',');
-        search += '&categoryIds=' + options;
+    if (beforeDate && !isNaN(beforeDate)) {
+        search += '&beforeDate=' + beforeDate.toISOString();
     }
-
-    if(searchOptions.beforeDate !== undefined) {
-        search += '&beforeDate=' + encodeURIComponent(searchOptions.beforeDate);
+    if (afterDate) {
+        search += '&afterDate=' + afterDate.toISOString();
     }
-
-    if(searchOptions.afterDate !== undefined) {
-        search += '&afterDate=' + encodeURIComponent(searchOptions.afterDate);
-    }
-
-    return search;
+    return encodeURI(search);
 }
 
-export function GetSearchResults(searchOptions, setSearching, setFirstSearchMade) {
-    let searchURL = SearchURLBuilder(searchOptions);
-
-    let result = fetch(searchURL)
-                        .then(response => response.json())
-                        .catch(() => { return []; });
-    
-    setSearching(false);
-    setFirstSearchMade(true);
-
-    return result;
+export async function GetSearchResults(input, sources, authors, categories, beforeDate, afterDate) {
+    let searchURL = SearchURLBuilder(input, sources, authors, categories, beforeDate, afterDate);
+    console.log("Search URL: " + searchURL);
+    const result = await fetch(searchURL, {
+        headers: {
+            origin: "localhost"
+        }
+    });
+    return await result.json();
 }
 
 export default GetSearchResults;

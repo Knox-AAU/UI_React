@@ -7,7 +7,7 @@ function Suggester(props) {
     return (
         <div className="SuggesterOuter">
             <ul className="list-group list-group-flush" >
-                {props.searchData.Results.map(suggestion => {
+                {props.searchData?.Results.map(suggestion => {
                     return(
                         <li key={suggestion.Sentence.toString()} className="list-group-item">
                             <div className="searchResultDiv">

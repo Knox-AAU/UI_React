@@ -1,20 +1,25 @@
 import Source from '../Models/SourceModel';
 
-const sourcesEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_SEARCH_ENDPOINT;
+const sourcesEndpoint = process.env.REACT_APP_ACCESS_API + '/document-data/sources';
 
-export function GetSources() {
-    let sourceList = [];
-
-    let response = fetch(sourcesEndpoint)
-                    .then((response) => response.json())
-                    .catch(() => { return []; });
-
-    for (let jsonContent in response) {
-        let source = new Source(jsonContent);
-        sourceList.push(source);
+export async function GetSources() {
+    const response = await fetch(sourcesEndpoint, {
+        headers: {
+            origin: "localhost"
+        }
+    });
+    let json = await response.json();
+    if (response.ok) {
+        return json;
     }
-
-    return sourceList;
+    else {
+        let details = "";
+        for (const [key, value] of Object.entries(json.errors)) {
+            details += key + ": " + value.join(' ');
+        }
+        console.error("Unable to fetch sources: " + response.statusText + " (" + details + ")");
+        return [];
+    }
 }
 
 export default GetSources;

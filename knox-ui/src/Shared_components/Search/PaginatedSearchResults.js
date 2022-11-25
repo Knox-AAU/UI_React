@@ -2,7 +2,7 @@ import React from 'react'
 import SearchResults from './SearchResults';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
-import '../Css/PaginatedSearchResults.css';
+import '../../Css/PaginatedSearchResults.css';
 
 function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }) {
     const [currentSearchResults, setCurrentSearchResults] = useState([]);
