@@ -11,7 +11,7 @@ import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 const suggesterHubUrl = process.env.REACT_APP_SUGGESTERHUB_URL;
 
-function SearchBar({ onClick, isSearching, enableSuggester}) {
+function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
     const [searchTerms, setSearchTerms] = useState("");
     const [showSuggester, setShowSuggester] = useState(false);
     const [signalRConnection, setSignalRConnection] = useState(null);
@@ -19,7 +19,7 @@ function SearchBar({ onClick, isSearching, enableSuggester}) {
 
     // Initialization
     useEffect(() => {
-        const joinRoom = async () => {
+        if (enableSuggester) {
             const SuggesterConnection = new HubConnectionBuilder()
                 .withUrl(suggesterHubUrl)
                 .withAutomaticReconnect()
@@ -28,38 +28,51 @@ function SearchBar({ onClick, isSearching, enableSuggester}) {
 
             SuggesterConnection.on("suggestionResponse", (response) => {
                 const json = JSON.parse(response);
-                console.log(json);
                 setSuggesterResponse(json)
             });
 
             SuggesterConnection.start()
                 .then(() => setSignalRConnection(SuggesterConnection))
                 .then(() => console.log("Sentence Suggester is ready!"))
-                .catch(console.error);
-        };
-        joinRoom().catch(console.error);
+                .catch(e => console.error("Failed to start Sentence Suggester: " + e.message));
+        }
+        return () => signalRConnection?.stop().then(() => setSignalRConnection(null));
     }, [])
 
-    // Runs whenever 'searchTerms' is changed
+    // Runs whenever 'searchTerms' is changed. Waits 500 ms before updating, and if 'searchTerms' changes again, it stops and starts the timer again.
     useEffect(() => {
-        if(searchTerms?.trim() !== '') {
-            setShowSuggester(true);
-            sendMessage(searchTerms).catch(console.error);
-        }
-        else {
-            setShowSuggester(false);
-        }
-    }, [searchTerms]);
+        const sendMessage = async (message) => {
+            const messageObject = {
+                Sentence: message,
+                OrderBy: "ASC",
+                MaxResults: 5
+            };
+            await signalRConnection?.invoke("SendGroupMessage", signalRConnection.connectionId, "suggestionRequestTest", JSON.stringify(messageObject));
+        };
+
+        const timeoutId = setTimeout(() => {
+            if(enableSuggester && searchTerms?.trim() !== '') {
+                setShowSuggester(true);
+                sendMessage(searchTerms).catch(console.error);
+            }
+            else {
+                setShowSuggester(false);
+            }
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [searchTerms, enableSuggester, signalRConnection]);
 
     // Event handlers
-    const handleSearchBarFocus = () => searchTerms?.trim() !== '' && setShowSuggester(enableSuggester);
-    const handleSearchBarUnfocus = () => setShowSuggester(false);
+    const handleSearchBarFocus = () => enableSuggester && searchTerms?.trim() !== '' && setShowSuggester(true);
+    const handleSearchBarUnfocus = () => enableSuggester && setShowSuggester(false);
     const handleKeypress = e => e.key === "Enter" && sendSearch();
-    const sendSearch = () => {
-        sendMessageForEvaluation(searchTerms).catch(console.error);
+    const sendSearch = (e) => {
+        e.preventDefault();
+        if (enableSuggester) {
+            sendMessageForEvaluation(searchTerms).catch(console.error);
+        }
         if(searchTerms?.trim() !== '') {
-            onClick(searchTerms);
-            setSearchTerms("");
+            onSubmitCallback(searchTerms);
         }
     }
     const searchFieldChange = e => {
@@ -68,16 +81,7 @@ function SearchBar({ onClick, isSearching, enableSuggester}) {
     }
 
     const sendMessageForEvaluation = async (message) => {
-        await signalRConnection.invoke("SendGroupMessage", signalRConnection.connectionId, "evalutateSentence", message)
-    }
-
-    const sendMessage = async (message) => {
-        const messageObject = {
-            Sentence: message,
-            OrderBy: "ASC",
-            MaxResults: 5
-        };
-        await signalRConnection.invoke("SendGroupMessage", signalRConnection.connectionId, "suggestionRequestTest", JSON.stringify(messageObject));
+        await signalRConnection?.invoke("SendGroupMessage", signalRConnection.connectionId, "evalutateSentence", message)
     }
 
     return (
@@ -114,7 +118,7 @@ SearchBar.defaultProps = {
     showSuggester: false
 }
 SearchBar.propTypes = {
-    onClick: propTypes.func.isRequired
+    onSubmitCallback: propTypes.func.isRequired
 }
 
 // Replacing search-solid.svg
