@@ -1,5 +1,3 @@
-import GetSources from "./SourcesService";
-
 const baseSearchURL = process.env.REACT_APP_ACCESS_API + '/search?';
 
 // Expected URL example (decoded): "words=this,is,a,test&sourceIds=1&sourceIds=2&authors=Anders Andersen&authors=Per Petersen&categoryIds=1&categoryIds=2&beforeDate=2010-01-01T10:00:00Z&afterDate=2010-31-12T10:00:00Z"
@@ -25,15 +23,12 @@ function SearchURLBuilder(input, sources, authors, categories, beforeDate, after
     return encodeURI(search);
 }
 
-export async function GetSearchResults(input, sources, authors, categories, beforeDate, afterDate) {
+export function GetSearchResults(input, sources, authors, categories, beforeDate, afterDate) {
     let searchURL = SearchURLBuilder(input, sources, authors, categories, beforeDate, afterDate);
-    console.log("Search URL: " + searchURL);
-    const result = await fetch(searchURL, {
-        headers: {
-            origin: "localhost"
-        }
-    });
-    return await result.json();
+
+    return fetch(searchURL, { headers: { origin: "localhost" } })
+        .then(response => response?.ok ? response.json() : [])
+        .catch(console.error);
 }
 
 export default GetSearchResults;
