@@ -12,7 +12,7 @@ export function AutocompleteComponent({header, setSelectedValues, fetchAllValues
             .then(values => setAllValues(values))
             .then(() => setIsLoading(false))
             .catch(console.error);
-    }, []);
+    }, [fetchAllValuesCallback]);
 
     const handleChange = (values) => {
         setSelectedValues(values);

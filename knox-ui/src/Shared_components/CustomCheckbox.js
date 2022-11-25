@@ -2,11 +2,11 @@ import React from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MuiCheckbox from "@mui/material/Checkbox";
 
-export function Checkbox({id, name, onChangeCallback}) {
+export function Checkbox({value, name, onChangeCallback}) {
 
     return (
         <FormControlLabel
-            key={id}
+            key={value}
             label={name}
             sx={{
                 color: '#ffffff',
@@ -15,7 +15,7 @@ export function Checkbox({id, name, onChangeCallback}) {
                 <MuiCheckbox
                     defaultChecked={true}
                     name={name}
-                    value={id}
+                    value={value}
                     onChange={(event, isChecked) => onChangeCallback(event, isChecked)}
                     sx={{
                         color: '#ffffff',

@@ -37,6 +37,8 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
                 .catch(e => console.error("Failed to start Sentence Suggester: " + e.message));
         }
         return () => signalRConnection?.stop().then(() => setSignalRConnection(null));
+        // This method should only run on initialization, so disable the warning below.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // Runs whenever 'searchTerms' is changed. Waits 500 ms before updating, and if 'searchTerms' changes again, it stops and starts the timer again.
@@ -66,22 +68,19 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
     const handleSearchBarFocus = () => enableSuggester && searchTerms?.trim() !== '' && setShowSuggester(true);
     const handleSearchBarUnfocus = () => enableSuggester && setShowSuggester(false);
     const handleKeypress = e => e.key === "Enter" && sendSearch();
-    const sendSearch = (e) => {
-        e.preventDefault();
+    const sendSearch = () => {
+        onSubmitCallback(searchTerms);
         if (enableSuggester) {
+            setShowSuggester(false);
             sendMessageForEvaluation(searchTerms).catch(console.error);
-        }
-        if(searchTerms?.trim() !== '') {
-            onSubmitCallback(searchTerms);
         }
     }
     const searchFieldChange = e => {
-        e.preventDefault();
         setSearchTerms(e.target.value);
     }
 
     const sendMessageForEvaluation = async (message) => {
-        await signalRConnection?.invoke("SendGroupMessage", signalRConnection.connectionId, "evalutateSentence", message)
+        await signalRConnection?.invoke("SendGroupMessage", signalRConnection.connectionId, "evaluateSentence", message);
     }
 
     return (

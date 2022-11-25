@@ -27,19 +27,13 @@ const SearchModule = () => {
     const [afterDate, setAfterDate] = useState(null);
 
     const handleSearchSubmitted = async (searchBarText) => {
-        if (isSearching) {
+        if (isSearching || !isInputValid()) {
             return;
         }
-
-        if (!isInputValid()) {
-            return;
-        }
-
         setIsSearching(true);
         GetSearchResults(searchBarText, sourceFilter, authorFilter, categoryFilter, beforeDate, afterDate)
             .then(setSearchResults)
             .catch(e => console.error("Unable to get search results: " + e));
-
         if (!isFirstSearchMade) {
             setIsFirstSearchMade(true);
         }
@@ -49,10 +43,10 @@ const SearchModule = () => {
     const isInputValid = () => {
         const errors = [];
         if (beforeDate && isNaN(beforeDate)) {
-            errors.push("The 'From' date is invalid.");
+            errors.push("The 'To' date is invalid.");
         }
         if (afterDate && isNaN(afterDate)) {
-            errors.push("The 'To' date is invalid.");
+            errors.push("The 'From' date is invalid.");
         }
         if (errors.length > 0) {
             setAlertMessages(errors);
@@ -76,7 +70,7 @@ const SearchModule = () => {
                     <div style={{display:'inline-flex',width:"100%",position:'relative'}}>
                         <div style={{ width: "100%" }}>
                             <SearchBar onSubmitCallback={handleSearchSubmitted}
-                                       enableSuggester={false}
+                                       enableSuggester={true}
                                        isSearching={isSearching}
                             />
                             <Snackbar open={isAlertOpen} onClose={handleOnAlertClosed} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>

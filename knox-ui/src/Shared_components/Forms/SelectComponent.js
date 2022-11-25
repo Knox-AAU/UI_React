@@ -13,7 +13,7 @@ export function SelectComponent({header, selectedValues, setSelectedValues, fetc
                 setSelectedValues(values.map(x => x.id));
             })
             .catch(console.error);
-    }, []);
+    }, [fetchAllValuesCallback, setSelectedValues]);
 
     const handleCheckboxChanged = (e, isChecked) => {
         const value = parseInt(e.target.value);
@@ -21,7 +21,7 @@ export function SelectComponent({header, selectedValues, setSelectedValues, fetc
             setSelectedValues([...selectedValues, value]);
         }
         else {
-            let newFilter = [...selectedValues].filter(x => x.id !== value);
+            let newFilter = [...selectedValues].filter(x => x !== value);
             setSelectedValues(newFilter);
         }
     }
@@ -30,7 +30,7 @@ export function SelectComponent({header, selectedValues, setSelectedValues, fetc
         <div className='sidebar-component-top'>
             <h5>{header}</h5>
             <FormGroup>
-                { allValues.map(x => Checkbox({id: x.id, name: x.name, onChangeCallback: handleCheckboxChanged })) }
+                { allValues.map(x => Checkbox({ value: x.id, name: x.name, onChangeCallback: handleCheckboxChanged })) }
             </FormGroup>
             { allValues?.length === 0 ? <span>Found no values.</span> : null }
         </div>
