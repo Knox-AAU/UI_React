@@ -80,8 +80,8 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester, setIsSideba
             <Stack direction='row'>
                 <Autocomplete id={"search-bar"}
                               freeSolo={true}
-                              options={suggestedSentences}
-                              getOptionLabel={(option) => option.Sentence}
+                              sx={{width: '100%'}}
+                              options={suggestedSentences.map(value => value.Sentence)}
                               filterOptions={(options, state) => options}
                               inputMode={'search'}
                               onKeyDown={handleKeyDown}
@@ -90,7 +90,6 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester, setIsSideba
                               renderInput={(params) => (
                                   <TextField className={"SearchBarStyle form-control form-control-plaintext"}
                                              {...params}
-                                             hiddenLabel={true}
                                              placeholder={"Enter search..."}
                                              sx={{
                                                  "& .MuiOutlinedInput-root": {
@@ -100,7 +99,6 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester, setIsSideba
                                                  }
                                              }}/>
                               )}
-                              renderOption={(props, option) => <li {...props} key={option.Sentence + option.Score}>{option.Sentence}</li>}
                             >
                 </Autocomplete>
                 <ButtonGroup sx={{margin: 0.9}}>

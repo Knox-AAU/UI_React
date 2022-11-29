@@ -1,23 +1,25 @@
 import React from 'react'
-import SearchResults from './SearchResults';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import '../../Css/PaginatedSearchResults.css';
+import {Card, List, ListItem } from "@mui/material";
 
-function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }) {
+function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
     const [currentSearchResults, setCurrentSearchResults] = useState([]);
     const [pageCount, setPageCount] = useState(0);
     // Start Location of shown searches
     const [itemOffset, setItemOffset] = useState(0);
+    const [relevanceSum, setRelevanceSum] = useState(0);
 
     useEffect(() => {
         // Fetch items from another resources.
-        const endOffset = itemOffset + itemsPerPage;
-        setCurrentSearchResults(searchResults.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(searchResults.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage, searchResults]);
+        setRelevanceSum(searchResults.map(x => x.relevance).reduce((partialSum, x) => partialSum + x, 0));
 
-
+        // Pagination is handled by the API through the 'limit' and 'offset' query parameters. The following should probably be redone
+        //const endOffset = itemOffset + itemsPerPage;
+        setCurrentSearchResults(searchResults/*.slice(itemOffset, endOffset)*/);
+        setPageCount(Math.ceil(searchResults?.length / itemsPerPage));
+    }, [searchResults, itemsPerPage, itemOffset]);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
@@ -25,9 +27,27 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, firstSearchMade }
         window.scrollTo(0,0)
     }
 
+    const getNormalizedRelevance = (relevance) => {
+        return relevanceSum > 0
+            ? (relevance / relevanceSum) * 100
+            : 0;
+    }
+
     return (
         <div className="PaginateStyle">
-            <SearchResults searchResults={currentSearchResults} firstSearchMade={firstSearchMade} />
+            <List>
+                {currentSearchResults?.map(x => (
+                    <ListItem key={x.documentModel.id} variant="outlined" sx={{padding: 0, margin: 0}}>
+                        <Card sx={{width: '100%', padding: 2}}>
+                            <h4 className='title-link'
+                                onClick={() => console.log('Not implemented yet')}>{x.documentModel.title}</h4>
+                            <p className={"text-muted"}>Skrevet af {x.documentModel.author}, udgivet
+                                d. {x.documentModel.date.toLocaleDateString()} i {x.documentModel.publication} fra {x.sourceName}</p>
+                            <p className={"text-muted"}>Relevance: {getNormalizedRelevance(x.relevance).toFixed(0)}%</p>
+                        </Card>
+                    </ListItem>
+                ))}
+            </List>
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="→"

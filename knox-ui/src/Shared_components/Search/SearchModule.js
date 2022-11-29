@@ -47,6 +47,9 @@ const SearchModule = () => {
 
     const isInputValid = () => {
         const errors = [];
+        if (sourceFilter?.length === 0) {
+            errors.push("Please select a source.");
+        }
         if (beforeDate && isNaN(beforeDate)) {
             errors.push("The 'To' date is invalid.");
         }
