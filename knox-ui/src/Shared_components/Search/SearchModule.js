@@ -1,13 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import AdvancedSideBar from "./AdvancedSideBar";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import {BarLoader} from "react-spinners";
+import { InputGroup } from "react-bootstrap";
+import BarLoader from "react-spinners/BarLoader";
 import GetSearchResults from "../../Services/SearchService";
-import '../../Css/HomePage.css';
 import PaginatedSearchResults from "./PaginatedSearchResults";
-import {Alert, Snackbar} from "@mui/material";
 import SearchBar from "./SearchBar";
+import AlertPopup from "../AlertPopup";
+import '../../Css/HomePage.css';
 
 const SearchModule = () => {
     const [isFirstSearchMade, setIsFirstSearchMade] = useState(false);
@@ -32,12 +31,18 @@ const SearchModule = () => {
         }
         setIsSearching(true);
         GetSearchResults(searchBarText, sourceFilter, authorFilter, categoryFilter, beforeDate, afterDate)
-            .then(setSearchResults)
-            .catch(e => console.error("Unable to get search results: " + e));
-        if (!isFirstSearchMade) {
-            setIsFirstSearchMade(true);
-        }
-        setIsSearching(false);
+            .then(results => setSearchResults(results ?? []))
+            .catch(e => {
+                console.error("Unable to get search results: " + e);
+                setAlertMessages(["An error occurred while connecting to the access API"]);
+                setIsAlertOpen(true);
+            })
+            .finally(() => {
+                setIsSearching(false);
+                if (!isFirstSearchMade) {
+                    setIsFirstSearchMade(true);
+                }
+            });
     }
 
     const isInputValid = () => {
@@ -55,10 +60,6 @@ const SearchModule = () => {
         return errors.length === 0;
     }
 
-    const handleOnAlertClosed = (e) => {
-        setIsAlertOpen(false);
-    }
-
     return (
         <div className="ContentOfPage">
             <div className="SearchWrapper">
@@ -72,31 +73,31 @@ const SearchModule = () => {
                             <SearchBar onSubmitCallback={handleSearchSubmitted}
                                        enableSuggester={true}
                                        isSearching={isSearching}
+                                       setIsSidebarOpen={setIsSidebarOpen}
+                                       isSidebarOpen={isSidebarOpen}
+                                       showFilterButton={true}
                             />
-                            <Snackbar open={isAlertOpen} onClose={handleOnAlertClosed} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
-                                <Alert className={"ps-4 pe-4"} variant={"filled"} severity="error" sx={{ width: '100%' }}>
-                                    <span>Validation error(s):<br/></span>
-                                    { alertMessages.map((msg, index) => (<span key={index} className={"ps-2"}>{ msg }<br/></span>)) }
-                                </Alert>
-                            </Snackbar>
-                            <InputGroup className="Loader">
-                                <BarLoader loading={isSearching} color='#729A9A' height='15px' width="100%" />
-                            </InputGroup>
-                            { isFirstSearchMade ? <span>Found {searchResults.length} result(s).</span> : null }
-                            <PaginatedSearchResults
-                                itemsPerPage={25}
-                                searchResults={searchResults}
-                                isFirstSearchMade={isFirstSearchMade}
+                            <AlertPopup
+                                isAlertOpen={isAlertOpen}
+                                setIsAlertOpen={setIsAlertOpen}
+                                alertMessages={alertMessages}
                             />
+                            { isSearching ?
+                                <InputGroup className="Loader">
+                                    <BarLoader loading={isSearching} color='#729A9A' height='15px' width="100%" />
+                                </InputGroup>
+                                : null
+                            }
+
+                            { isFirstSearchMade && !isSearching ?
+                                <span>Found {searchResults.length} result(s).</span>
+                                : null
+                            }
+                            { searchResults?.length > 0 ?
+                                <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} isFirstSearchMade={isFirstSearchMade}/>
+                                : null
+                            }
                         </div>
-                        <Button
-                            data-testid="advancedButton"
-                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            className="ButtonStyle"
-                            style={{height:"5vh",width:"100px", padding:"0px"}}
-                        >
-                            Advanced
-                        </Button>
                     </div>
                 </div>
             </div>

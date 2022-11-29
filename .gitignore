@@ -14,5 +14,4 @@ knox-ui/.vs/slnx.sqlite
 .idea/
 
 # Misc.
-**/.env
-**/.env*
+**/.env*.local

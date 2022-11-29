@@ -27,8 +27,7 @@ export function GetSearchResults(input, sources, authors, categories, beforeDate
     let searchURL = SearchURLBuilder(input, sources, authors, categories, beforeDate, afterDate);
 
     return fetch(searchURL, { headers: { origin: "localhost" } })
-        .then(response => response?.ok ? response.json() : [])
-        .catch(console.error);
+        .then(response => response?.ok ? response.json() : []);
 }
 
 export default GetSearchResults;

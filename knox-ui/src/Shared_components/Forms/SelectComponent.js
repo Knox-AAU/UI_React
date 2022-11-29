@@ -9,8 +9,8 @@ export function SelectComponent({header, selectedValues, setSelectedValues, fetc
     useEffect(() => {
         fetchAllValuesCallback()
             .then(values => {
-                setAllValues(values);
-                setSelectedValues(values.map(x => x.id));
+                setAllValues(values ?? []);
+                setSelectedValues(values?.map(x => x.id) ?? []);
             })
             .catch(console.error);
     }, [fetchAllValuesCallback, setSelectedValues]);

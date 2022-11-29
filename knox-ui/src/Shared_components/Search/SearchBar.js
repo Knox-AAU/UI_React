@@ -1,25 +1,22 @@
-import React, {useEffect} from 'react'
-import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import propTypes from 'prop-types'
+import React, { useEffect } from 'react';
+import propTypes from 'prop-types';
 import { useState } from 'react';
-import { BarLoader } from 'react-spinners'
-import '../../Css/SeacrhBar.css';
-import Suggester from '../Suggester';
-import {HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import '../../Css/SearchBar.css';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import {Autocomplete, Button, ButtonGroup, Stack, TextField} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const suggesterHubUrl = process.env.REACT_APP_SUGGESTERHUB_URL;
 
-function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
+function SearchBar({ onSubmitCallback, isSearching, enableSuggester, setIsSidebarOpen, isSidebarOpen, showFilterButton }) {
     const [searchTerms, setSearchTerms] = useState("");
-    const [showSuggester, setShowSuggester] = useState(false);
     const [signalRConnection, setSignalRConnection] = useState(null);
-    const [suggesterResponse, setSuggesterResponse] = useState(null);
+    const [suggestedSentences, setSuggestedSentences] = useState([]);
 
     // Initialization
     useEffect(() => {
-        if (enableSuggester) {
+        if (enableSuggester && suggesterHubUrl !== undefined) {
             const SuggesterConnection = new HubConnectionBuilder()
                 .withUrl(suggesterHubUrl)
                 .withAutomaticReconnect()
@@ -28,7 +25,7 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
 
             SuggesterConnection.on("suggestionResponse", (response) => {
                 const json = JSON.parse(response);
-                setSuggesterResponse(json)
+                setSuggestedSentences(json?.Results ?? [])
             });
 
             SuggesterConnection.start()
@@ -54,30 +51,25 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
 
         const timeoutId = setTimeout(() => {
             if(enableSuggester && searchTerms?.trim() !== '') {
-                setShowSuggester(true);
                 sendMessage(searchTerms).catch(console.error);
             }
             else {
-                setShowSuggester(false);
+                setSuggestedSentences([]);
             }
         }, 500);
         return () => clearTimeout(timeoutId);
     }, [searchTerms, enableSuggester, signalRConnection]);
 
     // Event handlers
-    const handleSearchBarFocus = () => enableSuggester && searchTerms?.trim() !== '' && setShowSuggester(true);
-    const handleSearchBarUnfocus = () => enableSuggester && setShowSuggester(false);
-    const handleKeypress = e => e.key === "Enter" && sendSearch();
+    const handleKeyDown = e => e.key === "Enter" && sendSearch();
     const sendSearch = () => {
         onSubmitCallback(searchTerms);
         if (enableSuggester) {
-            setShowSuggester(false);
             sendMessageForEvaluation(searchTerms).catch(console.error);
         }
     }
-    const searchFieldChange = e => {
-        setSearchTerms(e.target.value);
-    }
+    const searchFieldChange = (value) => setSearchTerms(value);
+    const handleUnfocus = () => setSuggestedSentences([]);
 
     const sendMessageForEvaluation = async (message) => {
         await signalRConnection?.invoke("SendGroupMessage", signalRConnection.connectionId, "evaluateSentence", message);
@@ -85,59 +77,68 @@ function SearchBar({ onSubmitCallback, isSearching, enableSuggester }) {
 
     return (
         <div style={{ width: "100%" }}>
-            <InputGroup className="mb-3" >
-                <FormControl className='SearchBarStyle'
-                    onChange={searchFieldChange}
-                    onFocus={handleSearchBarFocus}
-                    onBlur={handleSearchBarUnfocus}
-                    id="search-bar"
-                    value={searchTerms}
-                    placeholder="Enter your search..."
-                    aria-label="Search Term"
-                    onKeyPress={handleKeypress}
-                />
-                <Button className='SearchButtonStyle'
-                    onClick={sendSearch}
-                    variant="outline-secondary"
-                    id="search-button"
-                    disabled={isSearching}>
-                    <SearchIcon/>
-                </Button>
-            </InputGroup>
-            {showSuggester ? <Suggester searchData={suggesterResponse}/> : null}
-            <InputGroup className="Loader">
-                <BarLoader loading={isSearching} color='#729A9A' height='15px' width="100%" />
-            </InputGroup>
+            <Stack direction='row'>
+                <Autocomplete id={"search-bar"}
+                              freeSolo={true}
+                              options={suggestedSentences}
+                              getOptionLabel={(option) => option.Sentence}
+                              filterOptions={(options, state) => options}
+                              inputMode={'search'}
+                              onKeyDown={handleKeyDown}
+                              onBlur={handleUnfocus}
+                              onInputChange={(event, val) => searchFieldChange(val)}
+                              renderInput={(params) => (
+                                  <TextField className={"SearchBarStyle form-control form-control-plaintext"}
+                                             {...params}
+                                             hiddenLabel={true}
+                                             placeholder={"Enter search..."}
+                                             sx={{
+                                                 "& .MuiOutlinedInput-root": {
+                                                     "& > fieldset": {
+                                                         borderColor: '#747474'
+                                                     }
+                                                 }
+                                             }}/>
+                              )}
+                              renderOption={(props, option) => <li {...props} key={option.Sentence + option.Score}>{option.Sentence}</li>}
+                            >
+                </Autocomplete>
+                <ButtonGroup sx={{margin: 0.9}}>
+                    <Button className={"icon-btn-wrapper"}
+                            sx={{
+                                "&:hover": {
+                                    backgroundColor: '#3874cb',
+                                    svg: {
+                                        color: '#ffffff'
+                                    }
+                                }
+                            }}
+                            variant='outlined'
+                            onClick={sendSearch}
+                            disabled={isSearching}>
+                        <SearchIcon className={"icon-btn"} fontSize='large'/>
+                    </Button>
+                    { showFilterButton ?
+                        <Button variant='outlined'
+                                sx={{ "&:hover": { backgroundColor: '#3874cb', svg: { color: '#ffffff' }}}}
+                                className={"icon-btn-wrapper"}
+                                onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                            <FilterAltIcon className={"icon-btn"} fontSize='large'/>
+                        </Button>
+                        : null}
+                </ButtonGroup>
+            </Stack>
         </div>
     )
 }
 
 SearchBar.defaultProps = {
     isSearching: false,
-    showSuggester: false
+    enableSuggester: false,
+    showFilterButton: false
 }
 SearchBar.propTypes = {
     onSubmitCallback: propTypes.func.isRequired
-}
-
-// Replacing search-solid.svg
-function SearchIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            className="svg-inline--fa fa-search fa-w-16"
-            data-icon="search"
-            data-prefix="fas"
-            version="1.1"
-            viewBox="0 0 512 512"
-        >
-            <path
-                fill="#fffff"
-                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
-            ></path>
-        </svg>
-    );
 }
 
 export default SearchBar

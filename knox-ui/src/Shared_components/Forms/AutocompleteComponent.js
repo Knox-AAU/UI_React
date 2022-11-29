@@ -9,7 +9,7 @@ export function AutocompleteComponent({header, setSelectedValues, fetchAllValues
     useEffect(() => {
         setIsLoading(true);
         fetchAllValuesCallback()
-            .then(values => setAllValues(values))
+            .then(values => setAllValues(values ?? []))
             .then(() => setIsLoading(false))
             .catch(console.error);
     }, [fetchAllValuesCallback]);
