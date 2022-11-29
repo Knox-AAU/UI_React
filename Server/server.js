@@ -38,7 +38,7 @@ const wsProxy = httpProxy.createProxyServer({
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://knox-master01.srv.aau.dk"
+    origin: "http://knox-node03.srv.aau.dk"
 }));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
