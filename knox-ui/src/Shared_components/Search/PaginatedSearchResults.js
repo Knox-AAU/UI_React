@@ -41,8 +41,7 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
                         <Card sx={{width: '100%', padding: 2}}>
                             <h4 className='title-link'
                                 onClick={() => console.log('Not implemented yet')}>{x.documentModel.title}</h4>
-                            <p className={"text-muted"}>Skrevet af {x.documentModel.author}, udgivet
-                                d. {x.documentModel.date.toLocaleDateString()} i {x.documentModel.publication} fra {x.sourceName}</p>
+                            <p className={"text-muted"}>Written by {x.documentModel.author}, published on {x.documentModel.date.toLocaleDateString()} in {x.documentModel.publication} from {x.sourceName}</p>
                             <p className={"text-muted"}>Relevance: {getNormalizedRelevance(x.relevance).toFixed(0)}%</p>
                         </Card>
                     </ListItem>
