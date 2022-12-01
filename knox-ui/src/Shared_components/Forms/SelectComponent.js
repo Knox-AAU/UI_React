@@ -27,7 +27,7 @@ export function SelectComponent({header, selectedValues, setSelectedValues, fetc
     }
 
     return (
-        <div className='sidebar-component-top'>
+        <div className='sidebar-section-top'>
             <h5>{header}</h5>
             <FormGroup>
                 { allValues.map(x => Checkbox({ value: x.id, name: x.name, onChangeCallback: handleCheckboxChanged })) }

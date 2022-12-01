@@ -37,7 +37,7 @@ export default function AdvancedSideBar({ isOpen,
                         afterDate={afterDate}
                         setAfterDate={setAfterDate}
                     />
-                    <div className={"sidebar-component"}>
+                    <div className={"sidebar-section"}>
                         <h5 className={"mb-3"}>Other filters</h5>
                         <AutocompleteComponent
                             header={"Authors"}

@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 
-function CustomDatePicker({label, date, setDate}) {
+function CustomDatePicker({className, label, date, setDate}) {
     const handleChange = (newValue) => setDate(newValue);
 
     return (
-        <div>
+        <div className={className}>
             <DesktopDatePicker
                 views={['year', 'month', 'day']}
                 inputFormat='DD/MM/YYYY'

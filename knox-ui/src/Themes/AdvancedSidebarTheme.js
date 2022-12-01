@@ -45,17 +45,29 @@ const ThemeOptions = createTheme({
                     padding: 10,
                     color: '#ffffff',
                     '& .MuiButtonBase-root': {
-                        color: '#ffffff'
+                        color: '#ffffff',
+                        '& .Mui-TouchRipple-root': {
+                            backgroundColor: '#ff00dc'
+                        }
                     },
                     '& .MuiPickersDay-root': {
                         color: '#000000',
+                        backgroundColor: '#ffffff',
                         '&:hover': {
-                            backgroundColor: '#3874cb',
+                            backgroundColor: '#f00dc',
                             color: '#ffffff'
                         },
                         '&:disabled': {
                             color: '#d70202'
                         }
+                    },
+                    '& .MuiPickersDay-root:focus': {
+                        color: '#000000',
+                        backgroundColor: '#ffffff'
+                    },
+                    '& .MuiPickersDay-today': {
+                        color: '#000000',
+                        backgroundColor: '#ffffff'
                     },
                     '& svg': {
                         color: '#ffffff'

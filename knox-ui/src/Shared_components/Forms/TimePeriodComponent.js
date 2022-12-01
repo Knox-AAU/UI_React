@@ -7,14 +7,12 @@ import React from "react";
 export function TimePeriodComponent({header, beforeDate, setBeforeDate, afterDate, setAfterDate}) {
 
     return (
-        <div className='sidebar-component'>
+        <div className='sidebar-section'>
             <h5 className="mb-3">{header}</h5>
             <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DatePicker label="From" date={afterDate} setDate={setAfterDate}/>
-                        <DatePicker label="To" date={beforeDate} setDate={setBeforeDate}/>
-                    </Stack>
+                    <DatePicker className='sidebar-component' label="From" date={afterDate} setDate={setAfterDate}/>
+                    <DatePicker className='sidebar-component' label="To" date={beforeDate} setDate={setBeforeDate}/>
                 </LocalizationProvider>
             </div>
         </div>
