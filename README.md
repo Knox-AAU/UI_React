@@ -1,4 +1,7 @@
 ![Tests Main](https://github.com/Knox-AAU/React-UI/actions/workflows/react-CI-test.yml/badge.svg)
+
+Note: The test workflow is currently disabled due to issues with the test framework.
+
 # Getting Started with KNOX frontend
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
