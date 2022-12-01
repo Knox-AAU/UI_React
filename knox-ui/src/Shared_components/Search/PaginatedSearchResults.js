@@ -2,7 +2,7 @@ import React from 'react'
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import '../../Css/PaginatedSearchResults.css';
-import {Card, List, ListItem } from "@mui/material";
+import { Paper, Card, List, ListItem } from "@mui/material";
 
 function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
     const [currentSearchResults, setCurrentSearchResults] = useState([]);
@@ -35,18 +35,21 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
 
     return (
         <div className="PaginateStyle">
-            <List>
-                {currentSearchResults?.map(x => (
-                    <ListItem key={x.documentModel.id} variant="outlined" sx={{padding: 0, margin: 0}}>
-                        <Card sx={{width: '100%', padding: 2}}>
-                            <h4 className='title-link'
-                                onClick={() => console.log('Not implemented yet')}>{x.documentModel.title}</h4>
-                            <p className={"text-muted"}>Written by {x.documentModel.author}, published on {x.documentModel.date.toLocaleDateString()} in {x.documentModel.publication} from {x.sourceName}</p>
-                            <p className={"text-muted"}>Relevance: {getNormalizedRelevance(x.relevance).toFixed(0)}%</p>
-                        </Card>
-                    </ListItem>
-                ))}
-            </List>
+            <Paper style={{maxHeight: 450, overflow: 'auto'}}>
+                <List>
+                    {currentSearchResults?.map(x => (
+                        <ListItem key={x.documentModel.id} variant="outlined" sx={{padding: 0, margin: 0}}>
+                            <Card sx={{width: '100%', padding: 2, boxShadow: 0}}>
+                                <h4 className='title-link'
+                                    onClick={() => console.log('Not implemented yet')}>{x.documentModel.title}
+                                </h4>
+                                <p className={"text-muted"}>Written by {x.documentModel.author}, published on {x.documentModel.date.toLocaleDateString()} in {x.documentModel.publication} from {x.sourceName}</p>
+                                <p className={"text-muted"}>Relevance: {getNormalizedRelevance(x.relevance).toFixed(0)}%</p>
+                            </Card>
+                        </ListItem>
+                    ))}
+                </List>
+            </Paper>
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="→"

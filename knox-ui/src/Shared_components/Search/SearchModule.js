@@ -97,7 +97,7 @@ const SearchModule = () => {
                                 : null
                             }
                             { searchResults?.length > 0 ?
-                                <PaginatedSearchResults itemsPerPage={25} searchResults={searchResults} isFirstSearchMade={isFirstSearchMade}/>
+                                <PaginatedSearchResults itemsPerPage={10} searchResults={searchResults} isFirstSearchMade={isFirstSearchMade}/>
                                 : null
                             }
                         </div>
