@@ -1,10 +1,9 @@
 import React from 'react'
-import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import '../../Css/PaginatedSearchResults.css';
-import { Paper, Card, List, ListItem } from "@mui/material";
+import {Paper, Card, List, ListItem, Pagination } from "@mui/material";
 
-function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
+function PaginatedSearchResults({ itemsPerPage, searchResults }) {
     const [currentSearchResults, setCurrentSearchResults] = useState([]);
     const [pageCount, setPageCount] = useState(0);
     // Start Location of shown searches
@@ -22,9 +21,10 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
     }, [searchResults, itemsPerPage, itemOffset]);
 
     // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-        setItemOffset((event.selected * itemsPerPage) % searchResults.length)
-        window.scrollTo(0,0)
+    const handleChangePage = (page) => {
+        console.log(page);
+        setItemOffset((page * itemsPerPage) % searchResults.length);
+        window.scrollTo(0,0);
     }
 
     const getNormalizedRelevance = (relevance) => {
@@ -35,11 +35,11 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
 
     return (
         <div className="PaginateStyle">
-            <Paper style={{maxHeight: 450, overflow: 'auto'}}>
+            <Paper style={{maxHeight: 450, overflow: 'auto'}} sx={{boxShadow: 0}}>
                 <List>
                     {currentSearchResults?.map(x => (
                         <ListItem key={x.documentModel.id} variant="outlined" sx={{padding: 0, margin: 0}}>
-                            <Card sx={{width: '100%', padding: 2, boxShadow: 0}}>
+                            <Card sx={{width: '100%', paddingTop: 1, paddingLeft: 1, boxShadow: 0}}>
                                 <h4 className='title-link'
                                     onClick={() => console.log('Not implemented yet')}>{x.documentModel.title}
                                 </h4>
@@ -50,17 +50,16 @@ function PaginatedSearchResults({ itemsPerPage, searchResults, isSearching }) {
                     ))}
                 </List>
             </Paper>
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel="→"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                pageCount={pageCount}
-                previousLabel="←"
-                renderOnZeroPageCount={null}
-                containerClassName='pagination' /* as this work same as bootstrap class */
-                subContainerClassName='pages pagination' /* as this work same as bootstrap class */
-                activeClassName='active' /* as this work same as bootstrap class */
+            <Pagination
+                shape='rounded'
+                variant='outlined'
+                sx={{
+                    marginTop: 2
+                }}
+                count={pageCount}
+                onChange={(event, page) => handleChangePage(page)}
+                showFirstButton
+                showLastButton
             />
         </div>
     );
