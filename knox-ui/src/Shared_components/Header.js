@@ -8,17 +8,17 @@ const Header = () => {
     return (
     
     <StickyBox>
-      <Navbar data-testid="stickyBox" collapseOnSelect expand="lg"  variant="light" style={{padding: 0, backgroundColor: "#242526"}} className="NavBarStyle" >
+      <Navbar data-testid="stickyBox" collapseOnSelect expand="lg"  variant="dark" style={{padding: 0, backgroundColor: "#242526"}} className="NavBarStyle" >
         <Container data-testid="container" className="ContainerStyle">
         <Navbar.Brand href="/home"><img style={{height:"40px"}} className="img-responsive" src={logo} alt="logo"/></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" >
-              <Nav.Link href="/home" style={{color:"white"}}>Home</Nav.Link>
-              <Nav.Link href="/factchecker" style={{color:"white"}}>Fact Checking</Nav.Link>
+              <Nav.Link href="/home" className={"LinkStyle"}>Home</Nav.Link>
+              <Nav.Link href="/factchecker" className={"LinkStyle"} >Fact Checking</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="/status" style={{color:"white"}}>Status</Nav.Link>
+              <Nav.Link href="/status" className={"LinkStyle"}>Status</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

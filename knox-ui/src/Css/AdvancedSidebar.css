@@ -1,43 +1,30 @@
-/* Sidebar css */
+.sidebar {
+    background: #3874cb;
+    width: 300px;
+    border: 0;
+    padding: 15px;
+    height: 94.6vh;
+    color: #ffffff;
+}
 
-.sidebar_component {
-    margin: auto;
+.sidebar-section {
     margin-top: 20px;
-    padding: 7px;
-    width: 80%;
-    border-radius: 5px;
-    background: #6895D7;
-    position: relative;
 }
 
-.sidebar_component h2 {
+.sidebar-section-top {
+    margin-top: 0;
+}
+
+.sidebar-component {
     margin-top: 10px;
-    color: white;
-    text-align: center;
+    margin-bottom: 10px;
 }
 
-
-.nobullets {
-    padding-left: 0;
-    list-style-type: none;
-    columns: 2;
+.sidebar-component-top {
+    padding: 0;
+    margin-top: 0;
 }
 
-.checkbox label {
-    text-align: left;
-    word-break: break-word;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2px;
-    margin-bottom: 5px;
-}
-
-.sidebar_option_text {
-    margin: 0;
-}
-
-.checkbox ul li label {
-    display: flex;
-    align-items: center;
-    color: white;
+.sidebar-component-collection {
+    margin-top: 200px;
 }

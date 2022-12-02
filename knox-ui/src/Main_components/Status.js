@@ -41,6 +41,8 @@ const Status = props => {
             let totalDownloadFiles = 0;
             let currentScrapeLink = 0;
             let totalScrapeLinks = 0;
+            let currentJsonFile = 0;
+            let totalJsonFiles = 0;
 
             let setState = ((newState) => {
                 state = newState
@@ -97,6 +99,11 @@ const Status = props => {
                         document.getElementById("buttons").style.display = "none";
                         document.getElementById("no_ws_connection").style.display = "block";
                         break;
+                    case "SENDING":
+                        primaryProgressBarOuter.style.display = "initial";
+                        document.getElementById("primaryProgressBarLegend").style.display = "initial";
+                        primaryProgressBarOuter.getElementsByClassName("ProgressBarTitle")[0].textContent = "Current JSON file being sent: ";
+                        break;
                     case "FINISHED":
                         primaryProgressBar.textContent = "Finished!";
                         secondaryProgressBar.textContent = "Finished!";
@@ -125,6 +132,10 @@ const Status = props => {
 
             let updateDownloadFileNumber = (() => {
                 updateProgressBar(primaryProgressBar, currentDownloadFile, totalDownloadFiles, "PDF");
+            });
+
+            let updateJsonFileSent = (() => {
+                updateProgressBar(primaryProgressBar, currentJsonFile, totalJsonFiles, "JSON");
             });
 
             let updateScrapeLink = (() => {
@@ -212,6 +223,22 @@ const Status = props => {
                         if (state === "SCRAPING")
                             updateScrapeLink();
                     }
+
+                    if (contents.hasOwnProperty("currentJsonFile")) {
+                        currentJsonFile = contents.currentJsonFile;
+                        if (state === "SENDING")
+                            updateJsonFileSent();
+                    }
+
+                    if (contents.hasOwnProperty("totalJsonFiles")) {
+                        totalJsonFiles = contents.totalJsonFiles;
+                        if (state === "SENDING")
+                            updateJsonFileSent();
+                    }
+
+                    if (contents.hasOwnProperty("currentJsonFileName")) {
+                        document.getElementById("primaryProgressBarLegend").getElementsByTagName("a")[0].textContent = contents.currentJsonFileName;
+                    }
                 }
             }
 
@@ -246,13 +273,6 @@ const Status = props => {
                 jsonObject.contents.push({ "commandType": "SEND" });
                 ws.send(JSON.stringify(jsonObject));
             });
-
-            ws.onclose = (e) => {
-                setTimeout(() => {
-                    setState("CLIENT_WARNING");
-                    wsStart();
-                }, 1000);
-            }
         }
         wsStart();
     });
@@ -260,9 +280,9 @@ const Status = props => {
     const [value, setValue] = React.useState(null);
 
     React.useEffect(() => {
-      axios.get("http://130.225.57.27/MongoJsonAPU/collection_count?db=Nordjyske&col=1.0").then((response) => {
-        setValue(response.data);
-        console.log(response.data)
+      axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
+        setValue(response?.data);
+        console.log(response)
       });
     }, []);
 
@@ -279,24 +299,22 @@ const Status = props => {
             </div>
 
             {/* Section for Nordjysk statistics */}
-            <div className="GroupSpecificlDiv" style={{ gridColumn: "1", gridRow: "2" }}>
-                <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
-                    <h2>Nordjysk Status of parsing:</h2>
-                    <p>Probably gonna be some kind of piechart to display the percentage of files that have been parsed</p>
+            <div data-testid="nordjyskDiv" className="GroupSpecificlDiv" >
+                <h2>Nordjysk Status of parsing:</h2>
 
-                    <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
-                        data={[
-                            { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
-                            { title: 'Not yet parsed json', value: 1550, color: '#C13C37' },
-                        ]}
-                    />
-                </div>
-
-                {/* Section for Nordjyske statistics */}
-                <div className="GroupSpecificlDiv">
-                    <h2>Nordjyske/Grundfoss Named Enitity Recognition (NER) Visualiser:</h2>
-                    <Visualiser publishers={["NJ", "GF"]} url="/visualiseNer/" />
-                </div>
+                <PieChart viewBoxSize={10} //https://github.com/toomuchdesign/react-minimal-pie-chart/blob/master/stories/index.tsx and https://www.npmjs.com/package/react-minimal-pie-chart
+                    data={[
+                        { title: 'Parsed json', value: value ? value.count : 0, color: '#E38627' },
+                        { title: 'Not yet parsed json', value: 53000, color: '#C13C37' },
+                    ]}
+                />
+                <p>Yellow is parsed</p>
+                <p>red is not yet parsed</p>
+            </div>
+            {/* Section for Nordjyske and Grundfos statistics */}
+            <div className="GroupSpecificlDiv knowledgelayerbox">
+            <h2 className="knowledgelayerelement">Nordjyske/Grundfos Named Enitity Recognition (NER) Visualiser:</h2>
+            <Visualiser publishers={["NJ", "GF"]} urlNer="/visualiseNer/" urlKg="/generateKG/" />
             </div>
             {/* Section for Grundfoss statistics */}
             <div id="groupB" className="GroupSpecificlDiv" style={{ justifyContent: "left", gridColumn: "2", gridRow: "2", backgroundRepeat: "no-repeat", backgroundSize:"100%", display: "block", backgroundImage:`url(${GrundfosLogo})`}}>
@@ -364,8 +382,8 @@ const Status = props => {
 
             {/* Section for Database statistics */}
             <div data-testid="databaseDiv" className="GroupSpecificlDiv">
-                <h3>WordCount database status</h3>
-                <DatabaseStatus port="8000" apiName="wordCountStatus" dbName="WordCount"/>
+                <h3>Database status</h3>
+                <DatabaseStatus port="5501" apiName="Document Data API" dbName="Document Data"/>
                 <DatabaseStatus port="8000" apiName="rdfStatus" dbName="RDF"/>
             </div>
         </div>

@@ -1,5 +1,17 @@
-*/.vs/*
+**/.vs/
 knox-ui/.vs/slnx.sqlite
+
+# Build files
+**/build/
+
+# Test files
+**/coverage
+
+# Dependency directories
+**/node_modules/
 
 # Webstorm cache directory
 .idea/
+
+# Misc.
+**/.env*.local

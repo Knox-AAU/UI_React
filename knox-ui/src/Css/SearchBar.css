@@ -1,0 +1,40 @@
+.SearchBarStyle {
+    height: 100% !important;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.icon-btn-wrapper {
+    border-color: #747474 !important;
+}
+
+.icon-btn {
+    color: #747474;
+}
+
+.icon-btn-wrapper:hover {
+    border-color: black !important;
+}
+
+#search-bar {
+    width: 100%;
+}
+
+.SearchBarPlacement {
+  margin-top: 5%;
+  width: auto;
+  display: block;
+  margin-right: 7%;
+}
+
+.ImgStyle {
+  height: 30px;
+}
+
+.Loader {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+

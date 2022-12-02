@@ -59,3 +59,14 @@
     background-color: var(--main-color);
     border-color: var(--secondary-color);
 }
+
+.title-link {
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE 10 and IE 11 */
+    user-select: none;         /* Standard syntax */
+}
+
+.title-link:hover {
+    color: #3874cb;
+}
