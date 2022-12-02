@@ -1,6 +1,5 @@
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {Stack} from "@mui/material";
 import DatePicker from "../CustomDatePicker";
 import React from "react";
 
