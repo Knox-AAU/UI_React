@@ -1,20 +1,9 @@
-import Source from '../Models/SourceModel';
-
-const sourcesEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_SEARCH_ENDPOINT;
+const sourcesEndpoint = process.env.REACT_APP_ACCESS_API + '/document-data/sources';
 
 export function GetSources() {
-    let sourceList = [];
-
-    let response = fetch(sourcesEndpoint)
-                    .then((response) => response.json())
-                    .catch(() => { return []; });
-
-    for (let jsonContent in response) {
-        let source = new Source(jsonContent);
-        sourceList.push(source);
-    }
-
-    return sourceList;
+    return fetch(sourcesEndpoint, { headers: { origin: "localhost" } })
+        .then(response => response?.ok ? response.json() : [])
+        .catch(console.error);
 }
 
 export default GetSources;

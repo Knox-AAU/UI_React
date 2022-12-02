@@ -1,44 +1,22 @@
 import React from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MuiCheckbox from "@mui/material/Checkbox";
-import GetSources from "../Services/SourcesService";
 
-export function CreateCheckbox(sources, options, setOptions) {
-    let result = [];
-
-    if (sources !== undefined) {
-        for(let i = 0; i < sources.length; i++) {
-            result[i] = (<Checkbox source={sources[i]} key={sources[i].id} options={options} setOptions={setOptions} />);
-        }
-    }
-
-    return result;
-}
-
-export function Checkbox({source, options, setOptions}) {
-    const handleChange= (event, isChecked) => {
-        if (options.sources !== undefined && isChecked) {
-            setOptions(previousState => {
-                return {...previousState, sources: source}
-            });
-        } else if (options.sources !== undefined && !isChecked) {
-            setOptions(options.sources.filter(x => x.id !== event.target.id));
-        } else {
-            setOptions(options.sources = GetSources());
-        }
-    }
+export function Checkbox({value, name, onChangeCallback}) {
 
     return (
         <FormControlLabel
-            label={source.name}
+            key={value}
+            label={name}
             sx={{
                 color: '#ffffff',
             }}
             control={
                 <MuiCheckbox
-                    defaultChecked
-                    name={source.name}
-                    onChange={(event, isChecked) => handleChange(event, isChecked)}
+                    defaultChecked={true}
+                    name={name}
+                    value={value}
+                    onChange={(event, isChecked) => onChangeCallback(event, isChecked)}
                     sx={{
                         color: '#ffffff',
                         '&.Mui-checked': {
@@ -51,4 +29,4 @@ export function Checkbox({source, options, setOptions}) {
     );
 }
 
-export default CreateCheckbox;
+export default Checkbox;

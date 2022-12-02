@@ -273,13 +273,6 @@ const Status = props => {
                 jsonObject.contents.push({ "commandType": "SEND" });
                 ws.send(JSON.stringify(jsonObject));
             });
-
-            ws.onclose = (e) => {
-                setTimeout(() => {
-                    setState("CLIENT_WARNING");
-                    wsStart();
-                }, 1000);
-            }
         }
         wsStart();
     });
@@ -288,7 +281,7 @@ const Status = props => {
 
     React.useEffect(() => {
       axios.get("http://localhost:8000/NordjyskeCount").then((response) => {
-        setValue(response.data);
+        setValue(response?.data);
         console.log(response)
       });
     }, []);

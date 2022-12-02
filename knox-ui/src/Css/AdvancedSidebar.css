@@ -7,10 +7,24 @@
     color: #ffffff;
 }
 
+.sidebar-section {
+    margin-top: 20px;
+}
+
+.sidebar-section-top {
+    margin-top: 0;
+}
+
 .sidebar-component {
-    padding: 20px 0px 0px 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .sidebar-component-top {
-    padding: 0px;
+    padding: 0;
+    margin-top: 0;
+}
+
+.sidebar-component-collection {
+    margin-top: 200px;
 }

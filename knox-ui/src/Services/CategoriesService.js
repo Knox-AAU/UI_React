@@ -1,20 +1,9 @@
-import Category from '../Models/CategoryModel';
-
-const categoriesEndpoint = process.env.REACT_APP_ACCESS_API + process.env.REACT_APP_CATEGORIES_ENDPOINT;
+const categoriesEndpoint = process.env.REACT_APP_ACCESS_API + '/document-data/categories';
 
 export function GetCategories() {
-    let categoryList = [];
-
-    let response = fetch(categoriesEndpoint)
-                    .then((response) => response.json())
-                    .catch(() => { return []; });
-
-    for (let jsonContent in response) {
-        let category = new Category(jsonContent);
-        categoryList.push(category);
-    }
-
-    return categoryList;
+    return fetch(categoriesEndpoint, { headers: { origin: "localhost" } })
+        .then(response => response?.ok ? response.json() : [])
+        .catch(console.error);
 }
 
 export default GetCategories;

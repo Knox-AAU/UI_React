@@ -2,7 +2,7 @@ import React from "react";
 import "../Css/FactChecker.css";
 import { useState, useMemo } from "react";
 import "../Css/SearchResult.css";
-import SearchBar from "../Shared_components/SearchBar";
+import SearchBar from "../Shared_components/Search/SearchBar";
 
 const FactChecker = (props) => {
   const [triples, setTriples] = useState([]);
@@ -12,14 +12,15 @@ const FactChecker = (props) => {
     fetch("http://localhost:8000/gettriples")
       .then((response) => response.json())
       .then((json) => {
-        setTriples(json);
-        setShowingTriples(json);
+        setTriples(json ?? []);
+        setShowingTriples(json ?? []);
       })
       .catch((e) => console.log(e))
       .finally(() => {});
   }, []);
 
   const search = (terms) => {
+    if (triples.length === 0) return;
     terms = terms.toLowerCase().split(" ");
     let result = [];
     triples.forEach((triple) => {
@@ -37,6 +38,7 @@ const FactChecker = (props) => {
   };
 
   const onClick = async (triple) => {
+    if (triples.length === 0) return;
     let newArr = [...triples];
     const requestOptions = {
       method: "POST",
@@ -69,12 +71,12 @@ const FactChecker = (props) => {
             </h3>
           )}
           <SearchBar
-            searchText="Enter your search"
-            onClick={search}
-            loadingState={false}
+            enableSuggester={true}
+            onSubmitCallback={search}
+            isSearching={false}
           />
         </div>
-        {showingTriples &&
+        {showingTriples?.length > 0 &&
           showingTriples.map((triple) => (
             <div
               className="searchResultFactCheckerDiv"

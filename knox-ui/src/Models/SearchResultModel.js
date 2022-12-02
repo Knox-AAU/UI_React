@@ -1,9 +1,9 @@
 export class SearchResult {
-    document;
+    documentModel;
     relevance;
 
-    constructor(document, relevance) {
-        this.document = document;
+    constructor(documentModel, relevance) {
+        this.documentModel = documentModel;
         this.relevance = relevance;
     }
 }
