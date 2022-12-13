@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 var searchstring = "";
 var triples = [];
-
+var maxTriples = prompt("Max amount of triples to be visualized as a force-directed graph");
 var subject = [];
 var predicate = [];
 var object = [];
@@ -103,7 +103,7 @@ const KeyLogger = (KeyPressed) => {
       for (let i = 0; i < TableData.length; i++) {
         document.getElementById('table').innerHTML += TableData[i];  
       }
-      if(subject.length < 200){
+      if(subject.length < maxTriples){
         GenerateLabelTriplesQuery(undefined);
       }
     }
