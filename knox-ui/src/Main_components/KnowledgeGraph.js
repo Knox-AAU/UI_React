@@ -2,9 +2,20 @@ import React from 'react'
 import '../Css/KnowledgeGraph.css';
 import * as d3 from 'd3';
 
-
-var triples = [];
 var searchstring = "";
+var triples = [];
+
+var subject = [];
+var predicate = [];
+var object = [];
+var TableData=[];
+
+var LabelSubject = [];
+var LabelPredicate = [];
+var LabelObject = [];
+
+
+
 
 const KnowledgeGraph = props => {
 const KeyLogger = (KeyPressed) => {
@@ -12,33 +23,77 @@ const KeyLogger = (KeyPressed) => {
 }
   const onClick = (searchText) => {
     searchText = searchstring;
+    document.getElementById('table').innerHTML = "";
+    document.getElementById('svg-body').innerHTML = "";
+    document.getElementById('status').innerHTML="";
+    triples = [];
+    subject = [];
+    predicate = [];
+    object = [];
+    TableData=[];
+    LabelSubject = [];
+    LabelPredicate = [];
+    LabelObject = [];
     Search(searchText);
 }
     function Search(id) {
-        document.getElementById('table').innerHTML = "";
-        document.getElementById('svg-body').innerHTML = "";
         
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://localhost:3030/SNOMEDTEST?query=PREFIX+skos%3A%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3ESELECT+%3FSUBJECT+%3FPREDICATE+%3FOBJECT+where%7B%0A++%3Chttp%3A%2F%2Fwww.example.org%2F'+id+'%3E+(skos%3A%7C!skos%3A)%7B0%7D+%3FSUBJECT.%0A++%3FSUBJECT+%3FPREDICATE+%3FOBJECT+%0A%7DLIMIT+150%0A', true);
         xhr.withCredentials = true;
         xhr.send(null);
-        xhr.onloadend = (event) => {ResponseToTable(xhr.response)};
-       
+        xhr.onloadend = (event) => {if(xhr.status===200){ResponseToTable(ResponseParser(xhr.response))}else{document.getElementById('status').innerHTML="INVALID PATIENT ID"};};
+        
+    } 
+    function FindLabels(QueryString) {    
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', QueryString, true);
+      xhr.withCredentials = true;
+      xhr.send(null);
+      xhr.onloadend = (event) => {if(xhr.status===200){ResponseToKG(LabelResponseParser(xhr.response))}else{document.getElementById('status').innerHTML="INVALID PATIENT ID"}};  
+  } 
+
+  function GenerateLabelTriplesQuery(data){
+  var QueryString = "http://localhost:3030/SNOMEDTEST?query="+encodeURIComponent("PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT ?label ?id WHERE{")
+  
+  for (let i = 0; i < subject.length; i++) {
+    if(i !== subject.length-1){
+      QueryString += encodeURIComponent("{{<"+subject[i]+"> rdfs:labe* ?id}optional{<"+subject[i]+"> rdfs:label ?label}}union");
+      QueryString += encodeURIComponent("{{<"+predicate[i]+"> rdfs:labe* ?id}optional{<"+predicate[i]+"> rdfs:label ?label}}union");
+      QueryString += encodeURIComponent("{{<"+object[i]+"> rdfs:labe* ?id}optional{<"+object[i]+"> rdfs:label ?label}}union");
+    }else{
+      QueryString += encodeURIComponent("{{<"+subject[i]+"> rdfs:labe* ?id}optional{<"+subject[i]+"> rdfs:label?label}}union");
+      QueryString += encodeURIComponent("{{<"+predicate[i]+"> rdfs:labe* ?id}optional{<"+predicate[i]+"> rdfs:label ?label}}union");
+      QueryString += encodeURIComponent("{{<"+object[i]+"> rdfs:labe* ?id}optional{<"+object[i]+"> rdfs:label ?label}}}");
     }
+  }
+  FindLabels(QueryString);
+  }
 
-    function ResponseToTable(response){
-    var data = JSON.parse(response)
+  function LabelResponseParser(response){
+    
+    var data = JSON.parse(response);
     data = data.results.bindings;
-    var subject = [];
-    var predicate = [];
-    var object = [];
-    var TableData=[];
-
-      data.forEach(element => {
+    for (let i = 0; i < data.length; i+=3) {
+      if(data[i].label !== undefined){LabelSubject.push(data[i].label.value)}else{LabelSubject.push(data[i].id.value)}
+      if(data[i+1].label !== undefined){LabelPredicate.push(data[i+1].label.value)}else{LabelPredicate.push(data[i+1].id.value)}
+      if(data[i+2].label !== undefined){LabelObject.push(data[i+2].label.value)}else{LabelObject.push(data[i+2].id.value)}
+      
+    }
+    return data
+  }
+      
+  function ResponseParser(response){
+    var data = JSON.parse(response);
+    data = data.results.bindings;
+    data.forEach(element => {
       subject.push(element.SUBJECT.value)
       predicate.push(element.PREDICATE.value)
       object.push(element.OBJECT.value)
-    });
+  });
+  return data;
+  }
+    function ResponseToTable(data){
 
     TableData.push("<tr><th>SUBJECT</th><th>PREDICATE</th><th>OBJECT</th></tr>");
       for (let i = 0; i < subject.length; i++) {
@@ -48,20 +103,16 @@ const KeyLogger = (KeyPressed) => {
       for (let i = 0; i < TableData.length; i++) {
         document.getElementById('table').innerHTML += TableData[i];  
       }
+      if(subject.length < 200){
+        GenerateLabelTriplesQuery(undefined);
+      }
+    }
 
-    if(subject.length < 300 ){
-      ResponseToKG(subject,predicate,object);
+    function ResponseToKG(){
+    for (let i = 0; i < LabelSubject.length; i++) {
+      triples.push({subject:LabelSubject[i],predicate:LabelPredicate[i],object:LabelObject[i]});
     }
-    }
-
-    function ResponseToKG(subject, predicate, object){
-    for (let i = 0; i < subject.length; i++) {
-      triples.push({subject:subject[i],predicate:predicate[i],object:object[i]});
-
-    }
-    if(triples.length < 200){
-      hej();
-    }
+    VisualizeFDG();
     }
     function filterNodesById(nodes,id){
       return nodes.filter(function(n) { return n.id === id; });
@@ -134,7 +185,6 @@ const KeyLogger = (KeyPressed) => {
                   .attr("marker-end", "url(#end)")
                   .attr("class", "link")
               ;
-                  
       // ==================== Add Link Names =====================
       var linkTexts = svg.selectAll(".link-text")
             .data(graph.triples)
@@ -143,9 +193,6 @@ const KeyLogger = (KeyPressed) => {
               .attr("class", "link-text")
               .text( function (d) { return d.p.label; })
             ;
-  
-        //linkTexts.append("title")
-        //		.text(function(d) { return d.predicate; });
       // ==================== Add Node =====================
       var nodes = svg.selectAll(".node")
                 .data(filterNodesByType(graph.nodes, "node"))
@@ -153,7 +200,7 @@ const KeyLogger = (KeyPressed) => {
                 .append("circle")
                   .attr("class", "node")
                   .call(force.drag)
-              ;//nodes		
+                  ;		
       // ==================== Add Link Names =====================
       var nodeTexts = svg.selectAll(".node-text")
             .data(filterNodesByType(graph.nodes, "node"))
@@ -161,13 +208,7 @@ const KeyLogger = (KeyPressed) => {
             .append("text")
               .attr("class", "node-text")
               .text( function (d) { return d.label; })
-            ;
-  
-        //nodeTexts.append("title")
-        //		.text(function(d) { return d.label; });
-      
-      
-      
+              ;      
       // ==================== Force ====================
       var color = d3.scale.category20();
       force.on("tick", function() {
@@ -176,28 +217,21 @@ const KeyLogger = (KeyPressed) => {
           .attr("cy", function(d){ return d.y; })
           .attr("r", function(d){return d.weight+8})
           .style("fill",function(d,i){return color(i);})
-          ;
-            
+          ;   
         links
           .attr("d", function(d) {
               return "M" 	+ d.s.x + "," + d.s.y
                     + "S" + d.p.x + "," + d.p.y
                     + " " + d.o.x + "," + d.o.y;
             })	
-          ;
-                   
+          ;       
         nodeTexts
           .attr("x", function(d) { return d.x + 12 ; })
           .attr("y", function(d) { return d.y + 3; })
-          
-          
           ;
-          
-  
         linkTexts
           .attr("x", function(d) { return 4 + (d.s.x + d.p.x + d.o.x)/3  ; })
           .attr("y", function(d) { return 4 + (d.s.y + d.p.y + d.o.y)/3 ; })
-          
           ;
       });
       
@@ -209,9 +243,9 @@ const KeyLogger = (KeyPressed) => {
         .linkDistance(100)
         .start()
         ;
-        
     }
-    function hej(){
+
+    function VisualizeFDG(){
       var svg = d3.select("#svg-body").append("svg")
 				.attr("id",id())
 				.call(d3.behavior.zoom().on("zoom", function () {
@@ -223,10 +257,11 @@ const KeyLogger = (KeyPressed) => {
 	var force = d3.layout.force().size([1000, 500]);
 	
 	var graph = triplesToGraph(svg);
-  console.log(graph);
   update(svg, force, graph);
   triples = [];
+  
     }
+
     function id(){
       return "kl";
     }
@@ -236,24 +271,20 @@ const KeyLogger = (KeyPressed) => {
       
       <div className="ContentOfPage">
         <h1>Healthcare</h1>
+        <p id="status"></p>
         
         
             <input type="text" placeholder="Enter patient id" id="search" onChange={KeyLogger}></input>
             <button onClick={onClick}><i className="fa fa-search"></i>search</button>
         
-        
-        
-        
           <div id="tableblock">
           <table  id="table"></table>   
           </div>
-
       
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
           <script src="http://d3js.org/d3.v3.min.js"></script>
           <div id="svg-body"><g></g></div>
                 </div>
     )
-}
-   
+    }
   export default KnowledgeGraph
