@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 var searchstring = "";
 var triples = [];
-var maxTriples = prompt("Max amount of triples to be visualized as a force-directed graph");
+var maxTriples = 1;
 var subject = [];
 var predicate = [];
 var object = [];
@@ -18,6 +18,11 @@ var LabelObject = [];
 
 
 const KnowledgeGraph = props => {
+  if(MaxTriples === 0){
+    MaxTriples =  prompt("Max amount of triples to be visualized as a force-directed graph?");
+  }else if(MaxTriples === 1){
+    MaxTriples = 0;
+  }
 const KeyLogger = (KeyPressed) => {
     searchstring = KeyPressed.target.value;
 }
