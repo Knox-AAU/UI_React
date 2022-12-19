@@ -1,0 +1,90 @@
+.ContentOfPage {
+    width: 100%;
+    height: 100%;
+    padding: 0 7% 0 7%;
+    display: inline-block;
+    text-align: center;
+    align-content: center;
+}
+
+#tableblock{
+  display: block;
+  height: 75vh;
+  width: 100%;
+  overflow-y: scroll;
+  border:1px solid black;
+  text-align: center;
+  align-content: center;
+  margin-bottom: 25vh;
+}
+#table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    
+  }
+  
+  #table td, #table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    width: 33%;
+  }
+  
+  #table tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #table tr:hover {background-color: #ddd;}
+  
+  #table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: rgb(36, 37, 38);
+    color: white;
+  }
+#tableblock::-webkit-scrollbar {
+    display: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .node {
+		  stroke: #fff;
+		  fill:#ddd;
+		  stroke-width: 1.5px;
+		}
+
+		.link {
+		  fill: none;
+		  stroke: #999;
+		  stroke-opacity: .6;
+		  stroke-width: 1px;
+		}
+
+		marker {
+			stroke: #999;
+			fill:rgba(124,240,10,0);
+		}
+
+		.node-text {
+		  font: 11px sans-serif;
+		  fill:black;
+		}
+
+		.link-text {
+		  font: 9px sans-serif;
+		  fill:grey;
+		}
+		
+        #kl{
+            width: 100%;
+            height: 100vh;
+            padding: 0px;
+            margin: 0px;
+            border:1px solid black;
+        }
+
+
+        

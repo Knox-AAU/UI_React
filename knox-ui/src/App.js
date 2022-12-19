@@ -2,6 +2,7 @@ import React  from 'react';
 import Header from './Shared_components/Header.js';
 //import VA from './Shared_components/VirtualAssistant.js';
 import Home from './Main_components/Home.js';
+import KnowledgeGraph from './Main_components/KnowledgeGraph.js';
 import {
   BrowserRouter as Router,
   Switch,
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route path="/factchecker">
             <FactChecker/>    
+          </Route>
+          <Route path="/KnowledgeGraph">
+            <KnowledgeGraph/>    
           </Route>
           <Route path="/status">
             <Status/>
