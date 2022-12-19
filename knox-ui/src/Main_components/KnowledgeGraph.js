@@ -1,21 +1,18 @@
 import React from 'react'
 import '../Css/KnowledgeGraph.css';
-import * as d3 from 'd3';
+import * as d3 from 'd3'; 
 
 var searchstring = "";
 var triples = [];
-var maxTriples = 1;
+var QueryItems = [];
 var subject = [];
 var predicate = [];
 var object = [];
-var TableData=[];
-
+var TableData;
+var MaxTriples = 1;
 var LabelSubject = [];
 var LabelPredicate = [];
 var LabelObject = [];
-
-
-
 
 const KnowledgeGraph = props => {
   if(MaxTriples === 0){
@@ -27,6 +24,7 @@ const KeyLogger = (KeyPressed) => {
     searchstring = KeyPressed.target.value;
 }
   const onClick = (searchText) => {
+    
     searchText = searchstring;
     document.getElementById('table').innerHTML = "";
     document.getElementById('svg-body').innerHTML = "";
@@ -44,36 +42,52 @@ const KeyLogger = (KeyPressed) => {
     function Search(id) {
         
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3030/SNOMEDTEST?query=PREFIX+skos%3A%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3ESELECT+%3FSUBJECT+%3FPREDICATE+%3FOBJECT+where%7B%0A++%3Chttp%3A%2F%2Fwww.example.org%2F'+id+'%3E+(skos%3A%7C!skos%3A)%7B0%7D+%3FSUBJECT.%0A++%3FSUBJECT+%3FPREDICATE+%3FOBJECT+%0A%7DLIMIT+150%0A', true);
+        xhr.open('GET', 'http://localhost:3030/MedicalKnowledge?query='+encodeURIComponent('PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT ?SUBJECT ?PREDICATE ?OBJECT WHERE{graph ?g {<http://www.example.org/'+id+'> (skos:|!skos:){0,1} ?SUBJECT. ?SUBJECT ?PREDICATE ?OBJECT FILTER isIRI(?OBJECT)}}'), true);
         xhr.withCredentials = true;
         xhr.send(null);
         xhr.onloadend = (event) => {if(xhr.status===200){ResponseToTable(ResponseParser(xhr.response))}else{document.getElementById('status').innerHTML="INVALID PATIENT ID"};};
         
     } 
-    function FindLabels(QueryString) {    
+    function FindLabels(QueryString, i) {   
       const xhr = new XMLHttpRequest();
       xhr.open('GET', QueryString, true);
       xhr.withCredentials = true;
       xhr.send(null);
-      xhr.onloadend = (event) => {if(xhr.status===200){ResponseToKG(LabelResponseParser(xhr.response))}else{document.getElementById('status').innerHTML="INVALID PATIENT ID"}};  
+      xhr.onloadend = (event) => {if(xhr.status===200 && i!==QueryItems.length-3){LabelResponseParser(xhr.response)}else if(xhr.status===200 && i === QueryItems.length-3){ResponseToKG(LabelResponseParser(xhr.response))}else{document.getElementById('status').innerHTML="INVALID PATIENT ID"}};  
   } 
 
-  function GenerateLabelTriplesQuery(data){
-  var QueryString = "http://localhost:3030/SNOMEDTEST?query="+encodeURIComponent("PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT ?label ?id WHERE{")
+  async function GenerateLabelTriplesQuery(data){
   
-  for (let i = 0; i < subject.length; i++) {
-    if(i !== subject.length-1){
-      QueryString += encodeURIComponent("{{<"+subject[i]+"> rdfs:labe* ?id}optional{<"+subject[i]+"> rdfs:label ?label}}union");
-      QueryString += encodeURIComponent("{{<"+predicate[i]+"> rdfs:labe* ?id}optional{<"+predicate[i]+"> rdfs:label ?label}}union");
-      QueryString += encodeURIComponent("{{<"+object[i]+"> rdfs:labe* ?id}optional{<"+object[i]+"> rdfs:label ?label}}union");
-    }else{
-      QueryString += encodeURIComponent("{{<"+subject[i]+"> rdfs:labe* ?id}optional{<"+subject[i]+"> rdfs:label?label}}union");
-      QueryString += encodeURIComponent("{{<"+predicate[i]+"> rdfs:labe* ?id}optional{<"+predicate[i]+"> rdfs:label ?label}}union");
-      QueryString += encodeURIComponent("{{<"+object[i]+"> rdfs:labe* ?id}optional{<"+object[i]+"> rdfs:label ?label}}}");
+  var QueryPrefix = "http://localhost:3030/MedicalKnowledge?query="+encodeURIComponent("PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT ?label ?id WHERE{")
+  var QueryString = QueryPrefix;
+
+    for (let i = 0; i < subject.length; i++) {
+        QueryItems.push("{{<"+subject[i]+"> rdfs:labe* ?id}optional{<"+subject[i]+"> rdfs:label ?label}}");
+        QueryItems.push("{{<"+predicate[i]+"> rdfs:labe* ?id}optional{<"+predicate[i]+"> rdfs:label ?label}}");
+        QueryItems.push("{{<"+object[i]+"> rdfs:labe* ?id}optional{<"+object[i]+"> rdfs:label ?label}}");
     }
-  }
-  FindLabels(QueryString);
-  }
+    
+    for (let i = 0; i < QueryItems.length; i+=3) {
+      if(i === QueryItems.length-3){
+        QueryString += encodeURIComponent(QueryItems[i]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+1]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+2]+"}");
+        await FindLabels(QueryString, i);
+        QueryString = QueryPrefix;
+      } 
+      if(i%333 === 0 && i!==0){
+        QueryString += encodeURIComponent(QueryItems[i]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+1]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+2]+"}");
+        await FindLabels(QueryString, i);
+        QueryString = QueryPrefix;
+      }else{
+        QueryString += encodeURIComponent(QueryItems[i]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+1]+"union");
+        QueryString += encodeURIComponent(QueryItems[i+2]+"union");
+      }
+    }
+    }
 
   function LabelResponseParser(response){
     
@@ -83,7 +97,6 @@ const KeyLogger = (KeyPressed) => {
       if(data[i].label !== undefined){LabelSubject.push(data[i].label.value)}else{LabelSubject.push(data[i].id.value)}
       if(data[i+1].label !== undefined){LabelPredicate.push(data[i+1].label.value)}else{LabelPredicate.push(data[i+1].id.value)}
       if(data[i+2].label !== undefined){LabelObject.push(data[i+2].label.value)}else{LabelObject.push(data[i+2].id.value)}
-      
     }
     return data
   }
@@ -99,17 +112,20 @@ const KeyLogger = (KeyPressed) => {
   return data;
   }
     function ResponseToTable(data){
-
-    TableData.push("<tr><th>SUBJECT</th><th>PREDICATE</th><th>OBJECT</th></tr>");
+    TableData += "<tr><th>SUBJECT</th><th>PREDICATE</th><th>OBJECT</th></tr>";
       for (let i = 0; i < subject.length; i++) {
-        TableData.push("<tr><td><a href='"+subject[i]+"'>"+subject[i]+"</a></td><td><a href='"+predicate[i]+"'>"+predicate[i]+"</a></td><td><a href='"+object[i]+"'>"+object[i]+"</a></td></tr>")
+        TableData += "<tr><td><a href='"+subject[i]+"'>"+subject[i]+"</a></td><td><a href='"+predicate[i]+"'>"+predicate[i]+"</a></td><td><a href='"+object[i]+"'>"+object[i]+"</a></td></tr>"
       }
-    
-      for (let i = 0; i < TableData.length; i++) {
-        document.getElementById('table').innerHTML += TableData[i];  
-      }
-      if(subject.length < maxTriples){
+
+        document.getElementById('table').innerHTML += TableData;  
+
+      if(subject.length < MaxTriples && subject.length ){
+        
+        document.getElementById('status').innerHTML="Please wait, the force-directed graph is being generated";
         GenerateLabelTriplesQuery(undefined);
+      }
+      else{
+        document.getElementById('status').innerHTML="INVALID PATIENT ID";
       }
     }
 
@@ -264,17 +280,16 @@ const KeyLogger = (KeyPressed) => {
 	var graph = triplesToGraph(svg);
   update(svg, force, graph);
   triples = [];
-  
+  document.getElementById('status').innerHTML="Scroll down to see the force-directed graph";
     }
 
     function id(){
       return "kl";
     }
-    
-  
     return(
       
       <div className="ContentOfPage">
+        
         <h1>Healthcare</h1>
         <p id="status"></p>
         
